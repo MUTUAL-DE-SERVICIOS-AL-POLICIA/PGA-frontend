@@ -10,9 +10,11 @@ export const useAuthStore = () => {
     const startlogin = async({ username, password }: { username: string, password: string }) =>{
         try {
            console.log('datos ingresados', {username, password});
+           const { data } = await coffeApi.post('/auth/login', { username, password });
+           console.log('Response data:', data);
         } catch (error: any) {
             dispatch(onLogout());
-            const message = error.response.data.error
+            const message = "error"
             Swal.fire('Error', message, 'error')
         }
     }
