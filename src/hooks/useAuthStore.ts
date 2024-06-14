@@ -5,13 +5,15 @@ import { onLogin, onLogout } from "../store";
 
 export const useAuthStore = () => {
     const { status, user } = useSelector((state: any) => state.auth);
-    const dispatach = useDispatch();
+    const dispatch = useDispatch();
 
     const startlogin = async({ username, password }: { username: string, password: string }) =>{
         try {
-            const { data } = await coffeApi.post('/api/auth/login', {username, password});
-        } catch (error) {
-            
+           console.log('datos ingresados', {username, password});
+        } catch (error: any) {
+            dispatch(onLogout());
+            const message = error.response.data.error
+            Swal.fire('Error', message, 'error')
         }
     }
 
@@ -20,5 +22,7 @@ export const useAuthStore = () => {
     return {
         status,
         user,
+
+        startlogin
     }
 }
