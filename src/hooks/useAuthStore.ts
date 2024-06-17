@@ -12,12 +12,31 @@ export const useAuthStore = () => {
            console.log('datos ingresados', {username, password});
            const { data } = await coffeApi.post('/auth/login', { username, password });
            console.log('Response data:', data);
+           localStorage.setItem('token', data.token);
+           const user = data.user;
+           localStorage.setItem('user',JSON.stringify(user));
+           localStorage.setItem('rol',data.role);
+           dispatch(onLogin(user));
+           //console.log(status)
+           
         } catch (error: any) {
             dispatch(onLogout());
-            const message = "error"
+            const message = error.response.data.message;
             Swal.fire('Error', message, 'error')
         }
     }
+
+    const checkAuthToken = async () => {
+        const token = localStorage.getItem('token');
+    
+        if (token) {
+          const user = localStorage.getItem('user')
+          return dispatch(onLogin(user));
+        } else {
+          localStorage.clear();
+          dispatch(onLogout());
+        }
+      }
 
     
 
@@ -25,6 +44,7 @@ export const useAuthStore = () => {
         status,
         user,
 
-        startlogin
+        startlogin,
+        checkAuthToken
     }
 }
