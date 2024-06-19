@@ -5,7 +5,7 @@ import { useAuthStore } from '../../hooks';
 export const AccountPopover = ({ anchorEl, onClose, open, onTapSettings }: { anchorEl: any, onClose: any, open: boolean, onTapSettings: any }) => {
 
     const navigate = useNavigate();
-    //const { startLogout } = useAuthStore();
+    const { startLogout } = useAuthStore();
     const { user } = useAuthStore();
 
     return (
@@ -50,9 +50,9 @@ export const AccountPopover = ({ anchorEl, onClose, open, onTapSettings }: { anc
                 >
                     Configuraciones
                 </MenuItem>
-                <MenuItem
+                <MenuItem           
                     onClick={() => {
-                        //startLogout();
+                        startLogout();
                         navigate('/');
                     }}
                 >

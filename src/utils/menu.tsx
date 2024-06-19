@@ -8,33 +8,33 @@ export const menu = () => {
             icon: <Home />
         },
         {
-            path: "/rentalCalendarView",
-            title: "Calendario",
-            icon: <CalendarMonth />,
+            path: "/supplierView",
+            title: "Proveedores",
+            icon: <Group/>,
             //permission: "show-rates"
         },
-        {
-            path: "/customersView",
-            title: "Clientes",
-            icon: <Group />,
-            //permission: "show-halls"
-        },
-        {
-            path: "/rentalView",
-            title: "Alquileres",
-            icon: <Receipt />,
-            //permission: "show-rates"
-        },
-        {
-            path: "/productsView",
-            title: "Productos",
-            icon: <Bento />,
-            //permission: "show-rates"
-        },
-        {
-            path: "/reports",
-            title: "Reportes",
-            icon:<Assessment/>
-        }
+        // {
+        //     path: "/customersView",
+        //     title: "Clientes",
+        //     icon: <CalendarMonth />,
+        //     //permission: "show-halls"
+        // },
+        // {
+        //     path: "/rentalView",
+        //     title: "Alquileres",
+        //     icon: <Receipt />,
+        //     //permission: "show-rates"
+        // },
+        // {
+        //     path: "/productsView",
+        //     title: "Productos",
+        //     icon: <Bento />,
+        //     //permission: "show-rates"
+        // },
+        // {
+        //     path: "/reports",
+        //     title: "Reportes",
+        //     icon:<Assessment/>
+        // }
     ]
 }

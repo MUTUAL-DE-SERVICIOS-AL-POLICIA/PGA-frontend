@@ -5,6 +5,10 @@ import { useAuthStore } from '../hooks';
 import { AuthPage } from '../views/auth/AuthPage';
 import { Layout } from '../views/layout/Layout';
 
+/* Rutas */
+
+import { SupplierView } from '../views/pages/Suppliers';
+
 export const AppRouter = () => {
 
     const { status, checkAuthToken } = useAuthStore();
@@ -17,7 +21,7 @@ export const AppRouter = () => {
             : 
             <Layout>
                 <Routes>
-                    
+                    <Route path='/supplierView' element={<SupplierView/>}/>
                 </Routes>
             </Layout>
     )

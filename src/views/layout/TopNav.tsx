@@ -1,4 +1,3 @@
-
 import { Avatar, Box, IconButton, Stack, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { MenuOutlined } from '@mui/icons-material';

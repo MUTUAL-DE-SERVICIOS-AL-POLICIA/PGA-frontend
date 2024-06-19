@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import { useLocation} from "react-router-dom";
 import { TopNav } from "./TopNav";
 import { SideNav } from "./SideNav";
+import { SettingsNav } from "./SettingsNav";
 const SIDE_NAV_WIDTH = 65;
 
 const LayoutRoot = styled('div')(({ theme }) => ({
@@ -57,6 +58,16 @@ export const Layout = (props:Props) =>{
             open={openNav}
             onPress={(title) => setTitle(title)}
          />
+         <SettingsNav
+            onClose={() => { setSettingsOpenNav(false) }}
+            open={settingsOpenNav}
+            onPress={(title) => setTitle(title)}
+         />
+         <LayoutRoot>
+            <LayoutContainer>
+                {children}
+            </LayoutContainer>
+         </LayoutRoot>
         </>
     )
 }

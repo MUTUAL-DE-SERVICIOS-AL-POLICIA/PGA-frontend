@@ -1,3 +1,5 @@
 export * from './Button'
 export * from './Input'
 export * from './SideNavItem'
+export * from './Search'
+export * from './Dialog'

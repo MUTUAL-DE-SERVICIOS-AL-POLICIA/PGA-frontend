@@ -120,4 +120,23 @@ export const SideNav = (props: navProps) => {
           </Drawer>
         );
       }
+
+      return (
+        <Drawer
+            anchor='left'
+            onClose={onClose}
+            open={open}
+            PaperProps={{
+                sx:{
+                    backgroundColor: '#1E635A',
+                    color: 'white',
+                    width:190
+                }
+            }}
+            sx={{zIndex:(theme) => theme.zIndex.appBar + 100}}
+            variant='temporary'
+        >   
+            {content}
+        </Drawer>
+      );
 }
