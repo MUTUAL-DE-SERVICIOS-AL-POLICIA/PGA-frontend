@@ -3,6 +3,7 @@ import { Stack, SvgIcon } from "@mui/material";
 import { useCallback, useState } from "react";
 import { ComponentButton } from "../../../components";
 import { SupplierTable } from "./SupplierTable";
+import { CreateSupplier } from "./CreateSupplier";
 
 export const SupplierView = () =>{
     const [openDialog, setOpenDialog] = useState(false);
@@ -29,7 +30,13 @@ export const SupplierView = () =>{
          </Stack>
 
          <SupplierTable/>
-         
+         {
+            openDialog &&
+            <CreateSupplier
+                open={openDialog}
+                handleClose={()=>handleDialog(false)}
+            />
+         }
         </>
     );
 }
