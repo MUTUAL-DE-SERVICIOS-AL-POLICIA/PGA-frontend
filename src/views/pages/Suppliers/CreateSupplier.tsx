@@ -45,6 +45,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
         nameValid, addressValid } = useForm(supplier ?? formFields, formValidation);
 
     const sendSubmit = async (event: any) => {
+        console.log("sdasd");
         event.preventDefault();
         setFormSubmitted(true);
         if(!isFormValid) return;
@@ -56,7 +57,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
         bodyFormData.append('address', address);
         bodyFormData.append('email', email);
         setLoading(true);
-        
+        console.log(bodyFormData);
         if(supplier == null){
             await postSupllier(bodyFormData).then((res)=>{
                 if(res){
@@ -82,7 +83,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     name="name"
                                     value={name}
                                     onChange={(V: any) => onInputChange(V, true)}
-                                    error={!!nameValid && formSubmitted}
+                                    // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
                             </Grid>
@@ -93,7 +94,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     name="sales_representative"
                                     value={sales_representative}
                                     onChange={(V: any) => onInputChange(V, true)}
-                                    error={!!nameValid && formSubmitted}
+                                    // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
                             </Grid>
@@ -104,7 +105,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     name="address"
                                     value={address}
                                     onChange={(V: any) => onInputChange(V, true)}
-                                    error={!!nameValid && formSubmitted}
+                                    // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
                             </Grid>
@@ -117,7 +118,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     name="nit"
                                     value={nit}
                                     onChange={(V: any) => onInputChange(V, true)}
-                                    error={!!nameValid && formSubmitted}
+                                    // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
                             </Grid>
@@ -128,7 +129,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     name="cellphone"
                                     value={cellphone}
                                     onChange={(V: any) => onInputChange(V, true)}
-                                    error={!!nameValid && formSubmitted}
+                                    // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
                             </Grid>
@@ -139,7 +140,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     name="email"
                                     value={email}
                                     onChange={(V: any) => onInputChange(V, true)}
-                                    error={!!nameValid && formSubmitted}
+                                    // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
                             </Grid>
@@ -152,7 +153,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                         <CircularProgress color="success" size={30}/> :
                         <>
                             <Button onClick={handleClose}>CANCELAR</Button>
-                            <Button>
+                            <Button type="submit">
                                 {supplier == null ? 'CREAR' : 'GUARDAR'}
                             </Button>
                         </>
