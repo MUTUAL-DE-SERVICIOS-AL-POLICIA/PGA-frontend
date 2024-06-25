@@ -24,7 +24,7 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
 
 
 
-  const onInputChange = ({ target }: { target: any }, uppercase = false, onlyfloat = false, onlyInteger = false) => {
+  const onInputChange = ({ target }: { target: any }, onlyfloat = false, onlyInteger = false) => {
     const { name, value } = target;
 
     if (onlyfloat || onlyInteger) {
@@ -38,7 +38,7 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
       // Si no se restringen los caracteres, simplemente convierte a mayúsculas si es necesario
       setFormState({
         ...formState,
-        [name]: uppercase ? value.toUpperCase() : value
+        [name]: value
       });
     }
   }

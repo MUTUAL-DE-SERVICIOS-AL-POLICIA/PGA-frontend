@@ -8,18 +8,18 @@ export interface SupplierModel{
     email:string
 }
 export interface FormSupplierModel {
-    name:string,
-    nit:string,
-    cellphone:string,
-    sales_representative:string,
-    address:string,
-    email:string
+    name:string | null,
+    nit:string | null,
+    cellphone:string | null,
+    sales_representative:string | null,
+    address:string | null,
+    email:string | null
 }
 export interface formSupplierValidations {
-    name: [(value: string)=>boolean, string];
-    nit: [(value: string)=>boolean, string];
-    cellphone: [(value: string)=>boolean, string];
-    sales_representative: [(value: string)=>boolean, string];
-    address: [(value: string)=>boolean, string];
-    email: [(value: string)=>boolean, string];
+    name: [(value: string | null)=>boolean, string];
+    nit: [(value: string | null)=>boolean, string];
+    cellphone: [(value: string | null)=>boolean, string];
+    sales_representative: [(value: string | null)=>boolean, string];
+    address: [(value: string | null)=>boolean, string];
+    email: [(value: string | null)=>boolean, string];
 }

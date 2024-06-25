@@ -8,6 +8,7 @@ import { Layout } from '../views/layout/Layout';
 /* Rutas */
 
 import { SupplierView } from '../views/pages/Suppliers';
+import { ClassifierView } from '../views/pages/Classifiers';
 
 export const AppRouter = () => {
 
@@ -22,6 +23,7 @@ export const AppRouter = () => {
             <Layout>
                 <Routes>
                     <Route path='/supplierView' element={<SupplierView/>}/>
+                    <Route path='/classifierView' element={<ClassifierView/>} />
                 </Routes>
             </Layout>
     )

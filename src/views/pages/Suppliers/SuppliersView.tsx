@@ -4,10 +4,15 @@ import { useCallback, useState } from "react";
 import { ComponentButton } from "../../../components";
 import { SupplierTable } from "./SupplierTable";
 import { CreateSupplier } from "./CreateSupplier";
+import { SupplierModel } from "../../../models";
 
 export const SupplierView = () =>{
     const [openDialog, setOpenDialog] = useState(false);
+    const [itemEdit, setItemEdit] = useState<SupplierModel | null>(null);
+
+
     const handleDialog = useCallback((value: boolean) =>{
+        if(!value) setItemEdit(null)
         setOpenDialog(value);
     }, []);
     return(
@@ -29,12 +34,18 @@ export const SupplierView = () =>{
             />
          </Stack>
 
-         <SupplierTable/>
+         <SupplierTable
+            itemEdit={(v)=>{
+                setItemEdit(v)
+                handleDialog(true)
+            }}
+         />
          {
             openDialog &&
             <CreateSupplier
                 open={openDialog}
                 handleClose={()=>handleDialog(false)}
+                supplier={itemEdit}
             />
          }
         </>

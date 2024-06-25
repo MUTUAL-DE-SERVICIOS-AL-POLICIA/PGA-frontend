@@ -1,15 +1,17 @@
 
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, Grid } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { FormEvent ,useCallback, useEffect, useState } from "react";
 import { useForm, useSupplierStore } from "../../../hooks";
 import { ComponentInputSelect, ComponentInput } from "../../../components";
 import { SupplierModel, FormSupplierModel, formSupplierValidations } from "../../../models";
+import { coffeApi } from "../../../services";
 
 interface createSupplierProps {
     open: boolean;
     handleClose: () => void;
     supplier: SupplierModel | null;
-}
+
+};
 
 const formFields: FormSupplierModel = {
     name: '',
@@ -18,54 +20,66 @@ const formFields: FormSupplierModel = {
     sales_representative: '',
     address: '',
     email: ''
-}
+};
 
+const formValidation: formSupplierValidations = {
+    name: [(value: string | null) => value == null ? false : value.length > 1, 'Debes ingresar el nombre del proveedor'],
+    nit: [(value: string | null) => value == null ? false : value.length > 1, 'Debes ingresar el nombre del proveedor'],
+    cellphone: [(value: string | null) => value == null ? false : value.length > 1, 'Debes ingresar el nombre del proveedor'],
+    sales_representative: [(value: string | null) => value == null ? false : value.length > 1, 'Debes ingresar el nombre del proveedor'],
+    address: [(value: string | null) => value == null ? false : value.length > 1, 'Debes ingresar el nombre del proveedor'],
+    email: [(value: string | null) => value == null ? false : value.length > 1, 'Debes ingresar el nombre del proveedor']
+};
 export const CreateSupplier = (props: createSupplierProps) => {
 
     const { open, handleClose, supplier } = props;
 
-    const formValidation: formSupplierValidations = {
-        name: [(value: string) => value.length > 1, 'Debes ingresar el nombre del proveedor'],
-        nit: [(value: string) => value.length > 1, 'Debes ingresar el nombre del proveedor'],
-        cellphone: [(value: string) => value.length > 1, 'Debes ingresar el nombre del proveedor'],
-        sales_representative: [(value: string) => value.length > 1, 'Debes ingresar el nombre del proveedor'],
-        address: [(value: string) => value.length > 1, 'Debes ingresar el nombre del proveedor'],
-        email: [(value: string) => value.length > 1, 'Debes ingresar el nombre del proveedor']
-    }
-
-    const { postSupllier } = useSupplierStore();
+    const { postSupllier, patchUpdateSupplier} = useSupplierStore();
     const [loading, setLoading] = useState(false);
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [modal, setmodal] = useState(false);
 
     const {
         name, nit, cellphone, sales_representative, address, email,
-        onValueChange,
-        onInputChange, onFileChange, isFormValid, onResetForm,
+        onInputChange,isFormValid, onResetForm,
         nameValid, addressValid } = useForm(supplier ?? formFields, formValidation);
 
-    const sendSubmit = async (event: any) => {
-        console.log("sdasd");
+    const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        //console.log("sdasd");
         event.preventDefault();
         setFormSubmitted(true);
-        if(!isFormValid) return;
-        var bodyFormData = new FormData();
-        bodyFormData.append('name', name);
-        bodyFormData.append('nit', nit);
-        bodyFormData.append('cellphone', cellphone);
-        bodyFormData.append('sales_representative', sales_representative);
-        bodyFormData.append('address', address);
-        bodyFormData.append('email', email);
+        if (!isFormValid) return;
+        // var bodyFormData = new FormData();
+        // bodyFormData.append('name', name);
+        // bodyFormData.append('nit', nit);
+        // bodyFormData.append('cellphone', cellphone);
+        // bodyFormData.append('sales_representative', sales_representative);
+        // bodyFormData.append('address', address);
+        // bodyFormData.append('email', email);
+        let data={name, nit, cellphone, sales_representative, address, email};
+
         setLoading(true);
-        console.log(bodyFormData);
-        if(supplier == null){
-            await postSupllier(bodyFormData).then((res)=>{
-                if(res){
+        // Ver lo que estás enviando
+        // for (var pair of bodyFormData.entries()) {
+        //      console.log(pair[0]+ ', ' + pair[1]); 
+        // }
+        if (supplier == null) {
+            await postSupllier(data).then((res) => {
+                if (res) {
+                    handleClose();
+                    onResetForm();
+                }
+            })
+        } else {
+
+            await patchUpdateSupplier(supplier.id, data).then((res) => {
+                if (res) {
                     handleClose();
                     onResetForm();
                 }
             })
         }
+
+        setLoading(false);
     }
 
 
@@ -82,7 +96,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     label="Nombre"
                                     name="name"
                                     value={name}
-                                    onChange={(V: any) => onInputChange(V, true)}
+                                    onChange={(V: any) => onInputChange(V, false, false)}
                                     // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
@@ -93,7 +107,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     label="Representante"
                                     name="sales_representative"
                                     value={sales_representative}
-                                    onChange={(V: any) => onInputChange(V, true)}
+                                    onChange={(V: any) => onInputChange(V, false, false)}
                                     // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
@@ -104,9 +118,9 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     label="Direccion"
                                     name="address"
                                     value={address}
-                                    onChange={(V: any) => onInputChange(V, true)}
+                                    onChange={(V: any) => onInputChange(V, false, false)}
                                     // error={!!nameValid && formSubmitted}
-                                    helperText={formSubmitted ? nameValid : ''}
+                                    helperText={formSubmitted ? addressValid : ''}
                                 />
                             </Grid>
                         </Grid>
@@ -117,7 +131,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     label="NIT"
                                     name="nit"
                                     value={nit}
-                                    onChange={(V: any) => onInputChange(V, true)}
+                                    onChange={(V: any) => onInputChange(V, false, false)}
                                     // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
@@ -128,7 +142,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     label="Celular / Telefono"
                                     name="cellphone"
                                     value={cellphone}
-                                    onChange={(V: any) => onInputChange(V, true)}
+                                    onChange={(V: any) => onInputChange(V, false, false)}
                                     // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
@@ -139,7 +153,7 @@ export const CreateSupplier = (props: createSupplierProps) => {
                                     label="Email"
                                     name="email"
                                     value={email}
-                                    onChange={(V: any) => onInputChange(V, true)}
+                                    onChange={(V: any) => onInputChange(V, false, false)}
                                     // error={!!nameValid && formSubmitted}
                                     helperText={formSubmitted ? nameValid : ''}
                                 />
@@ -150,13 +164,13 @@ export const CreateSupplier = (props: createSupplierProps) => {
                 <DialogActions>
                     {
                         loading ?
-                        <CircularProgress color="success" size={30}/> :
-                        <>
-                            <Button onClick={handleClose}>CANCELAR</Button>
-                            <Button type="submit">
-                                {supplier == null ? 'CREAR' : 'GUARDAR'}
-                            </Button>
-                        </>
+                            <CircularProgress color="success" size={30} /> :
+                            <>
+                                <Button onClick={handleClose}>CANCELAR</Button>
+                                <Button type="submit">
+                                    {supplier == null ? 'CREAR' : 'GUARDAR'}
+                                </Button>
+                            </>
                     }
                 </DialogActions>
             </form>

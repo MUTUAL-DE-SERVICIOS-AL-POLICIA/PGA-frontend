@@ -13,6 +13,12 @@ export const menu = () => {
             icon: <Group/>,
             //permission: "show-rates"
         },
+        {
+            path: "/classifierView",
+            title: "Clasificador",
+            icon: <Bento/>,
+            //permission: "show-rates"
+        },
         // {
         //     path: "/customersView",
         //     title: "Clientes",
@@ -23,12 +29,6 @@ export const menu = () => {
         //     path: "/rentalView",
         //     title: "Alquileres",
         //     icon: <Receipt />,
-        //     //permission: "show-rates"
-        // },
-        // {
-        //     path: "/productsView",
-        //     title: "Productos",
-        //     icon: <Bento />,
         //     //permission: "show-rates"
         // },
         // {
