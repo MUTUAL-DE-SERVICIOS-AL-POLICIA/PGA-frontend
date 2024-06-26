@@ -3,18 +3,18 @@ import { SupplierModel } from "../../models";
 
 export const supplierSlice = createSlice({
     name: 'supplier',
-    initialState:{
+    initialState: {
         suppliers: <SupplierModel[] | null>null,
         flag: false
     },
-    reducers:{
-        setSupplier: (state, action)=>{
+    reducers: {
+        setSupplier: (state, action) => {
             state.suppliers = action.payload.suppliers
         },
-        addSupplier: (state, action)=>{
+        addSupplier: (state, action) => {
             state.suppliers = [...state.suppliers!, action.payload.supplier]
         },
-        refreshSupplier: (state,/* action*/)=>{
+        refreshSupplier: (state,/* action*/) => {
             state.flag = !state.flag
         }
     }

@@ -38,7 +38,7 @@ export const SkeletonComponent = (props: ItemsProps) => {
 };
 
 
-export const SkeletonPropertie = () => {
+export const SkeletonClassifier = () => {
   return (
     <ItemPaper elevation={2}>
       <Grid container>
