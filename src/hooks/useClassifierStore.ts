@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 const api = coffeApi;
 
 export const useClassifierStore = () => {
-    const { classifiers } = useSelector((state: any) => state.classifiers);
+    const { classifiers, flag} = useSelector((state: any) => state.classifiers);
     const dispatch = useDispatch();
 
     const getClassifier = async () => {
@@ -39,6 +39,7 @@ export const useClassifierStore = () => {
     }
     return {
         classifiers,
+        flag,
 
         getClassifier,
         postCreateClassifier

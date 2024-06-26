@@ -9,6 +9,7 @@ interface CreateClassifierProps {
     open: boolean;
     handleClose: () => void;
     classifier: ClassifierModel | null;
+    change: boolean;
 }
 
 const formFields: FormClassifierModel = {
@@ -18,7 +19,7 @@ const formFields: FormClassifierModel = {
 }
 
 export const CreateClassifier = (props: CreateClassifierProps) => {
-    const { open, handleClose, classifier, } = props;
+    const { open, handleClose, classifier, change} = props;
 
 
     const formValidations: FormClassifierValidations = {
