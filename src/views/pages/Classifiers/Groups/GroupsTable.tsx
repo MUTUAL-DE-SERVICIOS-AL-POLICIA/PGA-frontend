@@ -1,8 +1,7 @@
-import { Skeleton, Stack, SvgIcon, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { GroupModel } from "../../../../models";
-import { ComponentButton, SkeletonComponent } from "../../../../components";
+import { SkeletonComponent } from "../../../../components";
 import React from "react";
-import { Add } from "@mui/icons-material";
 
 interface tableProps {
     groups: Array<GroupModel>;

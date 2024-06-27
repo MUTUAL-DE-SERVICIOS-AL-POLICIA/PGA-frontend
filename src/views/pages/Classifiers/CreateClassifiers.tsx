@@ -33,7 +33,7 @@ export const CreateClassifier = (props: CreateClassifierProps) => {
     const [loading, setLoading] = useState(false);
 
 
-    const { code_class, nombre, description, onValueChange, onInputChange, isFormValid, onResetForm, code_classValid, nombreValid, descriptionValid } = useForm(classifier ?? formFields, formValidations);
+    const { code_class, nombre, description, onInputChange, isFormValid, onResetForm, code_classValid, nombreValid, descriptionValid } = useForm(classifier ?? formFields, formValidations);
 
     const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();

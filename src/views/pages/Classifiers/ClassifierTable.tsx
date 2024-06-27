@@ -8,6 +8,7 @@ import noimage from "../../../assets/images/no-image.webp";
 import carpeta from "../../../assets/images/carpeta.png";
 import { GroupsTable } from "./Groups";
 import { ComponentButton } from "../../../components";
+import { useNavigate } from "react-router-dom";
 
 
 interface tableProps {
@@ -21,11 +22,10 @@ interface tableProps {
 export const ClassifierTable = (props: tableProps) => {
     const { flag, classifiers = null, getClassifier, deleleClassifier } = useClassifierStore();
     const { itemEdit } = props;
-    // const handleDialog = useCallback((value: boolean) => {
-    //     setOpenDialog(value);
-    //     if (!value) return setItemEdit(null);
-    //     setChange(value)
-    // }, []);
+    const navigate = useNavigate();
+    const handleRederict = () =>{
+        navigate('/groupView');
+    }
 
     useEffect(() => {
         getClassifier();
@@ -66,6 +66,7 @@ export const ClassifierTable = (props: tableProps) => {
                                     <Stack direction="row" justifyContent="flex-end">
                                         <ComponentButton
                                             text="Nuevo grupo"
+                                            onClick={handleRederict}
                                             startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>}
                                         />
                                     </Stack>
