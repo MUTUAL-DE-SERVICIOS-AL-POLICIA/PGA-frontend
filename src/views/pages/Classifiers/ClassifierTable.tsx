@@ -1,34 +1,35 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect } from "react"
 import { ClassifierModel } from "../../../models"
-import { Delete, Edit } from "@mui/icons-material";
-import { Grid, IconButton, Typography, Box } from "@mui/material";
+import { Delete, Edit, Add } from "@mui/icons-material";
+import { SvgIcon, Stack, Grid, IconButton, Typography, Box } from "@mui/material";
 import { useClassifierStore } from "../../../hooks";
-import { ItemPaper, SkeletonClassifier } from "../../../components";
+import { ItemPaper, SkeletonClassifier, SkeletonGroup } from "../../../components";
 import noimage from "../../../assets/images/no-image.webp";
 import carpeta from "../../../assets/images/carpeta.png";
-import { CreateClassifier } from "./CreateClassifiers";
+import { GroupsTable } from "./Groups";
+import { ComponentButton } from "../../../components";
+
+
 interface tableProps {
-    onEdit?: (classifier: ClassifierModel) => void;
+    itemEdit?: (classifier: ClassifierModel) => void;
     stateSelect?: boolean;
     //itemSelect?:boolean;  //Recordar para los grupos en un classifier 
     items?: any[];
 }
+
+
 export const ClassifierTable = (props: tableProps) => {
-    const { onEdit, stateSelect = false, items, } = props;
-    const { flag, classifiers = null, getClassifier } = useClassifierStore();
-    const [openDialog, setOpenDialog] = useState(false);
-    const [itemEdit, setItemEdit] = useState<any>(null);
-    const [change, setChange] = useState<boolean>(true);
+    const { flag, classifiers = null, getClassifier, deleleClassifier } = useClassifierStore();
+    const { itemEdit } = props;
+    // const handleDialog = useCallback((value: boolean) => {
+    //     setOpenDialog(value);
+    //     if (!value) return setItemEdit(null);
+    //     setChange(value)
+    // }, []);
 
-    const handleDialog = useCallback((value: boolean) => {
-        setOpenDialog(value);
-        if (!value) return setItemEdit(null);
-        setChange(value)
-    }, []);
-
-    useEffect(()=>{
+    useEffect(() => {
         getClassifier();
-    },[flag]);
+    }, [flag]);
 
     return (
         <>
@@ -46,37 +47,36 @@ export const ClassifierTable = (props: tableProps) => {
                                         style={{ height: '190px', width: '180px', objectFit: 'cover' }}
                                         onError={(e: any) => e.target.src = noimage}
                                     />
-                                    {
-                                        !stateSelect &&
-                                        <Box sx={{ textAlign: 'center' }} >
-                                            <IconButton color="success" onClick={()=>onEdit!(classifier)}>
-                                                <Edit/>
-                                            </IconButton>
-                                            <IconButton color="error">
-                                                <Delete/>
-                                            </IconButton>
-                                        </Box>
-                                    }
+                                    <Box sx={{ textAlign: 'center' }} >
+                                        <IconButton color="success" onClick={() => itemEdit!(classifier)}>
+                                            <Edit />
+                                        </IconButton>
+                                        <IconButton color="error" onClick={() => deleleClassifier(classifier)}>
+                                            <Delete />
+                                        </IconButton>
+                                    </Box>
                                 </Grid>
-                                <Grid item xs={12} sm={9} sx={{padding: '5px'}}>
+                                <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
                                     <Typography sx={{ fontWeight: 'bold' }}>Descripcion</Typography>
-                                    <Typography sx={{textAlign: 'justify'}}>{classifier.description}</Typography>
-                                    {/*Aca deb ir la tabla de los grupos*/} 
+                                    <Typography sx={{ textAlign: 'justify' }}>{classifier.description}</Typography>
+                                    {/*Aca deb ir la tabla de los grupos*/}
+                                    {
+                                        classifier.groups == null ? <SkeletonGroup /> : <GroupsTable groups={classifier.groups} />
+                                    }
+                                    <Stack direction="row" justifyContent="flex-end">
+                                        <ComponentButton
+                                            text="Nuevo grupo"
+                                            startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>}
+                                        />
+                                    </Stack>
                                 </Grid>
                             </Grid>
                         </ItemPaper>
-                    )
+                    );
                 })
             }
 
-            {
-                openDialog && <CreateClassifier 
-                    open={openDialog}
-                    handleClose={()=> handleDialog(false)}
-                    classifier={itemEdit}
-                    change={change}
-                ></CreateClassifier>
-            }
+
         </>
     )
 }

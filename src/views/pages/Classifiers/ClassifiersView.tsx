@@ -44,7 +44,12 @@ export const ClassifierView = () => {
                         startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>} />
                 </Stack>
             </Box>
-            <ClassifierTable />
+            <ClassifierTable
+                itemEdit={(v) => {
+                    setItemEdit(v)
+                    handleDialog(true)
+                }}
+            />
             {openDialog &&
                 <CreateClassifier
                     open={openDialog}

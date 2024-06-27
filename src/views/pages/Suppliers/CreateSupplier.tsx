@@ -34,34 +34,21 @@ export const CreateSupplier = (props: createSupplierProps) => {
 
     const { open, handleClose, supplier } = props;
 
-    const { postSupllier, patchUpdateSupplier} = useSupplierStore();
+    const { postSupllier, patchUpdateSupplier } = useSupplierStore();
     const [loading, setLoading] = useState(false);
     const [formSubmitted, setFormSubmitted] = useState(false);
 
     const {
         name, nit, cellphone, sales_representative, address, email,
-        onInputChange,isFormValid, onResetForm,
+        onInputChange, isFormValid, onResetForm,
         nameValid, addressValid } = useForm(supplier ?? formFields, formValidation);
 
     const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        //console.log("sdasd");
         event.preventDefault();
         setFormSubmitted(true);
         if (!isFormValid) return;
-        // var bodyFormData = new FormData();
-        // bodyFormData.append('name', name);
-        // bodyFormData.append('nit', nit);
-        // bodyFormData.append('cellphone', cellphone);
-        // bodyFormData.append('sales_representative', sales_representative);
-        // bodyFormData.append('address', address);
-        // bodyFormData.append('email', email);
-        let data={name, nit, cellphone, sales_representative, address, email};
-
+        let data = { name, nit, cellphone, sales_representative, address, email };
         setLoading(true);
-        // Ver lo que estás enviando
-        // for (var pair of bodyFormData.entries()) {
-        //      console.log(pair[0]+ ', ' + pair[1]); 
-        // }
         if (supplier == null) {
             await postSupllier(data).then((res) => {
                 if (res) {

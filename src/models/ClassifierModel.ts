@@ -1,8 +1,11 @@
+import { GroupModel } from "./GroupModel";
+ 
 export interface ClassifierModel{
-    id:number,
-    code_class:string,
-    nombre:string,
-    description:string
+    id:number;
+    code_class:string;
+    nombre:string;
+    description:string;
+    groups: Array<GroupModel>;
 }
 
 export interface FormClassifierModel {

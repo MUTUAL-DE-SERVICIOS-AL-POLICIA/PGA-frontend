@@ -44,7 +44,7 @@ export const useSupplierStore = () => {
 
     const patchUpdateSupplier = async (id: number, body: object) => {
         try {
-            console.log(body)
+            //console.log(body)
             await api.patch(`/auth/suppliers/${id}/`, body);
             dispatch(refreshSupplier());
             Swal.fire('Proveedor Actualizado', '', 'success');
