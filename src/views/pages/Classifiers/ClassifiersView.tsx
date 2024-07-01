@@ -1,6 +1,6 @@
 import { ComponentButton } from "../../../components";
 import { Add } from "@mui/icons-material";
-import { Stack, SvgIcon, Box } from "@mui/material";
+import { Stack, SvgIcon, Box, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
 import { ClassifierModel } from "../../../models";
 import { ClassifierTable } from "./ClassifierTable";
@@ -36,14 +36,16 @@ export const ClassifierView = () => {
             >
                 <Stack
                     direction="row"
-                    justifyContent="end"
+                    justifyContent="start"
+                    padding={1}
                 >
-                    <ComponentButton
+                    {/* <ComponentButton
                         text="Nuevo Clasificador"
                         onClick={() => handleDialog(true)}
-                        startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>} />
+                    startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>} /> */}
                 </Stack>
             </Box>
+            <Typography variant="h4">Lista de Clasificadores</Typography>
             <ClassifierTable
                 itemEdit={(v) => {
                     setItemEdit(v)

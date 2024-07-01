@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { ClassifierModel } from "../../../models"
-import { Delete, Edit, Add } from "@mui/icons-material";
+import { Visibility, Delete, Edit, Add } from "@mui/icons-material";
 import { SvgIcon, Stack, Grid, IconButton, Typography, Box } from "@mui/material";
 import { useClassifierStore } from "../../../hooks";
 import { ItemPaper, SkeletonClassifier, SkeletonGroup } from "../../../components";
@@ -51,9 +51,9 @@ export const ClassifierTable = (props: tableProps) => {
                                         <IconButton color="success" onClick={() => itemEdit!(classifier)}>
                                             <Edit />
                                         </IconButton>
-                                        <IconButton color="error" onClick={() => deleleClassifier(classifier)}>
+                                        {/* <IconButton color="error" onClick={() => deleleClassifier(classifier)}>
                                             <Delete />
-                                        </IconButton>
+                                        </IconButton> */}
                                     </Box>
                                 </Grid>
                                 <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
@@ -65,9 +65,9 @@ export const ClassifierTable = (props: tableProps) => {
                                     }
                                     <Stack direction="row" justifyContent="flex-end">
                                         <ComponentButton
-                                            text="Nuevo grupo"
+                                            text="Ver grupos"
                                             onClick={handleRederict}
-                                            startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>}
+                                            startIcon={<SvgIcon fontSize="small"><Visibility /></SvgIcon>}
                                         />
                                     </Stack>
                                 </Grid>

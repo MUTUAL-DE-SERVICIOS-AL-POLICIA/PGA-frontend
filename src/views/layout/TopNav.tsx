@@ -11,7 +11,6 @@ interface topProps {
     title: string;
 }
 
-
 export const TopNav = (props: topProps) => {
     const {
         onNavOpen,
@@ -22,6 +21,12 @@ export const TopNav = (props: topProps) => {
     const lgUp = useMediaQuery(theme.breakpoints.up('md'));
 
     const accountPopover = usePopover();
+
+    // Obtener la fecha y hora actual
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString(); // Formato de fecha
+    const formattedTime = currentDate.toLocaleTimeString(); // Formato de hora
+
     return (
         <>
             <Box
@@ -40,7 +45,6 @@ export const TopNav = (props: topProps) => {
                     alignItems="center"
                     direction="row"
                     justifyContent="space-between"
-
                 >
                     <Stack alignItems="center" direction="row">
                         {!lgUp && (
@@ -55,16 +59,18 @@ export const TopNav = (props: topProps) => {
                         justifyContent="space-between"
                         sx={{ flexGrow: 2, pl: 10 }}
                     >
-                        <Typography variant="h6">{title}</Typography>
+                        <Stack alignItems="center">
+                            <Typography variant="h5">{title}</Typography>
+                            <Typography variant="h6" sx={{ mt: 0.9 }}>{formattedDate} </Typography>
+                        </Stack>
                         <Avatar
                             onClick={accountPopover.handleOpen}
                             ref={accountPopover.anchorRef}
-                            sx={{ cursor: 'pointer', width: 45, height: 45 }}
+                            sx={{ cursor: 'pointer', width: 60, height: 60 }}
                             src={noimage}
                         />
                     </Stack>
                 </Stack>
-
             </Box>
 
             <AccountPopover

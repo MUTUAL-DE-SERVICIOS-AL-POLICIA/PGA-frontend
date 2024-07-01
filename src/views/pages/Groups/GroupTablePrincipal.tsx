@@ -30,7 +30,7 @@ export const GroupTablePrincipal = (props: tableProps) => {
     return (
         <Stack sx={{ paddingRight: '10' }}>
             <ComponentSearch
-                title="Buscar Cliente"
+                title="Buscar Grupo"
                 onSearch={handleSearch}
             />
             <TableContainer>
@@ -46,12 +46,12 @@ export const GroupTablePrincipal = (props: tableProps) => {
                     <TableBody>
                         {
                             groups == null ?
-                                <SkeletonComponent quantity={5} /> :
+                                <SkeletonComponent quantity={4} /> :
                                 groups.map((group: GroupModel, index: number) => {
                                     return (
                                         <React.Fragment key={index}>
                                             <TableRow sx={{ borderBottom: '2px solid #ccc' }}>
-
+                                                <TableCell>{group.classifier}</TableCell>
                                             </TableRow>
                                         </React.Fragment>
                                     )
