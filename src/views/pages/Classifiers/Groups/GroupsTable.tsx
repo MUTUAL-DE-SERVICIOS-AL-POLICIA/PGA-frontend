@@ -25,7 +25,7 @@ export const GroupsTable = (props: tableProps) => {
                     </TableHead>
                     
                     <TableBody>
-                        {groups == null ? <SkeletonComponent quantity={3}/> : groups.map((group: GroupModel, index:number)=>{
+                        {groups == null ? <SkeletonComponent quantity={4}/> : groups.map((group: GroupModel, index:number)=>{
                             return(
                                 <React.Fragment key={index}>
                                     <TableRow sx={{borderBottom: '2px solid #ccc'}}>

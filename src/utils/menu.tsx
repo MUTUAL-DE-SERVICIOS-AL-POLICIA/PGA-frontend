@@ -20,7 +20,7 @@ export const menu = () => {
             //permission: "show-rates"
         },
         {
-            path: "/customersView",
+            path: "/materialsView",
             title: "Materiales",
             icon: <Checklist/>,
             //permission: "show-halls"

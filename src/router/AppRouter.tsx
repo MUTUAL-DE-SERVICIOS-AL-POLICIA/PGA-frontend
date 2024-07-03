@@ -10,6 +10,7 @@ import { Layout } from '../views/layout/Layout';
 import { SupplierView } from '../views/pages/Suppliers';
 import { ClassifierView } from '../views/pages/Classifiers';
 import { GroupView } from '../views/pages/Groups';
+import { MaterialView } from '../views/pages/Materials';
 
 export const AppRouter = () => {
 
@@ -26,6 +27,7 @@ export const AppRouter = () => {
                     <Route path='/supplierView' element={<SupplierView/>}/>
                     <Route path='/classifierView' element={<ClassifierView/>} />
                     <Route path='/groupView' element={<GroupView/>}/>
+                    <Route path='/materialsView' element={<MaterialView/>}/>
                 </Routes>
             </Layout>
     )

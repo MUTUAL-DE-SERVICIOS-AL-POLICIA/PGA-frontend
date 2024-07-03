@@ -1,6 +1,6 @@
 export interface GroupModel{
     id:number,
-    code:string,
+    code_group:string,
     name_group:string,
     state:string,
     classifier:number,
