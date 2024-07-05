@@ -19,7 +19,7 @@ export const useGroupStore = () => {
             if (limit != -1) filter.params.limit = limit;
             if (search !== '') filter.params.search = search;
             const { data } = await api.get('/auth/groups/', filter);
-            console.log(data);
+            //console.log(data);
             const groups: any = []
             data.data.forEach((element: any) => { //data se llama donde envio los datos
                 const group: any = {}

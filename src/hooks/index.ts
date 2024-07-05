@@ -4,3 +4,4 @@ export * from './useAuthStore';
 export * from './usePopover';
 export * from './useClassifierStore';
 export * from './useGroupStore';
+export * from './useMaterialStore';

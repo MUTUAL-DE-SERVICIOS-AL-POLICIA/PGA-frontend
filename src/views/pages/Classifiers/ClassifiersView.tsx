@@ -1,6 +1,4 @@
-import { ComponentButton } from "../../../components";
-import { Add } from "@mui/icons-material";
-import { Stack, SvgIcon, Box, Typography } from "@mui/material";
+import { Stack, Box, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
 import { ClassifierModel } from "../../../models";
 import { ClassifierTable } from "./ClassifierTable";

@@ -11,7 +11,7 @@ export const authSlice = createSlice({
             
             state.status = 'authenticated';
             state.user = payload;
-            console.log(state.status)
+            //console.log(state.status)
         },
         onLogout: (state) => {
             state.status = 'not-authenticated';

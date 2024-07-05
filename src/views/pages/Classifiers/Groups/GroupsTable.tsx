@@ -30,7 +30,7 @@ export const GroupsTable = (props: tableProps) => {
                                 <React.Fragment key={index}>
                                     <TableRow sx={{borderBottom: '2px solid #ccc'}}>
                                         <TableCell>{group.id}</TableCell>
-                                        <TableCell>{group.code}</TableCell>
+                                        <TableCell>{group.code_group}</TableCell>
                                         <TableCell>{group.name_group}</TableCell>
                                         <TableCell>{group.materials_count}</TableCell>
                                     </TableRow>
