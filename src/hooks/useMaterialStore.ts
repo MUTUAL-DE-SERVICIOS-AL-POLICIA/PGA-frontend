@@ -2,6 +2,8 @@ import { coffeApi } from "../services"
 import { useDispatch, useSelector } from "react-redux"
 import { setMaterial, refreshMaterial } from "../store";
 import Swal from "sweetalert2";
+import { MaterialModel } from "../models";
+import { DialogComponent } from "../components";
 
 const api = coffeApi;
 
@@ -22,17 +24,17 @@ export const useMaterialStore = () => {
     }
 
     const postMaterial = async (body: Object) => {
-        //console.log(body);
+        console.log(body);
         try {
             await api.post('/auth/materials', body);
             dispatch(refreshMaterial());
             Swal.fire('Material Creado Correctamente !!! ', '', 'success');
             return true;
         } catch (error: any) {
-            if (error.response && error.response.status == 403){
+            if (error.response && error.response.status == 403) {
                 const message = error.response;
                 Swal.fire('Acceso Denegado', message, 'warning')
-            }else{
+            } else {
                 const message = error.response.data.error
                 Swal.fire('Error', message, 'error');
             }
@@ -41,11 +43,49 @@ export const useMaterialStore = () => {
         }
     }
 
+    const putState = async (id: number, stateup: string) => {
+        let data: { state?: string } = { state: stateup }
+        try {
+            await api.patch(`/auth/materials/${id}/`, data);
+            dispatch(refreshMaterial());
+            Swal.fire('Actualizado', '', 'success');
+            return true;
+        } catch (error: any) {
+            if (error.response) {
+                if (error.response.status === 400) {
+                    const message = error.response.data.message;
+                    Swal.fire('No permite', message, 'warning');
+                }
+            }
+        }
+
+    }
+
+    const deleteMaterial = async (material: MaterialModel) => {
+        const { dialogDelete } = DialogComponent();
+        const state = await dialogDelete(`Se eliminara el material ${material.description}`);
+        if (state) {
+            try {
+                await api.delete(`/auth/materials/${material.id}`);
+                dispatch(refreshMaterial());
+                Swal.fire(
+                    `¡Eliminado!`,
+                    `${material.description} fue eliminado`,
+                    'success'
+                );
+            } catch (error) {
+
+            }
+        }
+    }
+
     return {
         materials,
         flag,
 
         postMaterial,
-        getMaterial
+        getMaterial,
+        putState,
+        deleteMaterial
     }
 }

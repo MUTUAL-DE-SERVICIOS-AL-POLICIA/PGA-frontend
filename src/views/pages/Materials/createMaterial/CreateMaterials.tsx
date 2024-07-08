@@ -2,7 +2,7 @@ import { FormEvent, useCallback, useEffect, useState } from "react";
 import { FormMaterialModel, GroupModel, MaterialModel, FormMaterialValidate } from "../../../../models";
 import { useForm, useMaterialStore } from "../../../../hooks";
 import { ComponentInput, ComponentInputSelect, ModalSelectComponent } from "../../../../components";
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Stack, Typography } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { GroupModal } from "../../Groups";
 
 interface createProps {
@@ -47,10 +47,7 @@ export const CreateMaterials = (props: createProps) => {
     const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setFormSubmitted(true);
-        //console.log("dadas");
-        // let id = group_id.id;
-        // let data = { id, code_material, description };
-        let data: { group_id: number, code_material?: string, description?: string, unit_material?: string, barcode?: string, stock?: number } = {
+        let data: { group_id: number, code_material?: string, description?: string, unit_material?: string, barcode?: string, stock?: number, state?: string, min?: number } = {
             group_id: group_id.id
         }
         data.code_material = code_material;
@@ -58,16 +55,18 @@ export const CreateMaterials = (props: createProps) => {
         data.unit_material = unit_material;
         data.barcode = barcode;
         data.stock = 0;
+        data.state = "Inhabilitado"
+        data.min = 5;
         //console.log(data);
         setLoading(true);
         if (item == null) {
-            await postMaterial(data).then((res)=>{
-                // if(res){
-                //     handleClose();
-                //     onResetForm();
-                // }
+            await postMaterial(data).then((res) => {
+                if(res){
+                    handleClose();
+                    onResetForm();
+                }
             });
-            
+
         }
     }
 
@@ -79,6 +78,26 @@ export const CreateMaterials = (props: createProps) => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, [window.innerHeight]);
+
+    const units = [
+        "HOJA",
+        "ROLLO",
+        "BLOCK",
+        "CAJA",
+        "FRASCO",
+        "MTS",
+        "PIEZAS",
+        "OVILLO",
+        "PAR",
+        "BIDON",
+        "SET",
+        "GLOBAL",
+        "UNIDAD",
+        "LITRO",
+        "JUEGO",
+        "PAQUETE"
+    ];
+    units.sort((a, b) => a.localeCompare(b));
 
     return (
         <>
@@ -144,26 +163,35 @@ export const CreateMaterials = (props: createProps) => {
                                                 />
                                             </Grid>
                                         </Stack>
-                                        <Stack direction="row">
-                                            <Grid item xs={12} sm={3} sx={{ padding: '5px' }}>
-                                                <ComponentInput
-                                                    type="text"
+
+                                        <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
+                                            <FormControl fullWidth>
+                                                <InputLabel>Unidad</InputLabel>
+                                                <Select
                                                     label="Unidad"
                                                     name="unit_material"
                                                     value={unit_material}
                                                     onChange={(V: any) => onInputChange(V, false, false)}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
-                                                <ComponentInput
-                                                    type="text"
-                                                    label="Nombre del Material"
-                                                    name="description"
-                                                    value={description}
-                                                    onChange={(V: any) => onInputChange(V, false, false)}
-                                                />
-                                            </Grid>
-                                        </Stack>
+                                                >
+                                                    {units.map((unit, index) => (
+                                                        <MenuItem key={index} value={unit}>
+                                                            {unit}
+                                                        </MenuItem>
+                                                    ))}
+
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+
+                                        <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
+                                            <ComponentInput
+                                                type="text"
+                                                label="Nombre del Material"
+                                                name="description"
+                                                value={description}
+                                                onChange={(V: any) => onInputChange(V, false, false)}
+                                            />
+                                        </Grid>
                                     </>
                                 )
                             }
