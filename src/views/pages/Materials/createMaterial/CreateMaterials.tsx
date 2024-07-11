@@ -47,7 +47,7 @@ export const CreateMaterials = (props: createProps) => {
     const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setFormSubmitted(true);
-        let data: { group_id: number, code_material?: string, description?: string, unit_material?: string, barcode?: string, stock?: number, state?: string, min?: number } = {
+        let data: { group_id: number, code_material?: string, description?: string, unit_material?: string, barcode?: string, stock?: number, state?: string, min?: number, type?: string } = {
             group_id: group_id.id
         }
         data.code_material = code_material;
@@ -57,6 +57,7 @@ export const CreateMaterials = (props: createProps) => {
         data.stock = 0;
         data.state = "Inhabilitado"
         data.min = 5;
+        data.type = "Almacen"
         //console.log(data);
         setLoading(true);
         if (item == null) {

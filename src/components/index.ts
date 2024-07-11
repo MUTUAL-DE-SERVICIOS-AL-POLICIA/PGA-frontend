@@ -9,3 +9,4 @@ export * from './InputSelect';
 export * from './TablePagination';
 export * from './TableContent';
 export * from './ModalSelect';
+export * from './Select';

@@ -5,3 +5,5 @@ export * from './usePopover';
 export * from './useClassifierStore';
 export * from './useGroupStore';
 export * from './useMaterialStore';
+export * from './useNoteEntryStore';
+export * from './useTypeStore';

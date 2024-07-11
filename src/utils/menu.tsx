@@ -1,4 +1,4 @@
-import { Home,Assessment, Bento, CalendarMonth, Group, Receipt, Checklist } from "@mui/icons-material"
+import { Home, Bento, Group, Checklist, NoteAdd } from "@mui/icons-material"
 
 export const menu = () => {
     return [
@@ -10,27 +10,27 @@ export const menu = () => {
         {
             path: "/supplierView",
             title: "Proveedores",
-            icon: <Group/>,
+            icon: <Group />,
             //permission: "show-rates"
         },
         {
             path: "/classifierView",
             title: "Clasificador",
-            icon: <Bento/>,
+            icon: <Bento />,
             //permission: "show-rates"
         },
         {
             path: "/materialsView",
             title: "Materiales",
-            icon: <Checklist/>,
+            icon: <Checklist />,
             //permission: "show-halls"
         },
-        // {
-        //     path: "/rentalView",
-        //     title: "Alquileres",
-        //     icon: <Receipt />,
-        //     //permission: "show-rates"
-        // },
+        {
+            path: "/entryView",
+            title: "Entradas",
+            icon: <NoteAdd />,
+            //permission: "show-rates"
+        },
         // {
         //     path: "/reports",
         //     title: "Reportes",

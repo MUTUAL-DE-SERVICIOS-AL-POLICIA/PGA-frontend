@@ -1,6 +1,6 @@
 import { coffeApi } from "../services"
 import { useDispatch, useSelector } from "react-redux"
-import { setMaterial, refreshMaterial } from "../store";
+import { setMaterial, refreshMaterial, setLeakedMaterials, setClearLeakedMaterials } from "../store";
 import Swal from "sweetalert2";
 import { MaterialModel } from "../models";
 import { DialogComponent } from "../components";
@@ -8,7 +8,7 @@ import { DialogComponent } from "../components";
 const api = coffeApi;
 
 export const useMaterialStore = () => {
-    const { materials, flag } = useSelector((state: any) => state.materials);
+    const { materials, flag, leakedMaterials } = useSelector((state: any) => state.materials);
     const dispatch = useDispatch();
 
 
@@ -82,6 +82,7 @@ export const useMaterialStore = () => {
     return {
         materials,
         flag,
+        leakedMaterials,
 
         postMaterial,
         getMaterial,

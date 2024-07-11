@@ -20,6 +20,13 @@ export const useSupplierStore = () => {
         return data.total;
     }
 
+    const getSuppliersList = async () =>{
+        const { data } = await api.get('/auth/suppliers/');
+        dispatch(setSupplier({ suppliers: data.suppliers }));
+        //console.log(dispatch(setSupplier({ suppliers: data.suppliers })));
+        return data.total;
+    }
+
     const postSupllier = async (body: Object) => {
         try {
             await api.post('/auth/suppliers', body);
@@ -95,5 +102,6 @@ export const useSupplierStore = () => {
         postSupllier,
         patchUpdateSupplier,
         deleteSupplier,
+        getSuppliersList,
     }
 }

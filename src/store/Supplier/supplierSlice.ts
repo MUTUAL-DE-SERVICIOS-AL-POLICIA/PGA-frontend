@@ -4,7 +4,7 @@ import { SupplierModel } from "../../models";
 export const supplierSlice = createSlice({
     name: 'supplier',
     initialState: {
-        suppliers: <SupplierModel[] | null>null,
+        suppliers: <SupplierModel[] | null>null || [],
         flag: false
     },
     reducers: {

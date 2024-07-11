@@ -9,6 +9,7 @@ export interface MaterialModel {
     state: string;
     min: string;
     barcode: string;
+    type: string;
     stock: number;
 }
 

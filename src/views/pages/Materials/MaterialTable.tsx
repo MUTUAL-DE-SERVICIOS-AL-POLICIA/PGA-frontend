@@ -3,7 +3,7 @@ import { ComponentSearch, ComponentTablePagination, SkeletonComponent } from "..
 import { useMaterialStore } from "../../../hooks";
 import React, { useEffect, useState } from "react";
 import { MaterialModel } from "../../../models";
-import { DeleteOutline, EditOutlined } from "@mui/icons-material";
+import { DeleteOutline, CalendarMonth } from "@mui/icons-material";
 
 interface tableProps {
     limitInit?: number;
@@ -37,7 +37,7 @@ export const MaterialTable = (props: tableProps) => {
                 title="Buscar Material"
                 onSearch={handleSearch}
             />
-            <Typography>Lista de Materiales Y Stock</Typography>
+            <Typography>Lista de Materiales y Stock en Almacenes</Typography>
             <TableContainer>
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>
@@ -47,6 +47,7 @@ export const MaterialTable = (props: tableProps) => {
                             <TableCell sx={{ fontWeight: 'bold' }}>Unidad</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Stock</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Estado</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Tipo de Material</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
                         </TableRow>
                     </TableHead>
@@ -69,8 +70,12 @@ export const MaterialTable = (props: tableProps) => {
                                                     {material.state === 'Habilitado' ? 'Habilitado' : 'Inhabilitado'}
                                                 </Button>
                                             </TableCell>
+                                            <TableCell>{material.type}</TableCell>
                                             <TableCell>
-                                                <IconButton sx={{ p: 0 }} onClick={() => deleteMaterial(material)}>
+                                                <IconButton sx={{ p: 2 }} onClick={() => deleteMaterial(material)}>
+                                                    <CalendarMonth color="success" />
+                                                </IconButton>
+                                                <IconButton sx={{ p: 2 }} onClick={() => deleteMaterial(material)}>
                                                     <DeleteOutline color="error" />
                                                 </IconButton>
                                             </TableCell>
