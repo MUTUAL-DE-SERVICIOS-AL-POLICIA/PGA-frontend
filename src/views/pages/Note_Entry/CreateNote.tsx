@@ -1,14 +1,14 @@
-import { Grid, Grow, IconButton, Paper, TextField, Typography, Box, Divider } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { Grid, Grow, IconButton, Paper, TextField, Typography, Box, Divider, Button } from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import { ComponentButton, SelectComponent } from "../../../components";
 import { useMaterialStore, useSupplierStore, useTypeStore } from "../../../hooks";
 import { MaterialModel, SupplierModel, TypeModel } from "../../../models";
-import { ComponentButton, SelectComponent } from "../../../components";
-import { Delete } from "@mui/icons-material";
 import { CreateSupplier } from "../Suppliers";
 import { CreateMaterials } from "../Materials/createMaterial";
 
 export const CreateNote = () => {
-    const [formSubmited, setFormSubmited] = useState(false);
+    const [formSubmitted, setFormSubmitted] = useState(false);
     const { types = [], getTypes } = useTypeStore();
     const { suppliers = [], getSuppliersList } = useSupplierStore();
     const { materials = [], getMaterial } = useMaterialStore();
@@ -17,6 +17,7 @@ export const CreateNote = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openDialogMaterial, setOpenDialogMaterial] = useState(false);
     const [selectedMaterials, setSelectedMaterials] = useState<{ id: number, name: string, quantity: number, price: number, unit_material: string }[]>([]);
+    const [invoiceNumber, setInvoiceNumber] = useState<string>('');
 
     const handleType = (value: any) => {
         setTypeSelect(value);
@@ -61,15 +62,33 @@ export const CreateNote = () => {
         return selectedMaterials.reduce((acc, material) => acc + (material.quantity * material.price), 0);
     }
 
+    const getCurrentDate = () => {
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        const year = today.getFullYear();
+    
+        return `${year}-${month}-${day}`;
+    }
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = {
+            type: typeSelect,
+            supplier: supplierSelect,
+            materials: selectedMaterials,
+            date_entry: getCurrentDate(),
+            total: getTotal(),
+            invoice_number: invoiceNumber
+        };
+        console.log(formData);
+        // Aquí puedes enviar formData a través de una API o manejarlo según tus necesidades
+        setFormSubmitted(true);
+    }
+
     useEffect(() => {
         getSuppliersList();
-    }, []);
-
-    useEffect(() => {
         getTypes();
-    }, []);
-
-    useEffect(() => {
         getMaterial(0, 10, '');
     }, []);
 
@@ -82,7 +101,7 @@ export const CreateNote = () => {
             <Paper sx={{ margin: '10px 0px', padding: '10px', borderRadius: '10px', backgroundColor: '#d3f4eb' }}>
                 <Typography variant="h6" style={{ textAlign: 'center', fontSize: '1rem' }}>Nueva Nota de Entrada</Typography>
                 <Grow in={true} style={{ transformOrigin: '0 0 0' }} {...({ timeout: 2300 })}>
-                    <form action="">
+                    <form onSubmit={handleSubmit}>
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={4}>
                                 <SelectComponent
@@ -96,7 +115,7 @@ export const CreateNote = () => {
                                 <SelectComponent
                                     handleSelect={handleSupplier}
                                     label={"Proveedor"}
-                                    options={[{ id: 0, name: 'SIN PROVEDOR' }, ...suppliers.map((supplier: SupplierModel) => ({ id: supplier.id, name: supplier.name }))]}
+                                    options={[{ id: 0, name: 'SIN PROVEEDOR' }, ...suppliers.map((supplier: SupplierModel) => ({ id: supplier.id, name: supplier.name }))]}
                                     value={supplierSelect}
                                 />
                             </Grid>
@@ -124,6 +143,18 @@ export const CreateNote = () => {
                                 />
                             </Grid>
                         </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                label="Número de Factura"
+                                value={invoiceNumber}
+                                onChange={(e) => setInvoiceNumber(e.target.value)}
+                                variant="outlined"
+                                size="small" // Cambiamos el tamaño a small
+                                sx={{ mt: 2 }}
+                            />
+                        </Grid>
+                        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>Guardar Nota</Button>
                     </form>
                 </Grow>
             </Paper>
