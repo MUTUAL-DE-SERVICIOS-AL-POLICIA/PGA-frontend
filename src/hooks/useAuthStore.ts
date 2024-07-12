@@ -14,6 +14,7 @@ export const useAuthStore = () => {
            console.log('Response data:', data);
            localStorage.setItem('token', data.token);
            const user = data.user;
+           localStorage.setItem('id', data.id);
            localStorage.setItem('user',JSON.stringify(user));
            localStorage.setItem('rol',data.role);
            dispatch(onLogin(user));

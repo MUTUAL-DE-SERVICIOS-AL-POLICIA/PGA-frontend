@@ -69,6 +69,8 @@ export const CreateMaterials = (props: createProps) => {
             });
 
         }
+
+        setLoading(false);
     }
 
 

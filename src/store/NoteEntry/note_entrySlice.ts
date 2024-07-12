@@ -10,8 +10,11 @@ export const note_entrySlice = createSlice({
     reducers:{
         setShoppingCart: (state, action) => {
             state.shoppingCart = action.payload.shoppingCart;
+        },
+        setNoteEntry : (state, action)=>{
+            state.note_entries = action.payload.note_entries;
         }
     }
 });
 
-export const {setShoppingCart} = note_entrySlice.actions;
+export const {setShoppingCart, setNoteEntry} = note_entrySlice.actions;
