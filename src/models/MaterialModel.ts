@@ -11,6 +11,11 @@ export interface MaterialModel {
     barcode: string;
     type: string;
     stock: number;
+    pivot: {
+        cost_unit: string; 
+        amount_entries: number;
+        cost_total: string; 
+    };
 }
 
 export interface FormMaterialModel {

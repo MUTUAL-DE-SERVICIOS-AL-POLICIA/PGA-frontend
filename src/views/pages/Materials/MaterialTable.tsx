@@ -54,6 +54,7 @@ export const MaterialTable = (props: tableProps) => {
                     <TableBody>
                         {
                             materials == null ? <SkeletonComponent quantity={4} /> : materials.map((material: MaterialModel, index: number) => {
+                                //console.log(material)
                                 return (
                                     <React.Fragment key={index}>
                                         <TableRow sx={{ borderBottom: '2px solid #ccc' }}>

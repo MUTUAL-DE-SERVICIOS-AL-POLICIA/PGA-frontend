@@ -9,9 +9,9 @@ export const useAuthStore = () => {
 
     const startlogin = async({ username, password }: { username: string, password: string }) =>{
         try {
-           console.log('datos ingresados', {username, password});
+           //console.log('datos ingresados', {username, password});
            const { data } = await coffeApi.post('/auth/login', { username, password });
-           console.log('Response data:', data);
+           //console.log('Response data:', data);
            localStorage.setItem('token', data.token);
            const user = data.user;
            localStorage.setItem('id', data.id);

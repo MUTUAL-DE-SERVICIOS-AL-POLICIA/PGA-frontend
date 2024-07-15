@@ -24,7 +24,7 @@ export const useMaterialStore = () => {
     }
 
     const postMaterial = async (body: Object) => {
-        console.log(body);
+        //console.log(body);
         try {
             await api.post('/auth/materials', body);
             dispatch(refreshMaterial());

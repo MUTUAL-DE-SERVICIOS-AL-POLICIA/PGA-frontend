@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Grow, IconButton, Paper, TextField, Typography, Box, Divider, Button } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import { Delete, ExpandLess, ExpandMore } from "@mui/icons-material";
 import { ComponentButton, SelectComponent } from "../../../components";
 import { useMaterialStore, useNoteEntryStore, useSupplierStore, useTypeStore } from "../../../hooks";
 import { MaterialModel, SupplierModel, TypeModel } from "../../../models";
 import { CreateSupplier } from "../Suppliers";
 import { CreateMaterials } from "../Materials/createMaterial";
+import { useNavigate } from "react-router-dom";
 
 export const CreateNote = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -20,6 +21,11 @@ export const CreateNote = () => {
     const [invoiceNumber, setInvoiceNumber] = useState<string>('');
     const [authorizationNumber, setAuthorizationNumber] = useState<string>('');
     const { postNoteEntry } = useNoteEntryStore();
+
+    const navigate = useNavigate();
+    const handleRederict = () => {
+        navigate('/entryView');
+    }
 
     const handleType = (value: any) => {
         setTypeSelect(value);
@@ -87,7 +93,11 @@ export const CreateNote = () => {
         };
         setFormSubmitted(true);
 
-        await postNoteEntry(formData);
+        await postNoteEntry(formData).then((res) => {
+            if (res) {
+                handleRederict();
+            }
+        });
     }
 
     useEffect(() => {
@@ -99,6 +109,12 @@ export const CreateNote = () => {
     const availableMaterials = materials.filter((material: MaterialModel) => !selectedMaterials.some(selected => selected.id === material.id));
 
     const isMaterialSelectDisabled = typeSelect === 0 || supplierSelect === 0;
+
+    const [isMaterialsOpen, setIsMaterialsOpen] = useState(true); // Estado para controlar si la lista de materiales está abierta
+
+    const toggleMaterialsList = () => {
+        setIsMaterialsOpen(!isMaterialsOpen);
+    }
 
     return (
         <>
@@ -243,7 +259,10 @@ export const CreateNote = () => {
                         </Grid>
                     </Grid>
                 </Box>
-                {selectedMaterials.map(material => (
+                <IconButton onClick={toggleMaterialsList} sx={{ marginLeft: 'auto', marginBottom: '10px' }}>
+                    {isMaterialsOpen ? <ExpandLess /> : <ExpandMore />}
+                </IconButton>
+                {isMaterialsOpen && selectedMaterials.map(material => (
                     <Box key={material.id} sx={{ margin: '5px 0', padding: '5px', borderRadius: '5px', backgroundColor: '#f0f0f0' }}>
                         <Grid container spacing={1} alignItems="center">
                             <Grid item xs={3}>

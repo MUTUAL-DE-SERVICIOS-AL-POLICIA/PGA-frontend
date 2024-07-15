@@ -1,4 +1,4 @@
-import { Collapse, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Collapse, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import React from "react";
 import { useState } from "react";
@@ -38,18 +38,17 @@ export const ComponentTableContent = (props: Props) => {
 
   const columns = data.length > 0 ? Object.keys(data[0]) : [];
 
-  let subColumns: any = []
-  if (subTableData && subTableData.length !== 0) {
-    subColumns = subTableData.length > 0 ? Object.keys(subTableData[0].materials[0]) : []
+  let subColumns: any = [];
+  if (subTableData && subTableData.length !== 0 && subTableData[0]?.materials?.length > 0) {
+    subColumns = Object.keys(subTableData[0].materials[0]);
   }
-  
-  const [openRows, setOpenRows] = useState<Array<boolean>>(Array(data.length).fill(false))
 
+  const [openRows, setOpenRows] = useState<Array<boolean>>(Array(data.length).fill(false));
 
   const handleRowClick = (index: number) => {
-    const updatedOpenRows = [...openRows]
-    updatedOpenRows[index] = !updatedOpenRows[index]
-    setOpenRows(updatedOpenRows)
+    const updatedOpenRows = [...openRows];
+    updatedOpenRows[index] = !updatedOpenRows[index];
+    setOpenRows(updatedOpenRows);
   }
 
   return (
@@ -81,7 +80,7 @@ export const ComponentTableContent = (props: Props) => {
                   </TableCell>
                 ))}
               </StyledTableRow>
-              {useCollapse &&
+              {useCollapse && subTableData && subTableData[index_body]?.materials && (
                 <TableRow>
                   <TableCell
                     style={{
@@ -100,8 +99,7 @@ export const ComponentTableContent = (props: Props) => {
                           <TableHead>
                             <TableRow
                               sx={{
-                                '&>*':
-                                {
+                                '&>*': {
                                   borderBottom: '.1px solid grey',
                                   fontWeight: 'bold',
                                   backgroundColor: '#bdbdbd'
@@ -136,7 +134,7 @@ export const ComponentTableContent = (props: Props) => {
                     </Collapse>
                   </TableCell>
                 </TableRow>
-              }
+              )}
             </React.Fragment>
           ))}
         </TableBody>

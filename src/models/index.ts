@@ -3,3 +3,4 @@ export * from './ClassifierModel';
 export * from './GroupModel';
 export * from './MaterialModel';
 export * from './TypeModel';
+export * from './NoteEntryModel';
