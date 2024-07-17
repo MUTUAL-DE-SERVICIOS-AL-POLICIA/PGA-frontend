@@ -315,14 +315,20 @@ export const CreateNote = () => {
             {openDialog && (
                 <CreateSupplier
                     open={openDialog}
-                    handleClose={() => handleDialog(false)}
+                    handleClose={() => {
+                        handleDialog(false);
+                        getSuppliersList(); // Actualiza la lista de proveedores al cerrar el diálogo
+                    }}
                     supplier={null}
                 />
             )}
             {openDialogMaterial && (
                 <CreateMaterials
                     open={openDialogMaterial}
-                    handleClose={() => handleDialogMaterial(false)}
+                    handleClose={() => {
+                        handleDialogMaterial(false);
+                        getMaterial(0, 10, ''); // Actualiza la lista de materiales al cerrar el diálogo
+                    }}
                     item={null}
                 />
             )}
