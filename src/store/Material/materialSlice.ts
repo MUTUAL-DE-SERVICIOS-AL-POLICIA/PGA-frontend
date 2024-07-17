@@ -6,7 +6,8 @@ export const materialSlice = createSlice({
     initialState: {
         materials: <MaterialModel[] | null>null || [],
         leakedMaterials: [],
-        flag: false
+        flag: false,
+        materialview: []
     },
     reducers: {
         setMaterial: (state, action) => {
@@ -24,10 +25,13 @@ export const materialSlice = createSlice({
         clearMaterials: (state) => {
             state.materials = null || []
             state.leakedMaterials = []
+        },
+        setMater: (state, action) => {
+            state.materialview = action.payload.material;
         }
     }
 });
 
-export const { setMaterial, refreshMaterial,
+export const { setMaterial, refreshMaterial, setMater,
     //leakedMaterials
     setLeakedMaterials, setClearLeakedMaterials, clearMaterials } = materialSlice.actions;

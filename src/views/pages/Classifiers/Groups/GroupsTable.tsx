@@ -9,7 +9,7 @@ interface tableProps {
 
 export const GroupsTable = (props: tableProps) => {
     const { groups } = props;
-    console.log(groups);
+    //console.log(groups);
     return (
         <Stack sx={{ paddingRight: '10' }}>
             <Typography sx={{ fontWeight: 'bold' }}>Grupos:</Typography>

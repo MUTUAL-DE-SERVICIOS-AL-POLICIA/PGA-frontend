@@ -3,7 +3,7 @@ import { useNoteEntryStore } from "../../../hooks";
 import React, { useEffect, useState } from "react";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
 import { NoteEntryModel } from "../../../models";
-import { CalendarMonth, DeleteOutline } from "@mui/icons-material";
+import { DeleteOutline, Description } from "@mui/icons-material";
 
 interface tableProps {
     limitInit?: number;
@@ -25,9 +25,9 @@ const getTypeTextAndColor = (typeId: number) => {
 
 export const TableNotesEntry = (props: tableProps) => {
 
-    const { limitInit = 10, itemView } = props;
+    const { limitInit = 5, itemView } = props;
 
-    const { note_entries, flag, getNoteEntry } = useNoteEntryStore();
+    const { note_entries, flag, getNoteEntry, deleteNoteEntry } = useNoteEntryStore();
 
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
@@ -69,9 +69,9 @@ export const TableNotesEntry = (props: tableProps) => {
                                         <TableCell>
                                             <Stack alignContent="center" direction="row">
                                                 <IconButton sx={{ p: 2 }} onClick={() => itemView!(note_entry)}>
-                                                    <CalendarMonth color="success" />
+                                                    <Description color="success" />
                                                 </IconButton>
-                                                <IconButton sx={{ p: 2 }} >
+                                                <IconButton sx={{ p: 2 }} onClick={()=> deleteNoteEntry(note_entry)}>
                                                     <DeleteOutline color="error" />
                                                 </IconButton>
                                             </Stack>

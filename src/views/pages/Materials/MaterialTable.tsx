@@ -8,13 +8,14 @@ import { DeleteOutline, CalendarMonth } from "@mui/icons-material";
 interface tableProps {
     limitInit?: number;
     items?: any[];
+    itemView?: (note_entry: MaterialModel) => void;
 }
 
 export const MaterialTable = (props: tableProps) => {
 
-    const { limitInit = 10, items } = props;
+    const { limitInit = 10, items, itemView } = props;
 
-    const { materials, flag, getMaterial, putState, deleteMaterial } = useMaterialStore();
+    const { materials, flag, getMaterial, putState, deleteMaterial, viewMaterial } = useMaterialStore();
 
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
@@ -73,7 +74,7 @@ export const MaterialTable = (props: tableProps) => {
                                             </TableCell>
                                             <TableCell>{material.type}</TableCell>
                                             <TableCell>
-                                                <IconButton sx={{ p: 2 }} onClick={() => deleteMaterial(material)}>
+                                                <IconButton sx={{ p: 2 }} onClick={() => itemView!(material)}>
                                                     <CalendarMonth color="success" />
                                                 </IconButton>
                                                 <IconButton sx={{ p: 2 }} onClick={() => deleteMaterial(material)}>

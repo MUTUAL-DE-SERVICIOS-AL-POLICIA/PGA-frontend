@@ -1,6 +1,6 @@
 import { coffeApi } from "../services"
 import { useDispatch, useSelector } from "react-redux"
-import { setMaterial, refreshMaterial, setLeakedMaterials, setClearLeakedMaterials } from "../store";
+import { setMaterial, refreshMaterial, setLeakedMaterials, setClearLeakedMaterials, setMater } from "../store";
 import Swal from "sweetalert2";
 import { MaterialModel } from "../models";
 import { DialogComponent } from "../components";
@@ -8,7 +8,7 @@ import { DialogComponent } from "../components";
 const api = coffeApi;
 
 export const useMaterialStore = () => {
-    const { materials, flag, leakedMaterials } = useSelector((state: any) => state.materials);
+    const { materials, materialview, flag, leakedMaterials } = useSelector((state: any) => state.materials);
     const dispatch = useDispatch();
 
 
@@ -79,14 +79,28 @@ export const useMaterialStore = () => {
         }
     }
 
+    const viewMaterial = async (material: MaterialModel) => {
+        return api.get(`/auth/materials/${material.id}/`)
+            .then(response => {
+                console.log(response.data);
+                return response.data;
+            })
+            .catch(error => {
+                console.error('Error al obtener el material:', error);
+                throw error;
+            });
+    }
+
     return {
         materials,
         flag,
         leakedMaterials,
+        materialview,
 
         postMaterial,
         getMaterial,
         putState,
-        deleteMaterial
+        deleteMaterial,
+        viewMaterial
     }
 }

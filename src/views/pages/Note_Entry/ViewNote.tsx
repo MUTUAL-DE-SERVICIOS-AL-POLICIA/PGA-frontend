@@ -9,8 +9,6 @@ interface ViewProps {
 
 export const ViewNote = (props: ViewProps) => {
     const { open, handleClose, item } = props;
-
-    // Función para obtener el texto y color del tipo de nota
     const getTypeTextAndColor = (typeId: number) => {
         switch (typeId) {
             case 1:
