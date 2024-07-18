@@ -9,7 +9,7 @@ import { Layout } from '../views/layout/Layout';
 
 import { SupplierView } from '../views/pages/Suppliers';
 import { ClassifierView } from '../views/pages/Classifiers';
-import { GroupView } from '../views/pages/Groups';
+import { GroupTableSec, GroupView } from '../views/pages/Groups';
 import { MaterialView } from '../views/pages/Materials';
 import { Dashboard } from '../views/pages/Dashboard';
 import { CreateNote } from '../views/pages/Note_Entry/CreateNote';
@@ -30,7 +30,7 @@ export const AppRouter = () => {
                     <Route path='/dashboardView' element={<Dashboard />} />
                     <Route path='/supplierView' element={<SupplierView />} />
                     <Route path='/classifierView' element={<ClassifierView />} />
-                    <Route path='/groupView' element={<GroupView />} />
+                    <Route path='/groupView' element={<GroupTableSec />} />
                     <Route path='/materialsView' element={<MaterialView />} />
                     <Route path='/entryView' element={<NoteEntryView />} />
                     <Route path='/createNote' element={<CreateNote />} />

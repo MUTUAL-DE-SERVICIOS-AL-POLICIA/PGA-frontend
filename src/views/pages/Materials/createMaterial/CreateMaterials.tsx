@@ -30,6 +30,8 @@ const formMaterialValidation: FormMaterialValidate = {
 export const CreateMaterials = (props: createProps) => {
     const { open, handleClose, item } = props
 
+    // console.log(item);
+
 
     const { postMaterial } = useMaterialStore();
     const [formSubmitted, setFormSubmitted] = useState(false);

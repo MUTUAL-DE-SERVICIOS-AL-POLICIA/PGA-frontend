@@ -8,13 +8,14 @@ import { fontWeight } from "@mui/system";
 
 interface tableProps {
     limitInit?: number;
+    id_classifier?: number;
 }
 
 export const GroupTablePrincipal = (props: tableProps) => {
     const {
         limitInit = 10,
+        id_classifier
     } = props
-
 
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
@@ -38,8 +39,8 @@ export const GroupTablePrincipal = (props: tableProps) => {
             <Stack sx={{ paddingRight: '10px' }}>
 
                 {
-                    allGroups!==0 && allgroupsWithMaterial !==0 && <ComponentTableContent
-                        headers={['ID', 'Codigo Clasificador','Codigo Grupo', 'Nombre del Grupo']}
+                    allGroups !== 0 && allgroupsWithMaterial !== 0 && <ComponentTableContent
+                        headers={['ID', 'Codigo Clasificador', 'Codigo Grupo', 'Nombre del Grupo']}
                         data={allGroups}
                         sxHeader={{ fontWeight: 'bold', backgroundColor: '#E2F6F0' }}
                         useCollapse={true}

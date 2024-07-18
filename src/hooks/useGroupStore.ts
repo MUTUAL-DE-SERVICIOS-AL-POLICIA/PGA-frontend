@@ -9,8 +9,18 @@ import { DialogComponent } from "../components";
 const api = coffeApi;
 
 export const useGroupStore = () => {
-    const { allGroups, allgroupsWithMaterial, flag } = useSelector((state: any) => state.groups);
+    const { selectgroups, allGroups, allgroupsWithMaterial, flag } = useSelector((state: any) => state.groups);
     const dispatch = useDispatch();
+
+
+    const getUnitGroup = async (id_classifer: number) => {
+        try {
+            const { data } = await api.get(`/auth/listgroup/${id_classifer}`)
+            dispatch(setGroup({selectgroups: data.groups}))
+        } catch (error: any) {
+
+        }
+    }
 
 
     const getAllGroups = async (page: number, limit: number, search: string | null = null) => {
@@ -43,7 +53,7 @@ export const useGroupStore = () => {
                 element.materials = allMaterial
             });
             //console.log(data.data)
-            dispatch(setGroupMaterial({allgroupsWithMaterial: data.data}))
+            dispatch(setGroupMaterial({ allgroupsWithMaterial: data.data }))
             return data.total;
         } catch (error) {
 
@@ -53,9 +63,11 @@ export const useGroupStore = () => {
 
     return {
         allGroups,
+        selectgroups,
         flag,
         allgroupsWithMaterial,
 
-        getAllGroups
+        getAllGroups,
+        getUnitGroup,
     };
 }

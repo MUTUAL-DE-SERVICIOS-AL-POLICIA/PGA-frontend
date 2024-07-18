@@ -1,10 +1,8 @@
 import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, Typography, Divider, DialogActions, Button } from "@mui/material";
-import { NoteEntryModel } from "../../../models";
-
 interface ViewProps {
     open: boolean;
     handleClose: () => void;
-    item: NoteEntryModel | null;
+    item: any | null;
 }
 
 export const ViewNote = (props: ViewProps) => {
@@ -39,6 +37,10 @@ export const ViewNote = (props: ViewProps) => {
                                     <TableCell>{item.invoice_number}</TableCell>
                                 </TableRow>
                                 <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Nombre del provedor:</TableCell>
+                                    <TableCell>{item.supplier['name']}</TableCell>
+                                </TableRow>
+                                <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Fecha de Ingreso:</TableCell>
                                     <TableCell>{item.delivery_date}</TableCell>
                                 </TableRow>
@@ -69,7 +71,7 @@ export const ViewNote = (props: ViewProps) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {item.materials.map((material, index) => (
+                                {item.materials.map((material:any, index:any) => (
                                     <TableRow key={index}>
                                         <TableCell>{material.id}</TableCell>
                                         <TableCell>{material.code_material}</TableCell>

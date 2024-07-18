@@ -23,8 +23,10 @@ export const ClassifierTable = (props: tableProps) => {
     const { flag, classifiers = null, getClassifier, deleleClassifier } = useClassifierStore();
     const { itemEdit } = props;
     const navigate = useNavigate();
-    const handleRederict = () =>{
-        navigate('/groupView');
+
+
+    const handleRederict = (id: number) => {
+        navigate('/groupView', { state: { id_classifier: id } });
     }
 
     useEffect(() => {
@@ -66,7 +68,7 @@ export const ClassifierTable = (props: tableProps) => {
                                     <Stack direction="row" justifyContent="flex-end">
                                         <ComponentButton
                                             text="Ver grupos"
-                                            onClick={handleRederict}
+                                            onClick={() => handleRederict(classifier.id)}
                                             startIcon={<SvgIcon fontSize="small"><Visibility /></SvgIcon>}
                                         />
                                     </Stack>

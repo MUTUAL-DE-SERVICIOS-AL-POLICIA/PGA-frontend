@@ -17,8 +17,6 @@ export const GroupsTable = (props: tableProps) => {
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#E2F6F0' }}>
-                            <TableCell sx={{ fontWeight: 'bold' }}>ID</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Codigo del Grupo</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Nombre del Grupo</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Cantidad</TableCell>
                         </TableRow>
@@ -29,8 +27,6 @@ export const GroupsTable = (props: tableProps) => {
                             return(
                                 <React.Fragment key={index}>
                                     <TableRow sx={{borderBottom: '2px solid #ccc'}}>
-                                        <TableCell>{group.id}</TableCell>
-                                        <TableCell>{group.code_group}</TableCell>
                                         <TableCell>{group.name_group}</TableCell>
                                         <TableCell>{group.materials_count}</TableCell>
                                     </TableRow>
