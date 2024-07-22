@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Grow, IconButton, Paper, TextField, Typography, Box, Divider, Button } from "@mui/material";
-import { Delete, ExpandLess, ExpandMore } from "@mui/icons-material";
+import { Delete, ExpandLess, ExpandMore, Save } from "@mui/icons-material";
 import { ComponentButton, SelectComponent } from "../../../components";
 import { useMaterialStore, useNoteEntryStore, useSupplierStore, useTypeStore } from "../../../hooks";
 import { MaterialModel, SupplierModel, TypeModel } from "../../../models";
@@ -103,7 +103,7 @@ export const CreateNote = () => {
     useEffect(() => {
         getSuppliersList();
         getTypes();
-        getMaterial(0, 10, '');
+        getMaterial(0, 5000, '');
     }, []);
 
     const availableMaterials = materials.filter((material: MaterialModel) => !selectedMaterials.some(selected => selected.id === material.id));
@@ -126,7 +126,7 @@ export const CreateNote = () => {
                             <Grid item xs={12} sm={5}>
                                 <SelectComponent
                                     handleSelect={handleType}
-                                    label={"Tipo"}
+                                    label={""}
                                     options={[{ id: 0, name: 'Escoger el tipo de ingreso' }, ...types.map((type: TypeModel) => ({ id: type.id, name: type.name_type }))]}
                                     value={typeSelect}
                                 />
@@ -134,7 +134,7 @@ export const CreateNote = () => {
                             <Grid item xs={12} sm={5}>
                                 <SelectComponent
                                     handleSelect={handleSupplier}
-                                    label={"Proveedor"}
+                                    label={""}
                                     options={[{ id: 0, name: 'Escoger al proveedor' }, ...suppliers.map((supplier: SupplierModel) => ({ id: supplier.id, name: supplier.name }))]}
                                     value={supplierSelect}
                                 />
@@ -210,7 +210,7 @@ export const CreateNote = () => {
                             <Grid item xs={12} sm={10}>
                                 <SelectComponent
                                     handleSelect={handleAddMaterial}
-                                    label={"Seleccionar Materiales"}
+                                    label={""}
                                     options={[...availableMaterials.map((material: MaterialModel) => ({ id: material.id, name: material.description }))]}
                                     value={''}
                                     disabled={isMaterialSelectDisabled}
@@ -228,7 +228,8 @@ export const CreateNote = () => {
                             variant="contained"
                             color="primary"
                             sx={{ mt: 2 }}
-                            disabled={selectedMaterials.length === 0} // Desactivar si no hay materiales seleccionados
+                            startIcon={<Save/>}
+                            disabled={selectedMaterials.length === 0} 
                         >
                             Guardar Nota
                         </Button>
@@ -307,6 +308,7 @@ export const CreateNote = () => {
                     <Typography variant="h6" style={{ fontSize: '1rem' }}>Total General: {getTotal().toFixed(2)}</Typography>
                     <ComponentButton
                         text="Eliminar Todo"
+                        color="error"
                         onClick={handleRemoveAllMaterials}
                         startIcon={<Delete />}
                     />
@@ -317,7 +319,7 @@ export const CreateNote = () => {
                     open={openDialog}
                     handleClose={() => {
                         handleDialog(false);
-                        getSuppliersList(); // Actualiza la lista de proveedores al cerrar el diálogo
+                        getSuppliersList(); 
                     }}
                     supplier={null}
                 />
@@ -327,9 +329,10 @@ export const CreateNote = () => {
                     open={openDialogMaterial}
                     handleClose={() => {
                         handleDialogMaterial(false);
-                        getMaterial(0, 10, ''); // Actualiza la lista de materiales al cerrar el diálogo
+                        getMaterial(0, 10, ''); 
                     }}
                     item={null}
+                    type_material_select_base="Caja Chica"
                 />
             )}
         </>

@@ -9,6 +9,7 @@ interface createProps {
     open: boolean;
     handleClose: () => void;
     item: MaterialModel | null;
+    type_material_select_base: string;
 }
 
 const formMaterialFields: FormMaterialModel = {
@@ -28,7 +29,7 @@ const formMaterialValidation: FormMaterialValidate = {
 }
 
 export const CreateMaterials = (props: createProps) => {
-    const { open, handleClose, item } = props
+    const { open, handleClose, item, type_material_select_base } = props
 
     // console.log(item);
 
@@ -38,7 +39,7 @@ export const CreateMaterials = (props: createProps) => {
     const [modal, setModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const { group_id, code_material, description, unit_material, barcode,
+    const { group_id, code_material, description, unit_material, barcode, type_material,
         onInputChange, onValueChange, isFormValid, onResetForm,
         group_idValid, code_materialValid, descriptionValid, unit_materialValid,
         barcodeValid } = useForm(item ?? formMaterialFields, formMaterialValidation);
@@ -59,12 +60,12 @@ export const CreateMaterials = (props: createProps) => {
         data.stock = 0;
         data.state = "Inhabilitado"
         data.min = 5;
-        data.type = "Almacen"
+        data.type = type_material_select_base;
         //console.log(data);
         setLoading(true);
         if (item == null) {
             await postMaterial(data).then((res) => {
-                if(res){
+                if (res) {
                     handleClose();
                     onResetForm();
                 }
@@ -101,6 +102,10 @@ export const CreateMaterials = (props: createProps) => {
         "LITRO",
         "JUEGO",
         "PAQUETE"
+    ];
+
+    const type_material_select = [
+        "Almacen", "Caja Chica", "Fondo en Avance"
     ];
     units.sort((a, b) => a.localeCompare(b));
 
@@ -169,23 +174,44 @@ export const CreateMaterials = (props: createProps) => {
                                             </Grid>
                                         </Stack>
 
-                                        <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
-                                            <FormControl fullWidth>
-                                                <InputLabel>Unidad</InputLabel>
-                                                <Select
-                                                    label="Unidad"
-                                                    name="unit_material"
-                                                    value={unit_material}
-                                                    onChange={(V: any) => onInputChange(V, false, false)}
-                                                >
-                                                    {units.map((unit, index) => (
-                                                        <MenuItem key={index} value={unit}>
-                                                            {unit}
-                                                        </MenuItem>
-                                                    ))}
+                                        <Grid container spacing={2}>
 
-                                                </Select>
-                                            </FormControl>
+                                            <Grid item xs={6}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel>Tipo de material</InputLabel>
+                                                    <Select
+                                                        label="Tipo de Material"
+                                                        name="type_material"
+                                                        value={type_material_select_base}
+                                                        onChange={(V: any) => onInputChange(V, false, false)}
+                                                    >
+                                                        {type_material_select.map((unit, index) => (
+                                                            <MenuItem key={index} value={unit}>
+                                                                {unit}
+                                                            </MenuItem>
+                                                        ))}
+
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel>Unidad</InputLabel>
+                                                    <Select
+                                                        label="Unidad"
+                                                        name="unit_material"
+                                                        value={unit_material}
+                                                        onChange={(V: any) => onInputChange(V, false, false)}
+                                                    >
+                                                        {units.map((unit, index) => (
+                                                            <MenuItem key={index} value={unit}>
+                                                                {unit}
+                                                            </MenuItem>
+                                                        ))}
+
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
                                         </Grid>
 
                                         <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>

@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogContentText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, DialogActions, Button } from "@mui/material";
 import { useMaterialStore } from "../../../hooks";
 import { useEffect, useState } from "react";
 
@@ -25,27 +25,27 @@ export const MaterialsDetail = (props: ViewProps) => {
         }
     }, [item]);
 
-    // Calcular el total de las cantidades
     const totalAmount = materialDetails ? materialDetails.entries.reduce((sum: number, entry: any) => sum + entry.amount_entries, 0) : 0;
 
     return (
         <Dialog
             open={open}
             onClose={handleClose}
-            maxWidth="md" // Establece el ancho máximo del diálogo
-            fullWidth // Asegura que el diálogo use el ancho completo permitido
+            maxWidth="md"
+            fullWidth
+            sx={{ '& .MuiDialog-paper': { borderRadius: '12px', boxShadow: 24 } }}
         >
-            <DialogTitle sx={{ textAlign: 'center' }}>Visualizar Materiales</DialogTitle>
+            <DialogTitle sx={{ textAlign: 'center', backgroundColor: '#E2F6F0', color: '#333', padding: '16px 24px' }}>
+                <Typography variant="h6">Visualizar Materiales</Typography>
+            </DialogTitle>
             <DialogContent>
                 {materialDetails ? (
                     <>
-                        <DialogContentText>
-                            <strong>ID del Material:</strong> {materialDetails.material_id}
+                        <DialogContentText sx={{ marginBottom: 2 }}>
+                            <Typography variant="body1"><strong>ID del Material:</strong> {materialDetails.material_id}</Typography>
+                            <Typography variant="body1"><strong>Descripción del Material:</strong> {materialDetails.material_description}</Typography>
                         </DialogContentText>
-                        <DialogContentText>
-                            <strong>Descripción del Material:</strong> {materialDetails.material_description}
-                        </DialogContentText>
-                        <TableContainer sx={{ marginTop: 2 }}>
+                        <TableContainer sx={{ marginTop: 2, borderRadius: '8px', overflow: 'hidden', boxShadow: 1, backgroundColor: '#fff' }}>
                             <Table>
                                 <TableHead sx={{ backgroundColor: '#E2F6F0' }}>
                                     <TableRow>
@@ -66,9 +66,9 @@ export const MaterialsDetail = (props: ViewProps) => {
                                             <TableCell>{entry.cost_total}</TableCell>
                                         </TableRow>
                                     ))}
-                                    <TableRow>
-                                        <TableCell colSpan={2} align="right"><strong>Total Cantidad</strong></TableCell>
-                                        <TableCell><strong>{totalAmount}</strong></TableCell>
+                                    <TableRow sx={{ backgroundColor: '#f0f0f0', fontWeight: 'bold' }}>
+                                        <TableCell colSpan={2} align="right">Total Cantidad</TableCell>
+                                        <TableCell>{totalAmount}</TableCell>
                                         <TableCell colSpan={2}></TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -79,6 +79,9 @@ export const MaterialsDetail = (props: ViewProps) => {
                     <DialogContentText>Cargando datos...</DialogContentText>
                 )}
             </DialogContent>
+            <DialogActions sx={{ padding: '16px 24px' }}>
+                <Button onClick={handleClose} variant="outlined" color="primary">Cerrar</Button>
+            </DialogActions>
         </Dialog>
     );
 }

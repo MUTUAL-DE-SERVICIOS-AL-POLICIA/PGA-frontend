@@ -1,18 +1,19 @@
-import { FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material"
-import { ClearIcon } from "@mui/x-date-pickers";
+import React from 'react';
+import { FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, Typography, TextField, Autocomplete } from "@mui/material";
+import { Clear as ClearIcon } from "@mui/icons-material";
 
-interface selectProps {
+interface SelectComponentProps {
   label: string;
   handleSelect: (value: any) => void;
   options: any[];
   value: any;
   onClear?: () => void;
   disabled?: boolean;
-  error?: boolean,
-  helperText?: string,
+  error?: boolean;
+  helperText?: string;
 }
 
-export const SelectComponent = (props: selectProps) => {
+export const SelectComponent = (props: SelectComponentProps) => {
   const {
     label,
     handleSelect,
@@ -24,11 +25,16 @@ export const SelectComponent = (props: selectProps) => {
     helperText,
   } = props;
 
+  const handleChange = (event: React.SyntheticEvent, newValue: any) => {
+    handleSelect(newValue);
+  };
 
-  const onChange = (event: SelectChangeEvent) => {
-    let objSelected: any = event.target.value;
-    handleSelect(objSelected);
-  }
+  const handleClear = () => {
+    if (onClear) {
+      onClear();
+    }
+  };
+
   return (
     <>
       <FormControl
@@ -42,46 +48,49 @@ export const SelectComponent = (props: selectProps) => {
             borderColor: error ? 'red' : 'black',
           },
         }}
-        size="small">
-        <InputLabel id="select" >{label}</InputLabel>
-        <Select
-          labelId="select"
-          id="select"
-          value={value}
-          label="select"
-          onChange={onChange}
-          sx={{ borderRadius: 2 }}
-          componentsProps={{}}
-          slotProps={{}}
+        size="small"
+      >
+        <InputLabel id="select">{label}</InputLabel>
+        <Autocomplete
+          value={options.find(option => option.id === value) || null}
+          onChange={(event, newValue) => handleChange(event, newValue ? newValue.id : null)}
+          disableClearable
+          options={options}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={label}
+              variant="outlined"
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {onClear && value && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleClear}
+                          color="secondary"
+                        >
+                          <ClearIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    )}
+                    {params.InputProps.endAdornment}
+                  </>
+                ),
+              }}
+              size="small"
+            />
+          )}
           disabled={disabled}
-          endAdornment={
-            (
-              onClear && (value != "") && <InputAdornment position="end">
-                <IconButton
-                  onClick={onClear}
-                  color="secondary"
-                >
-                  <ClearIcon />
-                </IconButton>
-              </InputAdornment>
-            )
-          }
-          MenuProps={{
-            style: {
-              zIndex: 9999
-            }
-          }}
-        >
-          {
-            options.map((value: any) => <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>)
-          }
-        </Select>
+        />
       </FormControl>
-      {
-        error && (
-          <Typography style={{ color: 'red', fontSize: '0.8rem', padding: '2px' }} >{helperText}</Typography>
-        )
-      }
+      {error && (
+        <Typography style={{ color: 'red', fontSize: '0.8rem', padding: '2px' }}>
+          {helperText}
+        </Typography>
+      )}
     </>
-  )
+  );
 }

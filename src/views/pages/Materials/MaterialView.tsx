@@ -51,6 +51,7 @@ export const MaterialView = () => {
                     open={openDialog}
                     handleClose={() => handleDialog(false)}
                     item={itemEdit}
+                    type_material_select_base="Almacen"
                 />
             }
             {

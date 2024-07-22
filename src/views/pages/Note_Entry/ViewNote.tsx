@@ -1,4 +1,5 @@
 import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, Typography, Divider, DialogActions, Button } from "@mui/material";
+
 interface ViewProps {
     open: boolean;
     handleClose: () => void;
@@ -7,6 +8,7 @@ interface ViewProps {
 
 export const ViewNote = (props: ViewProps) => {
     const { open, handleClose, item } = props;
+
     const getTypeTextAndColor = (typeId: number) => {
         switch (typeId) {
             case 1:
@@ -22,11 +24,13 @@ export const ViewNote = (props: ViewProps) => {
 
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-            <DialogTitle sx={{ textAlign: 'center' }}>Visualizar Nota de Entrada</DialogTitle>
-            <DialogContent sx={{ pb: 4 }}>
+            <DialogTitle sx={{ textAlign: 'center', backgroundColor: '#E2F6F0', color: '#333', padding: '16px' }}>
+                <Typography variant="h6">Visualizar Nota de Entrada</Typography>
+            </DialogTitle>
+            <DialogContent sx={{ padding: '24px' }}>
                 {item && (
                     <div>
-                        <Table size="small">
+                        <Table size="small" sx={{ marginBottom: 2 }}>
                             <TableBody>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Número de Nota:</TableCell>
@@ -37,8 +41,8 @@ export const ViewNote = (props: ViewProps) => {
                                     <TableCell>{item.invoice_number}</TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Nombre del provedor:</TableCell>
-                                    <TableCell>{item.supplier['name']}</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Nombre del proveedor:</TableCell>
+                                    <TableCell>{item.supplier?.name}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Fecha de Ingreso:</TableCell>
@@ -50,18 +54,21 @@ export const ViewNote = (props: ViewProps) => {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Tipo de Nota de Entrada:</TableCell>
-                                    <TableCell>{getTypeTextAndColor(item.type_id).text}</TableCell>
+                                    <TableCell>
+                                        <Typography variant="body1" sx={{ color: getTypeTextAndColor(item.type_id).color }}>
+                                            {getTypeTextAndColor(item.type_id).text}
+                                        </Typography>
+                                    </TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
 
-                        <Divider sx={{ my: 2, borderBottom: '2px solid #000000' }} />
+                        <Divider sx={{ my: 2, borderBottom: '2px solid #E2F6F0' }} />
 
-                        <Typography variant="h6" gutterBottom>Visualizar Materiales</Typography>
-                        <Table size="small" sx={{ border: '1px solid #e0e0e0', borderRadius: '5px', overflow: 'hidden' }}>
-                            <TableHead sx={{ background: '#E2F6F0' }}>
+                        <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>Visualizar Materiales</Typography>
+                        <Table size="small" sx={{ border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'hidden' }}>
+                            <TableHead sx={{ backgroundColor: '#E2F6F0' }}>
                                 <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>ID</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Código</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Descripción</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Unidad</TableCell>
@@ -71,11 +78,10 @@ export const ViewNote = (props: ViewProps) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {item.materials.map((material:any, index:any) => (
+                                {item.materials.map((material: any, index: number) => (
                                     <TableRow key={index}>
-                                        <TableCell>{material.id}</TableCell>
                                         <TableCell>{material.code_material}</TableCell>
-                                        <TableCell>{material.description}</TableCell>
+                                        <TableCell>{material.pivot?.name_material}</TableCell>
                                         <TableCell>{material.unit_material}</TableCell>
                                         <TableCell>{material.pivot?.amount_entries}</TableCell>
                                         <TableCell>{material.pivot?.cost_unit}</TableCell>
@@ -87,8 +93,8 @@ export const ViewNote = (props: ViewProps) => {
                     </div>
                 )}
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose}>CERRAR</Button>
+            <DialogActions sx={{ padding: '16px' }}>
+                <Button onClick={handleClose} variant="outlined" color="primary">Cerrar</Button>
             </DialogActions>
         </Dialog>
     );
