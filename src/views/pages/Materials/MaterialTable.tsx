@@ -31,6 +31,8 @@ export const MaterialTable = (props: tableProps) => {
         getMaterial(0, limit, search).then((total) => setTotal(total));
     }
 
+    const filteredMaterils = materials?.filter((material: MaterialModel) => material.type === 'Almacen' || material.type === 'Fondo de Avance') || [];
+
     return (
         <Stack sx={{ paddingRight: '10px' }}>
 
@@ -54,7 +56,7 @@ export const MaterialTable = (props: tableProps) => {
                     </TableHead>
                     <TableBody>
                         {
-                            materials == null ? <SkeletonComponent quantity={4} /> : materials.map((material: MaterialModel, index: number) => {
+                            materials == null ? <SkeletonComponent quantity={4} /> : filteredMaterils.map((material: MaterialModel, index: number) => {
                                 //console.log(material)
                                 return (
                                     <React.Fragment key={index}>

@@ -107,7 +107,8 @@ export const CreateNote = () => {
     }, []);
 
     const availableMaterials = materials.filter((material: MaterialModel) => !selectedMaterials.some(selected => selected.id === material.id));
-
+    
+    console.log(availableMaterials);
     const isMaterialSelectDisabled = typeSelect === 0 || supplierSelect === 0;
 
     const [isMaterialsOpen, setIsMaterialsOpen] = useState(true); // Estado para controlar si la lista de materiales está abierta
@@ -120,7 +121,7 @@ export const CreateNote = () => {
         <>
             <Paper sx={{ margin: '10px 0px', padding: '10px', borderRadius: '10px', backgroundColor: '#d3f4eb' }}>
                 <Typography variant="h6" style={{ textAlign: 'center', fontSize: '1rem' }}>Nueva Nota de Entrada</Typography>
-                <Grow in={true} style={{ transformOrigin: '0 0 0' }} {...({ timeout: 2300 })}>
+                <Grow in={true}>
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={5}>

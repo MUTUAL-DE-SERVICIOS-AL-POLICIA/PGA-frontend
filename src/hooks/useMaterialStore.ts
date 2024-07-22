@@ -23,6 +23,17 @@ export const useMaterialStore = () => {
         return data.total;
     }
 
+    const getMaterial_petty_cash = async (page: number, limit: number, search: string) => {
+
+        let filter: any = { params: { page: page } };
+        if (limit != -1) filter.params.limit = limit;
+        if (search !== '') filter.params.search = search;
+        const { data } = await api.get('/auth/materialslistpettycash', filter);
+        dispatch(setMaterial({ materials: data.materials }))
+        //console.log(data);
+        return data.total;
+    }
+
     const postMaterial = async (body: Object) => {
         //console.log(body);
         try {
@@ -101,6 +112,7 @@ export const useMaterialStore = () => {
         getMaterial,
         putState,
         deleteMaterial,
-        viewMaterial
+        viewMaterial,
+        getMaterial_petty_cash
     }
 }
