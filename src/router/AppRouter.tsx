@@ -14,6 +14,7 @@ import { MaterialView } from '../views/pages/Materials';
 import { Dashboard } from '../views/pages/Dashboard';
 import { CreateNote } from '../views/pages/Note_Entry/CreateNote';
 import { NoteEntryView } from '../views/pages/Note_Entry';
+import { NoteRequestView } from '../views/pages/Note_Request';
 
 export const AppRouter = () => {
 
@@ -34,6 +35,7 @@ export const AppRouter = () => {
                     <Route path='/materialsView' element={<MaterialView />} />
                     <Route path='/entryView' element={<NoteEntryView />} />
                     <Route path='/createNote' element={<CreateNote />} />
+                    <Route path='/requestView' element={<NoteRequestView />}/>
 
                     <Route path='/*' element={<Navigate to={"/dashboardView"} />} />
                 </Routes>

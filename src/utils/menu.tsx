@@ -1,4 +1,4 @@
-import { Home, Bento, Group, Checklist, NoteAdd } from "@mui/icons-material"
+import { Home, Bento, Group, Checklist, NoteAdd, NoteAlt } from "@mui/icons-material"
 
 export const menu = () => {
     return [
@@ -29,6 +29,12 @@ export const menu = () => {
             path: "/entryView",
             title: "Entradas",
             icon: <NoteAdd />,
+            //permission: "show-rates"
+        },
+        {
+            path: "/requestView",
+            title: "Solicitudes",
+            icon: <NoteAlt />,
             //permission: "show-rates"
         },
         // {

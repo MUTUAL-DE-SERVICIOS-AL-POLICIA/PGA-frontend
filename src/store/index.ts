@@ -5,4 +5,5 @@ export * from './Group/groupSlice';
 export * from './Material/materialSlice';
 export * from './NoteEntry/note_entrySlice';
 export * from './Type/typeSlice';
+export * from './NoteRequest/note_requestSlice';
 export * from './store';

@@ -45,7 +45,7 @@ export const MaterialTable = (props: tableProps) => {
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>
                         <TableRow sx={{ background: '#E2F6F0' }}>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Code Material</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Cod. Material</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Descripción</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Unidad</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Stock</TableCell>
