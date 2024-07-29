@@ -7,5 +7,6 @@ export interface NoteRequestModel {
     observation:string;
     user_register: number;
     request_date: string;
+    employee: string;
     materials: MaterialModel[];
 }

@@ -8,7 +8,7 @@ interface ViewProps {
 
 export const ViewNote = (props: ViewProps) => {
     const { open, handleClose, item } = props;
-
+    console.log(item);
     const getTypeTextAndColor = (typeId: number) => {
         switch (typeId) {
             case 1:
@@ -42,7 +42,7 @@ export const ViewNote = (props: ViewProps) => {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Nombre del proveedor:</TableCell>
-                                    <TableCell>{item.supplier?.name}</TableCell>
+                                    <TableCell>{item.name_supplier}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Fecha de Ingreso:</TableCell>

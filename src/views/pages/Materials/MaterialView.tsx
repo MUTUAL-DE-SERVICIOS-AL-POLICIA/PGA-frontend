@@ -7,11 +7,14 @@ import { MaterialModel } from "../../../models"
 import { CreateMaterials } from "./createMaterial"
 import { MaterialsDetail } from "./MaterialDetail"
 import { useMaterialStore } from "../../../hooks"
+import { MaterialEdit } from "./MaterialEdit"
 
 export const MaterialView = () => {
 
     const [openDialog, setopenDialog] = useState(false);
     const [openDialogView, setOpenDialogView] = useState(false);
+    const [openDialogEdit, setOpenDialogEdit] = useState(false);
+    const [itemEdit2, setItemEdit2] = useState<MaterialModel | null>(null);
     const [itemEdit, setItemEdit] = useState<MaterialModel | null>(null);
     const { viewMaterial } = useMaterialStore();
     const [itemView, setItemView] = useState<MaterialModel | null>(null);
@@ -25,6 +28,10 @@ export const MaterialView = () => {
 
     const handleDialogView = useCallback((value: boolean) => {
         setOpenDialogView(value);
+    }, [])
+
+    const handleDialogEdit = useCallback((value: boolean) => {
+        setOpenDialogEdit(value);
     }, [])
 
     return (
@@ -44,6 +51,10 @@ export const MaterialView = () => {
                     setItemView(v)
                     handleDialogView(true)
                 }}
+                itemEdit={(v) => {
+                    setItemEdit2(v)
+                    handleDialogEdit(true)
+                }}
             />
             {
                 openDialog &&
@@ -60,6 +71,14 @@ export const MaterialView = () => {
                     open={openDialogView}
                     handleClose={() => handleDialogView(false)}
                     item={itemView}
+                />
+            }
+            {
+                openDialogEdit &&
+                <MaterialEdit
+                    open={openDialogEdit}
+                    handleClose={() => handleDialogEdit(false)}
+                    item={itemEdit2}
                 />
             }
 

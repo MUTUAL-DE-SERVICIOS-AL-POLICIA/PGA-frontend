@@ -72,6 +72,22 @@ export const useMaterialStore = () => {
 
     }
 
+    const patchMaterial = async (id: number, body: object) => {
+        try {
+            await api.patch(`/auth/updateName/${id}/`, body);
+            dispatch(refreshMaterial());
+            Swal.fire('Actualizado', '', 'success');
+            return true;
+        } catch (error: any) {
+            if (error.response) {
+                if (error.response.status === 400) {
+                    const message = error.response.data.message;
+                    Swal.fire('No permite', message, 'warning');
+                }
+            }
+        }
+    }
+
     const deleteMaterial = async (material: MaterialModel) => {
         const { dialogDelete } = DialogComponent();
         const state = await dialogDelete(`Se eliminara el material ${material.description}`);
@@ -113,6 +129,7 @@ export const useMaterialStore = () => {
         putState,
         deleteMaterial,
         viewMaterial,
-        getMaterial_petty_cash
+        getMaterial_petty_cash,
+        patchMaterial,
     }
 }

@@ -3,17 +3,18 @@ import { ComponentSearch, ComponentTablePagination, SkeletonComponent } from "..
 import { useMaterialStore } from "../../../hooks";
 import React, { useEffect, useState } from "react";
 import { MaterialModel } from "../../../models";
-import { DeleteOutline, CalendarMonth } from "@mui/icons-material";
+import { DeleteOutline, CalendarMonth, Edit } from "@mui/icons-material";
 
 interface tableProps {
     limitInit?: number;
     items?: any[];
     itemView?: (note_entry: MaterialModel) => void;
+    itemEdit?: (note_entry: MaterialModel) => void;
 }
 
 export const MaterialTable = (props: tableProps) => {
 
-    const { limitInit = 10, items, itemView } = props;
+    const { limitInit = 10, items, itemView, itemEdit } = props;
 
     const { materials, flag, getMaterial, putState, deleteMaterial, viewMaterial } = useMaterialStore();
 
@@ -78,6 +79,9 @@ export const MaterialTable = (props: tableProps) => {
                                             <TableCell>
                                                 <IconButton sx={{ p: 2 }} onClick={() => itemView!(material)}>
                                                     <CalendarMonth color="success" />
+                                                </IconButton>
+                                                <IconButton sx={{ p: 2 }} onClick={() => itemEdit!(material)}>
+                                                    <Edit color="info" />
                                                 </IconButton>
                                                 <IconButton sx={{ p: 2 }} onClick={() => deleteMaterial(material)}>
                                                     <DeleteOutline color="error" />
