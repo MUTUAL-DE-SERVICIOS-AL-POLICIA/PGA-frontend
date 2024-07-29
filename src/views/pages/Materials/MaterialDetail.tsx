@@ -25,7 +25,7 @@ export const MaterialsDetail = (props: ViewProps) => {
         }
     }, [item]);
 
-    const totalAmount = materialDetails ? materialDetails.entries.reduce((sum: number, entry: any) => sum + entry.amount_entries, 0) : 0;
+    const totalAmount = materialDetails ? materialDetails.entries.reduce((sum: number, entry: any) => sum + entry.request, 0) : 0;
 
     return (
         <Dialog
@@ -49,9 +49,10 @@ export const MaterialsDetail = (props: ViewProps) => {
                             <Table>
                                 <TableHead sx={{ backgroundColor: '#E2F6F0' }}>
                                     <TableRow>
-                                        <TableCell><strong>Número de Nota</strong></TableCell>
+                                        <TableCell><strong>Nro de Nota</strong></TableCell>
                                         <TableCell><strong>Fecha</strong></TableCell>
-                                        <TableCell><strong>Cantidad</strong></TableCell>
+                                        <TableCell><strong>Cantidad de Stock</strong></TableCell>
+                                        <TableCell><strong>Cantidad de Ingreso</strong></TableCell>
                                         <TableCell><strong>Costo Unitario</strong></TableCell>
                                         <TableCell><strong>Costo Total</strong></TableCell>
                                     </TableRow>
@@ -61,6 +62,7 @@ export const MaterialsDetail = (props: ViewProps) => {
                                         <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' } }}>
                                             <TableCell>{entry.note_number}</TableCell>
                                             <TableCell>{entry.date}</TableCell>
+                                            <TableCell>{entry.request}</TableCell>
                                             <TableCell>{entry.amount_entries}</TableCell>
                                             <TableCell>{entry.cost_unit}</TableCell>
                                             <TableCell>{entry.cost_total}</TableCell>

@@ -12,8 +12,13 @@ export const useNoteRequestStore = () => {
         if (limit != -1) filter.params.limit = limit;
         if (search !== '') filter.params.search = search;
         const { data } = await api.get('/auth/noteRequest/', filter);
-        dispatch(setNoteRequest({note_requests: data.data}));
+        dispatch(setNoteRequest({ note_requests: data.data }));
         return data.total;
+    }
+
+    const postNoteRequest = async (body: object) => {
+        console.log(body);
+        await api.post('/auth/delivered_material/', body);
     }
 
 
@@ -22,6 +27,7 @@ export const useNoteRequestStore = () => {
         flag,
 
         getNoteRequest,
+        postNoteRequest,
     }
 
 }

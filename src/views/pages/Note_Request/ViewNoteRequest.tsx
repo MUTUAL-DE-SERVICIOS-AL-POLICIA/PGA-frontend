@@ -1,5 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, Typography, Divider, DialogActions, Button, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
+import { useNoteRequestStore } from "../../../hooks/useNoteRequestStore";
 
 interface ViewProps {
     open: boolean;
@@ -10,6 +11,8 @@ interface ViewProps {
 export const ViewNoteRequest = (props: ViewProps) => {
     const { open, handleClose, item } = props;
     const [materials, setMaterials] = useState(item?.materials || []);
+    const { postNoteRequest } = useNoteRequestStore();
+
     useEffect(() => {
         if (item) {
             setMaterials(item.materials.map((material: any) => ({
@@ -34,7 +37,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
         setMaterials(newMaterials);
     };
 
-    const handleSubmit = (status: string) => {
+    const handleSubmit = async (status: string) => {
         const dataToSend = {
             noteRequestId: item.id_note,
             materials: materials.map((material: any) => ({
@@ -43,7 +46,9 @@ export const ViewNoteRequest = (props: ViewProps) => {
             })),
             status
         };
-        console.log('Sending data:', dataToSend);
+
+        await postNoteRequest(dataToSend);
+        //console.log('Sending data:', dataToSend);
     };
 
     return (
