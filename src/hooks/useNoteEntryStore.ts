@@ -16,15 +16,19 @@ export const useNoteEntryStore = () => {
         dispatch(setShoppingCart({ shoppingCart: items }))
     }
 
-    const getNoteEntry = async (page: number, limit: number, search: string) => {
+    const getNoteEntry = async (page: number, limit: number, search: string, startDate?: string, endDate?: string) => {
         let filter: any = { params: { page: page } };
         if (limit != -1) filter.params.limit = limit;
         if (search !== '') filter.params.search = search;
-        const { data } = await api.get('/auth/notes/', filter);
-        dispatch(setNoteEntry({ note_entries: data.data }))
-        return data.total;
+        if (startDate !== '') filter.params.start_date = startDate;
+        if (endDate !== '') filter.params.end_date = endDate;
 
-    }
+        console.log(endDate);
+
+        const { data } = await api.get('/auth/notes/', filter);
+        dispatch(setNoteEntry({ note_entries: data.data }));
+        return data.total;
+    };
 
 
     const postNoteEntry = async (body: object) => {

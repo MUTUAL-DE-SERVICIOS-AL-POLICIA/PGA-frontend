@@ -1,24 +1,38 @@
 import { useDispatch, useSelector } from "react-redux";
 import { coffeApi } from "../services"
-import { setNoteRequest } from "../store";
+import { refreshNoteRequest, setNoteRequest } from "../store";
+import Swal from "sweetalert2";
 
 const api = coffeApi;
 export const useNoteRequestStore = () => {
     const { note_requests = [], flag } = useSelector((state: any) => state.note_requests);
     const dispatch = useDispatch();
 
-    const getNoteRequest = async (page: number, limit: number, search: string) => {
-        let filter: any = { params: { page: page } }
-        if (limit != -1) filter.params.limit = limit;
+    const getNoteRequest = async (page: number, limit: number, search: string, state: string) => {
+        let filter: any = { params: { page: page, limit: limit } };
         if (search !== '') filter.params.search = search;
+        if (state !== '') filter.params.state = state;
+        // console.log(filter);
         const { data } = await api.get('/auth/noteRequest/', filter);
         dispatch(setNoteRequest({ note_requests: data.data }));
         return data.total;
-    }
+    };
 
     const postNoteRequest = async (body: object) => {
-        console.log(body);
-        await api.post('/auth/delivered_material/', body);
+        try {
+            const response = await api.post('/auth/delivered_material/', body);
+            if (response.data.status) {
+                dispatch(refreshNoteRequest());
+                Swal.fire('Estado de la Solicitud', response.data.message, 'success');
+            } else {
+                Swal.fire('Error', response.data.message, 'error');
+            }
+            return true;
+        } catch (error) {
+            console.error('Error al procesar la solicitud:', error);
+            Swal.fire('Error', 'Ocurrió un error al procesar la solicitud', 'error');
+            return false;
+        }
     }
 
 

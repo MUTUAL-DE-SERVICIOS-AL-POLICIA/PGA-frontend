@@ -1,6 +1,8 @@
-import { Dialog, DialogTitle, DialogContent, DialogContentText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, DialogActions, Button, IconButton } from "@mui/material";
 import { useMaterialStore } from "../../../hooks";
 import { useEffect, useState } from "react";
+import { Description } from "@mui/icons-material";
+import { NoteEntryModel } from "../../../models";
 
 interface ViewProps {
     open: boolean;
@@ -25,7 +27,9 @@ export const MaterialsDetail = (props: ViewProps) => {
         }
     }, [item]);
 
-    const totalAmount = materialDetails ? materialDetails.entries.reduce((sum: number, entry: any) => sum + entry.request, 0) : 0;
+    const itemView = async (note: NoteEntryModel) => {
+        console.log(note);
+    }
 
     return (
         <Dialog
@@ -55,6 +59,7 @@ export const MaterialsDetail = (props: ViewProps) => {
                                         <TableCell><strong>Cantidad de Ingreso</strong></TableCell>
                                         <TableCell><strong>Costo Unitario</strong></TableCell>
                                         <TableCell><strong>Costo Total</strong></TableCell>
+                                        {/* <TableCell><strong>Accion</strong></TableCell> */}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -66,11 +71,14 @@ export const MaterialsDetail = (props: ViewProps) => {
                                             <TableCell>{entry.amount_entries}</TableCell>
                                             <TableCell>{entry.cost_unit}</TableCell>
                                             <TableCell>{entry.cost_total}</TableCell>
+                                            {/* <IconButton sx={{ p: 2 }} onClick={() => itemView(entry)}>
+                                                <Description color="success" />
+                                            </IconButton> */}
                                         </TableRow>
                                     ))}
                                     <TableRow sx={{ backgroundColor: '#f0f0f0', fontWeight: 'bold' }}>
                                         <TableCell colSpan={2} align="right">Total Cantidad</TableCell>
-                                        <TableCell>{totalAmount}</TableCell>
+                                        <TableCell>{item.stock}</TableCell>
                                         <TableCell colSpan={2}></TableCell>
                                     </TableRow>
                                 </TableBody>

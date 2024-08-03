@@ -1,4 +1,4 @@
-import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, TextField } from "@mui/material";
 import { useNoteEntryStore } from "../../../hooks";
 import React, { useEffect, useState } from "react";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
@@ -24,7 +24,6 @@ const getTypeTextAndColor = (typeId: number) => {
 };
 
 export const TableNotesEntry = (props: tableProps) => {
-
     const { limitInit = 5, itemView } = props;
 
     const { note_entries, flag, getNoteEntry, deleteNoteEntry } = useNoteEntryStore();
@@ -32,14 +31,38 @@ export const TableNotesEntry = (props: tableProps) => {
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(limitInit);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     useEffect(() => {
-        getNoteEntry(page, limit, '').then((total) => setTotal(total))
-    }, [page, limit, flag]);
+        getNoteEntry(page, limit, '', startDate, endDate).then((total) => setTotal(total));
+    }, [page, limit, flag, startDate, endDate]);
 
     return (
         <Stack sx={{ paddingRight: '10px' }}>
             <Typography variant="h6" gutterBottom>Notas de Entrada</Typography>
+            <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+                <TextField
+                    label="Fecha Inicio"
+                    type="date"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    sx={{ width: 200 }} // Make input field longer
+                />
+                <TextField
+                    label="Fecha Limite"
+                    type="date"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    sx={{ width: 200 }} // Make input field longer
+                />
+            </Stack>
             <TableContainer>
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>
@@ -71,7 +94,7 @@ export const TableNotesEntry = (props: tableProps) => {
                                                 <IconButton sx={{ p: 2 }} onClick={() => itemView!(note_entry)}>
                                                     <Description color="success" />
                                                 </IconButton>
-                                                <IconButton sx={{ p: 2 }} onClick={()=> deleteNoteEntry(note_entry)}>
+                                                <IconButton sx={{ p: 2 }} onClick={() => deleteNoteEntry(note_entry)}>
                                                     <DeleteOutline color="error" />
                                                 </IconButton>
                                             </Stack>

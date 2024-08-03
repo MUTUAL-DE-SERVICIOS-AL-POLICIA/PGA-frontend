@@ -7,35 +7,33 @@ export const useAuthStore = () => {
     const { status, user } = useSelector((state: any) => state.auth);
     const dispatch = useDispatch();
 
-    const startlogin = async({ username, password }: { username: string, password: string }) =>{
+    const startlogin = async ({ username, password }: { username: string, password: string }) => {
         try {
-           //console.log('datos ingresados', {username, password});
-           const { data } = await coffeApi.post('/auth/login', { username, password });
-           //console.log('Response data:', data);
-           localStorage.setItem('token', data.token);
-           const user = data.user;
-           localStorage.setItem('id', data.id);
-           localStorage.setItem('user',JSON.stringify(user));
-           localStorage.setItem('rol',data.role);
-           dispatch(onLogin(user));
-           //console.log(status)
-           
+            const { data } = await coffeApi.post('/auth/login', { username, password });
+            localStorage.setItem('token', data.token);
+            const user = data.user;
+            localStorage.setItem('id', data.id);
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('rol', data.role);
+            dispatch(onLogin(user));
         } catch (error: any) {
             dispatch(onLogout());
-            const message = error.response.data.message;
-            Swal.fire('Error', message, 'error')
+            const message = error.response?.data?.message || 'Error desconocido';
+            Swal.fire('Error', message, 'error');
         }
     }
 
+
+
     const checkAuthToken = async () => {
         const token = localStorage.getItem('token');
-    
+
         if (token) {
-          const user = localStorage.getItem('user')
-          return dispatch(onLogin(user));
+            const user = localStorage.getItem('user')
+            return dispatch(onLogin(user));
         } else {
-          localStorage.clear();
-          dispatch(onLogout());
+            localStorage.clear();
+            dispatch(onLogout());
         }
     }
 
@@ -46,7 +44,7 @@ export const useAuthStore = () => {
 
 
 
-    
+
 
     return {
         status,
