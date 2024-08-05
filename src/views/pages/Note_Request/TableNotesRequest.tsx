@@ -13,7 +13,7 @@ interface TableProps {
 export const TableNotesRequest = (props: TableProps) => {
     const { limitInit = 5, itemView } = props;
     const { note_requests, flag, getNoteRequest } = useNoteRequestStore();
-    console.log(note_requests);
+    //console.log(note_requests);
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(limitInit);

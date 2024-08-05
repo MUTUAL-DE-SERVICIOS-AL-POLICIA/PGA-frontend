@@ -28,7 +28,8 @@ export const AuthPage = () => {
     const loginSubmit = async (event: any) => {
         event.preventDefault();
         setFormSubmitted(true);
-        if (!isFormValid) return;
+        if (!isFormValid)
+            return;
         setLoading(true);
         await startlogin({ username: username, password: password });
         setLoading(false);
@@ -82,7 +83,7 @@ export const AuthPage = () => {
                         color="primary"
                         fullWidth
                         loading={loading}
-                        
+
                         margin="15px 0 0 0"
                         height="50px"
                         sx={{ marginTop: '15px', height: '50px' }}

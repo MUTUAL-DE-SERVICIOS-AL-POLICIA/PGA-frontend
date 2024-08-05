@@ -35,24 +35,38 @@ export const useMaterialStore = () => {
     }
 
     const postMaterial = async (body: Object) => {
-        //console.log(body);
         try {
+            // Realiza la solicitud POST al endpoint '/auth/materials'
             await api.post('/auth/materials', body);
+
+            // Actualiza el estado de los materiales (si es necesario)
             dispatch(refreshMaterial());
-            Swal.fire('Material Creado Correctamente !!! ', '', 'success');
+
+            // Muestra un mensaje de éxito
+            Swal.fire('Material Creado Correctamente !!!', '', 'success');
             return true;
         } catch (error: any) {
-            if (error.response && error.response.status == 403) {
-                const message = error.response;
-                Swal.fire('Acceso Denegado', message, 'warning')
+            // Manejo de errores
+            if (error.response) {
+                const { status, data } = error.response;
+
+                if (status === 403) {
+                    // Mensaje de acceso denegado
+                    Swal.fire('Acceso Denegado', data.message || 'No tienes permiso para realizar esta acción.', 'warning');
+                } else {
+                    // Mensaje de error general
+                    const message = data.error || 'Ocurrió un error inesperado.';
+                    Swal.fire('Error', message, 'error');
+                }
             } else {
-                const message = error.response.data.error
-                Swal.fire('Error', message, 'error');
+                // Manejo de errores no relacionados con la respuesta HTTP (por ejemplo, errores de red)
+                Swal.fire('Error', 'Ocurrió un error inesperado. Por favor, verifica tu conexión a internet.', 'error');
             }
 
             return false;
         }
-    }
+    };
+
 
     const putState = async (id: number, stateup: string) => {
         let data: { state?: string } = { state: stateup }

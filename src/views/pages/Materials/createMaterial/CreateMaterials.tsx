@@ -228,7 +228,7 @@ export const CreateMaterials = (props: createProps) => {
                             }
                         </Grid>
                     </DialogContent>
-                    <DialogActions>
+                    <DialogActions> 
                         {
                             loading ?
                                 <CircularProgress color="success" size={30} /> :

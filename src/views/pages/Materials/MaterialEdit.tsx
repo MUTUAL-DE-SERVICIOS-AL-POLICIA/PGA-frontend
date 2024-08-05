@@ -39,8 +39,6 @@ export const MaterialEdit = (props: ViewProps) => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         await patchMaterial(item.id, formData)
-
-        console.log('Datos actualizados:', formData);
         handleClose();
     };
 

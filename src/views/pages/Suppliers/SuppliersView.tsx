@@ -19,12 +19,6 @@ export const SupplierView = () => {
         <>
             <Stack
                 direction="row"
-                justifyContent="flex-start"
-            >
-                <h1>Lista de proveedores</h1>
-            </Stack>
-            <Stack
-                direction="row"
                 justifyContent="flex-end"
             >
                 <ComponentButton

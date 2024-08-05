@@ -17,13 +17,13 @@ export const useAuthStore = () => {
             localStorage.setItem('rol', data.role);
             dispatch(onLogin(user));
         } catch (error: any) {
-            console.error('Login Error:', error.response ? error.response.data : error.message); 
-            console.log(error);
+            console.error('Login Error:', error.response ? error.response.data : error.message);
             dispatch(onLogout());
             const message = error.response?.data?.message || 'Error desconocido';
             Swal.fire('Error', message, 'error');
         }
     };
+
 
     const checkAuthToken = async () => {
         const token = localStorage.getItem('token');

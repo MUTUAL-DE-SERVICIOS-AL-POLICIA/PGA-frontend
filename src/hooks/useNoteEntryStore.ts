@@ -22,9 +22,6 @@ export const useNoteEntryStore = () => {
         if (search !== '') filter.params.search = search;
         if (startDate !== '') filter.params.start_date = startDate;
         if (endDate !== '') filter.params.end_date = endDate;
-
-        console.log(endDate);
-
         const { data } = await api.get('/auth/notes/', filter);
         dispatch(setNoteEntry({ note_entries: data.data }));
         return data.total;
@@ -53,7 +50,7 @@ export const useNoteEntryStore = () => {
     }
 
     const deleteNoteEntry = async (note_entry: NoteEntryModel) => {
-        console.log(note_entry);
+        //console.log(note_entry);
         const { dialogDelete } = DialogComponent();
         const state = await dialogDelete(`Se eliminara la nota de entrada ${note_entry.invoice_number}`);
         if (state) {

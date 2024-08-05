@@ -29,7 +29,7 @@ export const useClassifierStore = () => {
 
     const postCreateClassifier = async (body: object) => {
         try {
-            console.log(body);
+            //console.log(body);
             await api.post('/auth/classifiers/', body);
             dispatch(refreshClassifier());
             Swal.fire('Clasificador creado correctamente !', '', 'success');

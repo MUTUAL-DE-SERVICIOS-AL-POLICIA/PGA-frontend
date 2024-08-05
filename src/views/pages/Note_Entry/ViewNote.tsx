@@ -8,7 +8,6 @@ interface ViewProps {
 
 export const ViewNote = (props: ViewProps) => {
     const { open, handleClose, item } = props;
-    console.log(item);
     const getTypeTextAndColor = (typeId: number) => {
         switch (typeId) {
             case 1:

@@ -41,7 +41,6 @@ export const MaterialTable = (props: tableProps) => {
                 title="Buscar Material"
                 onSearch={handleSearch}
             />
-            <Typography>Lista de Materiales y Stock en Almacenes</Typography>
             <TableContainer>
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>

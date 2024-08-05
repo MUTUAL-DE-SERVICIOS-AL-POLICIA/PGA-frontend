@@ -43,7 +43,6 @@ export const ClassifierView = () => {
                     startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>} /> */}
                 </Stack>
             </Box>
-            <Typography variant="h4">Lista de Clasificadores</Typography>
             <ClassifierTable
                 itemEdit={(v) => {
                     setItemEdit(v)

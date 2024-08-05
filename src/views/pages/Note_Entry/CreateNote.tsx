@@ -108,7 +108,7 @@ export const CreateNote = () => {
 
     const availableMaterials = materials.filter((material: MaterialModel) => !selectedMaterials.some(selected => selected.id === material.id));
     
-    console.log(availableMaterials);
+    
     const isMaterialSelectDisabled = typeSelect === 0 || supplierSelect === 0;
 
     const [isMaterialsOpen, setIsMaterialsOpen] = useState(true); // Estado para controlar si la lista de materiales está abierta
