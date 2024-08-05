@@ -17,41 +17,35 @@ export const useAuthStore = () => {
             localStorage.setItem('rol', data.role);
             dispatch(onLogin(user));
         } catch (error: any) {
+            console.error('Login Error:', error.response ? error.response.data : error.message); 
+            console.log(error);
             dispatch(onLogout());
             const message = error.response?.data?.message || 'Error desconocido';
             Swal.fire('Error', message, 'error');
         }
-    }
-
-
+    };
 
     const checkAuthToken = async () => {
         const token = localStorage.getItem('token');
-
         if (token) {
-            const user = localStorage.getItem('user')
+            const user = localStorage.getItem('user');
             return dispatch(onLogin(user));
         } else {
             localStorage.clear();
             dispatch(onLogout());
         }
-    }
+    };
 
     const startLogout = () => {
         localStorage.clear();
         dispatch(onLogout());
-    }
-
-
-
-
+    };
 
     return {
         status,
         user,
-
         startlogin,
         checkAuthToken,
         startLogout
-    }
-}
+    };
+};

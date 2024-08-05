@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { Grid, Paper, Typography, TextField, Button, IconButton, CircularProgress } from "@mui/material";
+import { Grid, Paper, Typography, IconButton, CircularProgress } from "@mui/material";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useAuthStore, useForm } from "../../hooks";
+
+
 import logo from '../../assets/images/muserpol-logo-without-text.png';
+import { ComponentButton, ComponentInput } from "../../components";
 
 const loginFormFields = {
     username: '',
@@ -10,8 +13,8 @@ const loginFormFields = {
 };
 
 const formValidations = {
-    username: [(value: any) => value.trim().length >= 1, 'Debe ingresar su cuenta'],
-    password: [(value: any) => value.length >= 6, 'La contraseña debe tener al menos 6 caracteres'],
+    username: [(value: any) => value.length >= 1, 'Debe ingresar su cuenta'],
+    password: [(value: any) => value.length >= 4, 'La contraseña debe tener al menos 6 caracteres'],
 };
 
 export const AuthPage = () => {
@@ -27,7 +30,7 @@ export const AuthPage = () => {
         setFormSubmitted(true);
         if (!isFormValid) return;
         setLoading(true);
-        await startlogin({ username, password });
+        await startlogin({ username: username, password: password });
         setLoading(false);
     };
 
@@ -43,7 +46,7 @@ export const AuthPage = () => {
                     PLATAFORMA DE CONTROL Y SEGUIMIENTO EN ALMACENES
                 </Typography>
                 <form onSubmit={loginSubmit} style={{ width: '100%', maxWidth: '400px' }}>
-                    <TextField
+                    <ComponentInput
                         type="text"
                         label="Cuenta"
                         name="username"
@@ -52,11 +55,10 @@ export const AuthPage = () => {
                         error={!!usernameValid && formSubmitted}
                         helperText={formSubmitted ? usernameValid : ''}
                         fullWidth
-                        sx={{ marginBottom: '15px' }}
-                        variant="outlined"
                         size="small"
+                        customSx={{ marginBottom: '15px' }}
                     />
-                    <TextField
+                    <ComponentInput
                         type={showPassword ? 'text' : 'password'}
                         label="Contraseña"
                         name="password"
@@ -65,30 +67,28 @@ export const AuthPage = () => {
                         error={!!passwordValid && formSubmitted}
                         helperText={formSubmitted ? passwordValid : ''}
                         fullWidth
-                        sx={{ marginBottom: '15px' }}
-                        variant="outlined"
                         size="small"
-                        InputProps={{
-                            endAdornment: (
-                                <IconButton onClick={handleTogglePasswordVisibility} edge="end">
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            ),
-                        }}
+                        endAdornment={
+                            <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                        }
+                        customSx={{ marginBottom: '15px' }}
                     />
-                    <Button
+                    <ComponentButton
                         type="submit"
+                        text="INGRESAR"
                         variant="contained"
                         color="primary"
                         fullWidth
+                        loading={loading}
+                        
+                        margin="15px 0 0 0"
+                        height="50px"
                         sx={{ marginTop: '15px', height: '50px' }}
-                        disabled={!isFormValid || loading}
-                    >
-                        {loading ? <CircularProgress size={24} color="inherit" /> : 'INGRESAR'}
-                    </Button>
+                    />
                 </form>
             </Grid>
         </Grid>
     );
 };
-

@@ -7,22 +7,18 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
 
   useEffect(() => {
     createValidators();
-  }, [formState])
+  }, [formState]);
 
   useEffect(() => {
     setFormState({ ...initialForm });
-  }, [initialForm])
-
+  }, [initialForm]);
 
   const isFormValid = useMemo(() => {
     for (const formValue of Object.keys(formValidation)) {
       if (formValidation[formValue] !== null) return false;
     }
-
     return true;
-  }, [formValidation])
-
-
+  }, [formValidation]);
 
   const onInputChange = ({ target }: { target: any }, onlyfloat = false, onlyInteger = false) => {
     const { name, value } = target;
@@ -41,43 +37,44 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
         [name]: value
       });
     }
-  }
-
+  };
 
   const isSelectChange = (name: string, text: string) => {
     setFormState({
       ...formState,
       [name]: text
-    })
-  }
+    });
+  };
+
   const onFileChange = (name: string, file: File) => {
     setFormState({
       ...formState,
       [name]: file
-    })
-  }
+    });
+  };
 
   const onSwitchChange = (name: string, state: boolean) => {
     setFormState({
       ...formState,
       [name]: state
-    })
-  }
+    });
+  };
 
   const onArrayChange = (name: string, state: Array<any>) => {
     setFormState({
       ...formState,
       [name]: state
-    })
-  }
+    });
+  };
 
   const onValueChange = (name: string, state: any) => {
     setFormState({
       ...formState,
       [name]: state
-    })
-  }
-  const onListValuesChange = (names: string[], states: any[],) => {
+    });
+  };
+
+  const onListValuesChange = (names: string[], states: any[]) => {
     // Copia el estado actual en un nuevo objeto
     const updatedFormState = { ...formState };
 
@@ -88,13 +85,11 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
 
     // Establece el nuevo objeto actualizado como el estado
     setFormState(updatedFormState);
-  }
-
-
+  };
 
   const onResetForm = () => {
     setFormState(initialForm);
-  }
+  };
 
   const createValidators = () => {
     const formCheckedValues: any = {};
@@ -104,9 +99,8 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
     }
 
     setFormValidation(formCheckedValues);
-  }
-
-
+    //console.log('formCheckedValues:', formCheckedValues);
+  };
 
   return {
     ...formState,
@@ -120,8 +114,7 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
     onValueChange,
     onListValuesChange,
     onResetForm,
-
     ...formValidation,
     isFormValid
-  }
-}
+  };
+};

@@ -1,5 +1,5 @@
-import { TextField } from "@mui/material"
-import { memo } from "react"
+import { TextField } from "@mui/material";
+import { memo } from "react";
 
 export const ComponentInput = memo((
     {
@@ -17,7 +17,8 @@ export const ComponentInput = memo((
         customSx = {},
         size = 'Normal',
         width = '100%',
-        height = '50px'
+        height = '50px',
+        fullWidth = false
     }:
         {
             id?: string,
@@ -27,14 +28,15 @@ export const ComponentInput = memo((
             type: any,
             label: string,
             endAdornment?: any,
-            multiline?: boolean
+            multiline?: boolean,
             error?: boolean,
             helperText?: string,
             disabled?: boolean,
-            customSx?: object
+            customSx?: object,
             size?: any,
             width?: any,
-            height?: any
+            height?: any,
+            fullWidth?: boolean
         }) => {
     return (
         <TextField
@@ -51,6 +53,7 @@ export const ComponentInput = memo((
             style={{ width: width }}
             error={error}
             helperText={helperText}
+            fullWidth={fullWidth}
             InputProps={{
                 endAdornment,
                 style: {

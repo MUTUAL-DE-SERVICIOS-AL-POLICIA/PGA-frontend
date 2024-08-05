@@ -1,14 +1,35 @@
-import LoadingButton from '@mui/lab/LoadingButton'
-import { memo } from 'react'
+import LoadingButton from '@mui/lab/LoadingButton';
+import { memo } from 'react';
 
-export const ComponentButton = memo((
-    { type, text, onClick, startIcon, endIcon, disable, margin, height, loading = false, variant = "contained",
-    sx={fontWeight: 'bold',
-         display: 'flex',
-         margin: { margin },
-         height: { height }
-    }, color}
-    : { type?: any, text: string, onClick?: any, width?: any, startIcon?: any, margin?: any, height?: any, disable?: boolean, loading?: boolean, variant?: any, endIcon?: any, sx?: object, color?: any }) => {
+export const ComponentButton = memo(({
+    type,
+    text,
+    onClick,
+    startIcon,
+    endIcon,
+    disable,
+    margin,
+    height,
+    fullWidth = false,
+    loading = false,
+    variant = "contained",
+    sx = {},
+    color
+}: {
+    type?: any,
+    text: string,
+    onClick?: any,
+    startIcon?: any,
+    endIcon?: any,
+    disable?: boolean,
+    margin?: any,
+    height?: any,
+    fullWidth?: boolean,
+    loading?: boolean,
+    variant?: any,
+    sx?: object,
+    color?: any
+}) => {
     return (
         <LoadingButton
             loading={loading}
@@ -22,9 +43,16 @@ export const ComponentButton = memo((
             endIcon={endIcon}
             onClick={onClick}
             color={color}
-            sx={sx}
+            fullWidth={fullWidth}
+            sx={{
+                fontWeight: 'bold',
+                display: 'flex',
+                margin: margin,
+                height: height,
+                ...sx
+            }}
         >
             {text}
         </LoadingButton>
-    )
+    );
 });
