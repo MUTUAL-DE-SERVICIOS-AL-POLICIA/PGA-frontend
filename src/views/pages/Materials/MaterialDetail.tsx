@@ -46,8 +46,8 @@ export const MaterialsDetail = (props: ViewProps) => {
                 {materialDetails ? (
                     <>
                         <DialogContentText sx={{ marginBottom: 2 }}>
-                            <Typography variant="body1"><strong>ID del Material:</strong> {materialDetails.material_id}</Typography>
-                            <Typography variant="body1"><strong>Descripción del Material:</strong> {materialDetails.material_description}</Typography>
+                            <Typography variant="body1"><strong>ID del Material: </strong> {materialDetails.material_id}</Typography>
+                            <Typography variant="body1"><strong>Descripción del Material: </strong> {materialDetails.material_description}</Typography>
                         </DialogContentText>
                         <TableContainer sx={{ marginTop: 2, borderRadius: '8px', overflow: 'hidden', boxShadow: 1, backgroundColor: '#fff' }}>
                             <Table>
@@ -55,10 +55,10 @@ export const MaterialsDetail = (props: ViewProps) => {
                                     <TableRow>
                                         <TableCell><strong>Nro de Nota</strong></TableCell>
                                         <TableCell><strong>Fecha</strong></TableCell>
-                                        <TableCell><strong>Cantidad de Stock</strong></TableCell>
                                         <TableCell><strong>Cantidad de Ingreso</strong></TableCell>
                                         <TableCell><strong>Costo Unitario</strong></TableCell>
                                         <TableCell><strong>Costo Total</strong></TableCell>
+                                        <TableCell><strong>Cantidad de Stock</strong></TableCell>
                                         {/* <TableCell><strong>Accion</strong></TableCell> */}
                                     </TableRow>
                                 </TableHead>
@@ -67,19 +67,19 @@ export const MaterialsDetail = (props: ViewProps) => {
                                         <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' } }}>
                                             <TableCell>{entry.note_number}</TableCell>
                                             <TableCell>{entry.date}</TableCell>
-                                            <TableCell>{entry.request}</TableCell>
                                             <TableCell>{entry.amount_entries}</TableCell>
                                             <TableCell>{entry.cost_unit}</TableCell>
                                             <TableCell>{entry.cost_total}</TableCell>
                                             {/* <IconButton sx={{ p: 2 }} onClick={() => itemView(entry)}>
                                                 <Description color="success" />
-                                            </IconButton> */}
+                                                </IconButton> */}
+                                            <TableCell>{entry.request}</TableCell>
                                         </TableRow>
                                     ))}
                                     <TableRow sx={{ backgroundColor: '#f0f0f0', fontWeight: 'bold' }}>
-                                        <TableCell colSpan={2} align="right">Total Cantidad</TableCell>
+                                        <TableCell colSpan={5} align="right">Total Cantidad</TableCell>
                                         <TableCell>{item.stock}</TableCell>
-                                        <TableCell colSpan={2}></TableCell>
+                                        <TableCell colSpan={6}></TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>

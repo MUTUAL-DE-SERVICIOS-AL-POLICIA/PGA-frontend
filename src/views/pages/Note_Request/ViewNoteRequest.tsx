@@ -86,7 +86,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
             <DialogTitle sx={{ textAlign: 'center', background: '#E2F6F0', color: '#333', padding: '16px', position: 'relative' }}>
-                <Typography>Visualizar Solicitud</Typography>
+                <Typography variant="h6">Visualizar Solicitud</Typography>
                 <IconButton
                     aria-label="close"
                     onClick={handleClose}
