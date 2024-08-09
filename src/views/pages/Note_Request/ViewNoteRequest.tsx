@@ -33,14 +33,12 @@ export const ViewNoteRequest = (props: ViewProps) => {
         const parsedValue = parseFloat(value);
 
         if (!isNaN(parsedValue) && parsedValue >= 0) {
-            if (parsedValue > newMaterials[index].amount_request) {
-                newMaterials[index].amount_to_deliver = newMaterials[index].amount_request;
-            } else if (parsedValue > newMaterials[index].original_stock) {
-                newMaterials[index].amount_to_deliver = newMaterials[index].original_stock;
-                newMaterials[index].stock = 0;
-            } else {
-                newMaterials[index].amount_to_deliver = value;
+            if (parsedValue <= newMaterials[index].amount_request && parsedValue <= newMaterials[index].original_stock) {
+                newMaterials[index].amount_to_deliver = parsedValue;
                 newMaterials[index].stock = newMaterials[index].original_stock - parsedValue;
+            } else {
+                newMaterials[index].amount_to_deliver = Math.min(newMaterials[index].amount_request, newMaterials[index].original_stock);
+                newMaterials[index].stock = newMaterials[index].original_stock - newMaterials[index].amount_to_deliver;
             }
         } else {
             newMaterials[index].amount_to_deliver = '';
@@ -48,6 +46,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
         }
         setMaterials(newMaterials);
     };
+
 
     const handleSubmit = async (status: string) => {
         const dataToSend = {

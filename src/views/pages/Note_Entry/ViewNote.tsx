@@ -21,10 +21,12 @@ export const ViewNote = (props: ViewProps) => {
         }
     };
 
+    console.log(item);
+
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
             <DialogTitle sx={{ textAlign: 'center', backgroundColor: '#E2F6F0', color: '#333', padding: '16px' }}>
-                <Typography variant="h6">Visualizar Nota de Entrada</Typography>
+                Visualizar Nota de Entrada
             </DialogTitle>
             <DialogContent sx={{ padding: '24px' }}>
                 {item && (

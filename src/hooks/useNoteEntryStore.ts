@@ -4,6 +4,7 @@ import { coffeApi } from "../services";
 import Swal from "sweetalert2";
 import { NoteEntryModel } from "../models";
 import { DialogComponent } from "../components";
+import { printDocument } from "../utils/helper";
 
 const api = coffeApi;
 
@@ -60,6 +61,20 @@ export const useNoteEntryStore = () => {
         }
     }
 
+
+    const PrintNoteEntry = async (note_entry: NoteEntryModel) => {
+        try {
+            const response = await api.get(`/auth/printNoteEntry/${note_entry.id}/`, {
+                responseType: 'arraybuffer', // Importante para descargar archivos
+            });
+            printDocument(response)
+            return true
+
+        } catch (error) {
+            console.error('Error al imprimir la nota de entrada:', error);
+        }
+    };
+
     return {
         note_entries,
         flag,
@@ -69,5 +84,6 @@ export const useNoteEntryStore = () => {
         postNoteEntry,
         getNoteEntry,
         deleteNoteEntry,
+        PrintNoteEntry,
     }
 }

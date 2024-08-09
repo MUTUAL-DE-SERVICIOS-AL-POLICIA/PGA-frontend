@@ -3,7 +3,7 @@ import { useNoteEntryStore } from "../../../hooks";
 import React, { useEffect, useState } from "react";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
 import { NoteEntryModel } from "../../../models";
-import { DeleteOutline, Description } from "@mui/icons-material";
+import { DeleteOutline, Description, Print } from "@mui/icons-material";
 
 interface tableProps {
     limitInit?: number;
@@ -26,7 +26,7 @@ const getTypeTextAndColor = (typeId: number) => {
 export const TableNotesEntry = (props: tableProps) => {
     const { limitInit = 5, itemView } = props;
 
-    const { note_entries, flag, getNoteEntry, deleteNoteEntry } = useNoteEntryStore();
+    const { note_entries, flag, getNoteEntry, deleteNoteEntry, PrintNoteEntry } = useNoteEntryStore();
 
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
@@ -50,7 +50,7 @@ export const TableNotesEntry = (props: tableProps) => {
                     }}
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    sx={{ width: 200 }} // Make input field longer
+                    sx={{ width: 200 }} 
                 />
                 <TextField
                     label="Fecha Limite"
@@ -60,7 +60,7 @@ export const TableNotesEntry = (props: tableProps) => {
                     }}
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    sx={{ width: 200 }} // Make input field longer
+                    sx={{ width: 200 }} 
                 />
             </Stack>
             <TableContainer>
@@ -91,6 +91,9 @@ export const TableNotesEntry = (props: tableProps) => {
                                         </TableCell>
                                         <TableCell>
                                             <Stack alignContent="center" direction="row">
+                                                <IconButton sx={{ p: 2 }} onClick={() => PrintNoteEntry(note_entry)}>
+                                                    <Print color="info" />
+                                                </IconButton>
                                                 <IconButton sx={{ p: 2 }} onClick={() => itemView!(note_entry)}>
                                                     <Description color="success" />
                                                 </IconButton>

@@ -14,7 +14,7 @@ export const MaterialsDetail = (props: ViewProps) => {
     const { open, handleClose, item } = props;
     const { viewMaterial } = useMaterialStore();
     const [materialDetails, setMaterialDetails] = useState<any>(null);
-    console.log(item);
+    //console.log(item);
     useEffect(() => {
         if (item != null) {
             viewMaterial(item)
@@ -40,15 +40,17 @@ export const MaterialsDetail = (props: ViewProps) => {
             sx={{ '& .MuiDialog-paper': { borderRadius: '12px', boxShadow: 24 } }}
         >
             <DialogTitle sx={{ textAlign: 'center', backgroundColor: '#E2F6F0', color: '#333', padding: '16px 24px' }}>
-                <Typography variant="h6">Visualizar Materiales</Typography>
+                Visualizar Materiales
             </DialogTitle>
             <DialogContent>
                 {materialDetails ? (
                     <>
-                        <DialogContentText sx={{ marginBottom: 2 }}>
-                            <Typography variant="body1"><strong>ID del Material: </strong> {materialDetails.material_id}</Typography>
-                            <Typography variant="body1"><strong>Descripción del Material: </strong> {materialDetails.material_description}</Typography>
-                        </DialogContentText>
+                        <Typography sx={{ marginBottom: 2 }}>
+                            <strong>ID del Material: </strong> {materialDetails.material_id}
+                        </Typography>
+                        <Typography sx={{ marginBottom: 2 }}>
+                            <strong>Descripción del Material: </strong> {materialDetails.material_description}
+                        </Typography>
                         <TableContainer sx={{ marginTop: 2, borderRadius: '8px', overflow: 'hidden', boxShadow: 1, backgroundColor: '#fff' }}>
                             <Table>
                                 <TableHead sx={{ backgroundColor: '#E2F6F0' }}>
@@ -59,7 +61,6 @@ export const MaterialsDetail = (props: ViewProps) => {
                                         <TableCell><strong>Costo Unitario</strong></TableCell>
                                         <TableCell><strong>Costo Total</strong></TableCell>
                                         <TableCell><strong>Cantidad de Stock</strong></TableCell>
-                                        {/* <TableCell><strong>Accion</strong></TableCell> */}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -70,9 +71,6 @@ export const MaterialsDetail = (props: ViewProps) => {
                                             <TableCell>{entry.amount_entries}</TableCell>
                                             <TableCell>{entry.cost_unit}</TableCell>
                                             <TableCell>{entry.cost_total}</TableCell>
-                                            {/* <IconButton sx={{ p: 2 }} onClick={() => itemView(entry)}>
-                                                <Description color="success" />
-                                                </IconButton> */}
                                             <TableCell>{entry.request}</TableCell>
                                         </TableRow>
                                     ))}
@@ -86,7 +84,7 @@ export const MaterialsDetail = (props: ViewProps) => {
                         </TableContainer>
                     </>
                 ) : (
-                    <DialogContentText>Cargando datos...</DialogContentText>
+                    <Typography>Cargando datos...</Typography>
                 )}
             </DialogContent>
             <DialogActions sx={{ padding: '16px 24px' }}>

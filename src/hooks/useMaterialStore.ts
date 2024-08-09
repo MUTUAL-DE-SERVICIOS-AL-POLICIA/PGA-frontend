@@ -123,7 +123,7 @@ export const useMaterialStore = () => {
     const viewMaterial = async (material: MaterialModel) => {
         return api.get(`/auth/materials/${material.id}/`)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 return response.data;
             })
             .catch(error => {
