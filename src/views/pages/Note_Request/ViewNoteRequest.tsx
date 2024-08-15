@@ -85,7 +85,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
             <DialogTitle sx={{ textAlign: 'center', background: '#E2F6F0', color: '#333', padding: '16px', position: 'relative' }}>
-                <Typography variant="h6">Visualizar Solicitud</Typography>
+                <Typography sx={{ mb: 2, fontWeight: 'bold' }}>Visualizar Solicitud</Typography>
                 <IconButton
                     aria-label="close"
                     onClick={handleClose}
@@ -120,7 +120,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
 
                         <Divider sx={{ my: 2, borderBottom: '2px solid #E2F6F0' }} />
 
-                        <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>Visualizar Materiales</Typography>
+                        <Typography sx={{ mb: 2, fontWeight: 'bold' }}>Visualizar Materiales</Typography>
                         <Table size="small" sx={{ border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'hidden' }}>
                             <TableHead sx={{ backgroundColor: '#E2F6F0' }}>
                                 <TableRow>

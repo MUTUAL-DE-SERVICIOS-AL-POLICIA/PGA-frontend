@@ -21,7 +21,7 @@ export const ViewNote = (props: ViewProps) => {
         }
     };
 
-    console.log(item);
+    //console.log(item);
 
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">

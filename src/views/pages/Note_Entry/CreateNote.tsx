@@ -20,7 +20,7 @@ export const CreateNote = () => {
     const [selectedMaterials, setSelectedMaterials] = useState<{ id: number, name: string, quantity: number, price: number, unit_material: string }[]>([]);
     const [invoiceNumber, setInvoiceNumber] = useState<string>('');
     const [authorizationNumber, setAuthorizationNumber] = useState<string>('');
-    const { postNoteEntry } = useNoteEntryStore();
+    const { postNoteEntry, PrintNoteEntry } = useNoteEntryStore();
 
     const navigate = useNavigate();
     const handleRederict = () => {
@@ -95,6 +95,8 @@ export const CreateNote = () => {
 
         await postNoteEntry(formData).then((res) => {
             if (res) {
+                //console.log(res);
+                PrintNoteEntry(res);
                 handleRederict();
             }
         });

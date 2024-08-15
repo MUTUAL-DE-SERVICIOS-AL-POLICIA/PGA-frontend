@@ -6,4 +6,5 @@ export * from './Material/materialSlice';
 export * from './NoteEntry/note_entrySlice';
 export * from './Type/typeSlice';
 export * from './NoteRequest/note_requestSlice';
+export * from './ReportKardex/report_kardexSlice';
 export * from './store';

@@ -1,39 +1,27 @@
-import { DocumentScanner, Home, HourglassBottom, Person, Wifi } from "@mui/icons-material"
+import { AutoStories, DocumentScanner, Home, HourglassBottom, Person, Wifi } from "@mui/icons-material"
 
 export const menuSettings = () => {
     return [
         {
-            title: "Ajustes de productos",
+            title: "Reportes",
             //permission: "show-rent",
             group: [
                 {
-                    path: "/hourRangesView",
-                    title: "Rangos de horas",
-                    icon: <HourglassBottom />,
+                    path: "/reportExistence",
+                    title: "Kardex de Existencia",
+                    icon: <AutoStories />,
                     //permission: "show-halls"
                 },
                 {
-                    path: "/ratesView",
-                    title: "Tarifas",
-                    icon: <Wifi />,
+                    path: "/reportValuedPhysical",
+                    title: "Inv. Fisico Valorado",
+                    icon: <AutoStories />,
                     //permission: "show-halls"
                 }, {
-                    path: "/requirementsView",
-                    title: "Requisitos",
-                    icon: <DocumentScanner />,
+                    path: "/reportValuedPhysicalConsolided",
+                    title: "Inv. Fisico Valorado Consolidado",
+                    icon: <AutoStories />,
                     //permission: "show-halls"
-                },
-            ]
-        },
-        {
-            title: "Ajustes de Clienes",
-            //permission: "show-rent",
-            group: [
-                {
-                    title: "Tipos de Clientes",
-                    //permission: "show-rent",
-                    path: "/typeCustomersView",
-                    icon: <Wifi />
                 },
             ]
         },
@@ -55,17 +43,5 @@ export const menuSettings = () => {
                 // }
             ]
         },
-        {
-            title: "Gestion de Inmuebles",
-            //permission: "show-rent",
-            group: [
-                {
-                    path: "/propertiesView",
-                    title: "Inmuebles",
-                    icon: <Home />,
-                    //permission: "show-halls"
-                },
-            ]
-        }
     ]
 }

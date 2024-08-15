@@ -3,7 +3,7 @@ import { useNoteRequestStore } from "../../../hooks/useNoteRequestStore";
 import { NoteRequestModel } from "../../../models/NoteRequestModel";
 import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, FormControl, Select, InputLabel, MenuItem, Snackbar, Chip } from "@mui/material";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
-import { Description } from "@mui/icons-material";
+import { Description, Print } from "@mui/icons-material";
 
 interface TableProps {
     limitInit?: number;
@@ -12,7 +12,7 @@ interface TableProps {
 
 export const TableNotesRequest = (props: TableProps) => {
     const { limitInit = 5, itemView } = props;
-    const { note_requests, flag, getNoteRequest } = useNoteRequestStore();
+    const { note_requests, flag, getNoteRequest, PrintNoteRequest } = useNoteRequestStore();
     //console.log(note_requests);
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
@@ -121,6 +121,13 @@ export const TableNotesRequest = (props: TableProps) => {
                                                 <IconButton sx={{ p: 2 }} onClick={() => itemView!(note_request)}>
                                                     <Description color="success" />
                                                 </IconButton>
+                                                {note_request.state === 'Aceptado' ? (
+                                                    <IconButton sx={{ p: 2 }} onClick={() => PrintNoteRequest(note_request)}>
+                                                        <Print color="info" />
+                                                    </IconButton>
+                                                ) : null
+
+                                                }
                                             </Stack>
                                         </TableCell>
                                     </TableRow>

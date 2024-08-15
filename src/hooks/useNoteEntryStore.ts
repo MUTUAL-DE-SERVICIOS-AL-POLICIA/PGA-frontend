@@ -32,10 +32,10 @@ export const useNoteEntryStore = () => {
     const postNoteEntry = async (body: object) => {
         //console.log(body)
         try {
-            await api.post('/auth/createNoteEntry/', body);
+            const { data } = await api.post('/auth/createNoteEntry/', body);
             dispatch(refreshNoteEntry());
             Swal.fire('Nota de Entrada Creada Correctamente !!! ', '', 'success');
-            return true;
+            return data;
         } catch (error: any) {
             if (error.response && error.response.status == 403) {
                 const message = error.response;
@@ -62,7 +62,8 @@ export const useNoteEntryStore = () => {
     }
 
 
-    const PrintNoteEntry = async (note_entry: NoteEntryModel) => {
+    const PrintNoteEntry = async (note_entry: any) => {
+        //console.log(note_entry)
         try {
             const response = await api.get(`/auth/printNoteEntry/${note_entry.id}/`, {
                 responseType: 'arraybuffer', // Importante para descargar archivos

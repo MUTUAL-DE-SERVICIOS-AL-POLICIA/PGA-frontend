@@ -7,3 +7,4 @@ export * from './useGroupStore';
 export * from './useMaterialStore';
 export * from './useNoteEntryStore';
 export * from './useTypeStore';
+export * from './useReportKardexStore';

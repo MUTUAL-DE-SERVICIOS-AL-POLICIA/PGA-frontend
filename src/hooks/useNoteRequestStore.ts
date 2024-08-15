@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { coffeApi } from "../services"
 import { refreshNoteRequest, setNoteRequest } from "../store";
 import Swal from "sweetalert2";
+import { NoteRequestModel } from "../models/NoteRequestModel";
+import { printDocument } from "../utils/helper";
 
 const api = coffeApi;
 export const useNoteRequestStore = () => {
@@ -33,7 +35,22 @@ export const useNoteRequestStore = () => {
             Swal.fire('Error', 'Ocurrió un error al procesar la solicitud', 'error');
             return false;
         }
-    }
+    };
+
+    const PrintNoteRequest = async (note_request: any) => {
+        // console.log(note_request.id_note);
+        // await api.get(`/auth/print_post_request/${note_request.id_note}/`)
+        try {
+            const response = await api.get(`/auth/print_post_request/${note_request.id_note}/`, {
+                responseType: 'arraybuffer', // Importante para descargar archivos
+            });
+            printDocument(response)
+            return true
+
+        } catch (error) {
+            console.error('Error al imprimir la nota de entrada:', error);
+        }
+    };
 
 
     return {
@@ -42,6 +59,7 @@ export const useNoteRequestStore = () => {
 
         getNoteRequest,
         postNoteRequest,
+        PrintNoteRequest
     }
 
 }
