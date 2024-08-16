@@ -1,5 +1,6 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { padding } from '@mui/system';
 
 interface TableProps {
     itemKardex: any;
@@ -41,7 +42,7 @@ export const TableExistence = (props: TableProps) => {
         return (
             <StyledContainer>
                 <Typography variant="h6" align="center" gutterBottom>
-                    No hay datos disponibles
+                    Seleccione un Material
                 </Typography>
             </StyledContainer>
         );
@@ -52,6 +53,33 @@ export const TableExistence = (props: TableProps) => {
             <Typography variant="h6" align="center" gutterBottom>
                 KARDEX DE EXISTENCIAS
             </Typography>
+            <Typography align="center" gutterBottom>
+                (EXPRESADO EN BOLIVIANOS)
+            </Typography>
+            <Grid container spacing={1}>
+                <Grid item xs={12} sm={5}>
+                    <Typography sx={{ padding: '10px' }}>
+                        <strong>CÓDIGO: </strong> {itemKardex.code_material}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} sm={5}>
+                    <Typography sx={{ padding: '10px' }}>
+                        <strong>UNIDAD DE MEDIDA: </strong> {itemKardex.unit_material}
+                    </Typography>
+                </Grid>
+            </Grid>
+            <Grid container spacing={1}>
+                <Grid item xs={12} sm={5}>
+                    <Typography sx={{ padding: '10px' }}>
+                        <strong>DESCRIPCIÓN: </strong> {itemKardex.description}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} sm={5}>
+                    <Typography sx={{ padding: '10px' }}>
+                        <strong>GRUPO CONTABLE: </strong> {itemKardex.group}
+                    </Typography>
+                </Grid>
+            </Grid>
             <TableContainer>
                 <Table>
                     <TableHead>
