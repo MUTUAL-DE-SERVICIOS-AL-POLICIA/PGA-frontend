@@ -1,9 +1,7 @@
-import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import { Stack } from "@mui/material"
 import { useGroupStore } from "../../../hooks"
-import React, { useEffect, useState } from "react";
-import { ComponentSearch, SkeletonComponent, ComponentTableContent, ComponentTablePagination } from "../../../components";
-import { GroupModel } from "../../../models";
-import { fontWeight } from "@mui/system";
+import { useEffect, useState } from "react";
+import { ComponentTableContent, ComponentTablePagination } from "../../../components";
 
 
 interface tableProps {
@@ -14,7 +12,6 @@ interface tableProps {
 export const GroupTablePrincipal = (props: tableProps) => {
     const {
         limitInit = 10,
-        id_classifier
     } = props
 
     const [total, setTotal] = useState(0);
@@ -22,13 +19,7 @@ export const GroupTablePrincipal = (props: tableProps) => {
     const [limit, setLimit] = useState(limitInit);
 
     const { allGroups = [], allgroupsWithMaterial = [], getAllGroups } = useGroupStore();
-    const [open, setOpen] = useState(false);
-    const [groupSelectm, setGroupSelected] = useState(null);
 
-    const handleDialog = (value: boolean, group: any) => {
-        setOpen(value);
-        setGroupSelected(group);
-    }
 
     useEffect(() => {
         getAllGroups(page, limit, '').then((total) => setTotal(total))

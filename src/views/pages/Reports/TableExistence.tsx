@@ -1,6 +1,5 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { padding } from '@mui/system';
 
 interface TableProps {
     itemKardex: any;

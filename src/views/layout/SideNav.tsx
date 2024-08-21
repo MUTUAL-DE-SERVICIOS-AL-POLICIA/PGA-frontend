@@ -1,4 +1,4 @@
-import { styled, Theme, CSSObject, useThemeProps } from '@mui/material/styles';
+import { styled, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import { useState } from 'react';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
@@ -58,85 +58,85 @@ interface navProps {
 }
 
 export const SideNav = (props: navProps) => {
-    const {
-        open,
-        onClose,
-        onPress
-    } = props;
+  const {
+    open,
+    onClose,
+    onPress
+  } = props;
 
-    const [leave, setLeave] = useState(false);
-    const { pathname } = useLocation();
-    const theme = useTheme();
-    const lgUp = useMediaQuery(theme.breakpoints.up('md'));
+  const [leave, setLeave] = useState(false);
+  const { pathname } = useLocation();
+  const theme = useTheme();
+  const lgUp = useMediaQuery(theme.breakpoints.up('md'));
 
-    const content = (
-        <Box sx={{ py: 3 }}>
-          <img
-            src={leave || open ? logo : logoWithOutText}
-            alt="logo"
-            style={{
-              objectFit: 'cover',
-              width: leave || open ? '180px' : '52.5px',
-              padding: 5,
-              filter: 'brightness(1.3)'
-            }}
-          />
-          {
-            menu().map((item, index) => (
-              <React.Fragment key={index}>
-                <SideNavItem
-                  key={item.title}
-                  active={item.path ? (pathname === item.path) : false}
-                  leave={leave || open}
-                  icon={item.icon}
-                  path={item.path}
-                  title={item.title}
-                  onPress={(title) => {
-                    setLeave(false);
-                    onPress(title);
-                  }}
-                />
-              </React.Fragment>
-            ))
-          }
-        </Box>
-      );
-      if (lgUp) {
-        return (
-          <Drawer
-            onMouseEnter={() => setLeave(true)}
-            onMouseLeave={() => setLeave(false)}
-            variant="permanent"
-            PaperProps={{
-              sx: {
-                backgroundColor: '#1E635A',
-                color: 'white',
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-                width: 200
-              }
-            }}
-            open={leave}>
-            {content}
-          </Drawer>
-        );
+  const content = (
+    <Box sx={{ py: 3 }}>
+      <img
+        src={leave || open ? logo : logoWithOutText}
+        alt="logo"
+        style={{
+          objectFit: 'cover',
+          width: leave || open ? '180px' : '52.5px',
+          padding: 5,
+          filter: 'brightness(1.3)'
+        }}
+      />
+      {
+        menu().map((item, index) => (
+          <React.Fragment key={index}>
+            <SideNavItem
+              key={item.title}
+              active={item.path ? (pathname === item.path) : false}
+              leave={leave || open}
+              icon={item.icon}
+              path={item.path}
+              title={item.title}
+              onPress={(title) => {
+                setLeave(false);
+                onPress(title);
+              }}
+            />
+          </React.Fragment>
+        ))
       }
+    </Box>
+  );
+  if (lgUp) {
+    return (
+      <Drawer
+        onMouseEnter={() => setLeave(true)}
+        onMouseLeave={() => setLeave(false)}
+        variant="permanent"
+        PaperProps={{
+          sx: {
+            backgroundColor: '#1E635A',
+            color: 'white',
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+            width: 200
+          }
+        }}
+        open={leave}>
+        {content}
+      </Drawer>
+    );
+  }
 
-      return (
-        <Drawer
-            anchor='left'
-            onClose={onClose}
-            open={open}
-            PaperProps={{
-                sx:{
-                    backgroundColor: '#1E635A',
-                    color: 'white',
-                    width:190
-                }
-            }}
-            sx={{zIndex:(theme) => theme.zIndex.appBar + 100}}
-            variant='temporary'
-        >   
-            {content}
-        </Drawer>
-      );
+  return (
+    <Drawer
+      anchor='left'
+      onClose={onClose}
+      open={open}
+      PaperProps={{
+        sx: {
+          backgroundColor: '#1E635A',
+          color: 'white',
+          width: 190
+        }
+      }}
+      sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+      variant='temporary'
+    >
+      {content}
+    </Drawer>
+  );
 }

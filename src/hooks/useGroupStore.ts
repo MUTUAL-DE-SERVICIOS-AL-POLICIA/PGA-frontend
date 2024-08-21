@@ -1,10 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { coffeApi } from "../services";
 import { setGroup, setGroupMaterial, setAllGroup } from "../store";
-import Swal from "sweetalert2";
-import { GroupModel } from "../models";
-import { toast } from "react-toastify";
-import { DialogComponent } from "../components";
 
 const api = coffeApi;
 
@@ -16,7 +12,7 @@ export const useGroupStore = () => {
     const getUnitGroup = async (id_classifer: number) => {
         try {
             const { data } = await api.get(`/auth/listgroup/${id_classifer}`)
-            dispatch(setGroup({selectgroups: data.groups}))
+            dispatch(setGroup({ selectgroups: data.groups }))
         } catch (error: any) {
 
         }

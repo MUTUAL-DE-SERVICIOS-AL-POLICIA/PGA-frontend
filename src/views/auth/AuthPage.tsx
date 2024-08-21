@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Grid, Paper, Typography, IconButton, CircularProgress } from "@mui/material";
+import { useState } from "react";
+import { Grid, Paper, Typography, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useAuthStore, useForm } from "../../hooks";
 

@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { coffeApi } from "../services"
 import { refreshNoteRequest, setNoteRequest } from "../store";
 import Swal from "sweetalert2";
-import { NoteRequestModel } from "../models/NoteRequestModel";
 import { printDocument } from "../utils/helper";
 
 const api = coffeApi;

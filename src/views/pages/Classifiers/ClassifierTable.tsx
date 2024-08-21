@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { ClassifierModel } from "../../../models"
-import { Visibility, Delete, Edit, Add } from "@mui/icons-material";
+import { Visibility, Edit } from "@mui/icons-material";
 import { SvgIcon, Stack, Grid, IconButton, Typography, Box } from "@mui/material";
 import { useClassifierStore } from "../../../hooks";
 import { ItemPaper, SkeletonClassifier, SkeletonGroup } from "../../../components";
@@ -20,7 +20,7 @@ interface tableProps {
 
 
 export const ClassifierTable = (props: tableProps) => {
-    const { flag, classifiers = null, getClassifier, deleleClassifier } = useClassifierStore();
+    const { flag, classifiers = null, getClassifier } = useClassifierStore();
     const { itemEdit } = props;
     const navigate = useNavigate();
 

@@ -1,6 +1,6 @@
 import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, TextField } from "@mui/material";
 import { useNoteEntryStore } from "../../../hooks";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
 import { NoteEntryModel } from "../../../models";
 import { DeleteOutline, Description, Print } from "@mui/icons-material";
@@ -50,7 +50,7 @@ export const TableNotesEntry = (props: tableProps) => {
                     }}
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    sx={{ width: 200 }} 
+                    sx={{ width: 200 }}
                 />
                 <TextField
                     label="Fecha Limite"
@@ -60,7 +60,7 @@ export const TableNotesEntry = (props: tableProps) => {
                     }}
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    sx={{ width: 200 }} 
+                    sx={{ width: 200 }}
                 />
             </Stack>
             <TableContainer>

@@ -20,7 +20,7 @@ export const Dashboard = () => {
         navigate('/reportValuedPhysicalConsolided');
     }
 
-    const { dashboards, flag, getDashboard } = useDashboardStore();
+    const { dashboards, getDashboard } = useDashboardStore();
 
     useEffect(() => {
         getDashboard();

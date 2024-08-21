@@ -33,19 +33,16 @@ export const CreateMaterials = (props: createProps) => {
 
     // console.log(item);
 
-
     const { postMaterial } = useMaterialStore();
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [modal, setModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const { group_id, code_material, description, unit_material, barcode, type_material,
-        onInputChange, onValueChange, isFormValid, onResetForm,
-        group_idValid, code_materialValid, descriptionValid, unit_materialValid,
-        barcodeValid } = useForm(item ?? formMaterialFields, formMaterialValidation);
+    const { group_id, code_material, description, unit_material, barcode,
+        onInputChange, onValueChange, onResetForm,
+        group_idValid } = useForm(item ?? formMaterialFields, formMaterialValidation);
 
-
-    const handleModal = useCallback((value: boolean) => setModal(value), [{}]);
+    const handleModal = useCallback((value: boolean) => setModal(value), []);
 
     const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -70,20 +67,17 @@ export const CreateMaterials = (props: createProps) => {
                     onResetForm();
                 }
             });
-
         }
-
         setLoading(false);
     }
 
-
-    const [screenHeight, setScreenHeight] = useState(window.innerHeight);
-
     useEffect(() => {
-        const handleResize = () => setScreenHeight(window.innerHeight);
+        const handleResize = () => {
+            // Aquí podrías usar screenHeight si fuera necesario
+        };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, [window.innerHeight]);
+    }, []); // Dependencia vacía para ejecutarse solo en montaje y desmontaje
 
     const units = [
         "HOJA",
@@ -228,7 +222,7 @@ export const CreateMaterials = (props: createProps) => {
                             }
                         </Grid>
                     </DialogContent>
-                    <DialogActions> 
+                    <DialogActions>
                         {
                             loading ?
                                 <CircularProgress color="success" size={30} /> :

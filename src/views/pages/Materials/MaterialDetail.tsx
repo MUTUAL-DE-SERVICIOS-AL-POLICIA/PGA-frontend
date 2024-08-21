@@ -1,8 +1,6 @@
-import { Dialog, DialogTitle, DialogContent, DialogContentText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, DialogActions, Button, IconButton } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, DialogActions, Button } from "@mui/material";
 import { useMaterialStore } from "../../../hooks";
 import { useEffect, useState } from "react";
-import { Description } from "@mui/icons-material";
-import { NoteEntryModel } from "../../../models";
 
 interface ViewProps {
     open: boolean;
@@ -27,9 +25,6 @@ export const MaterialsDetail = (props: ViewProps) => {
         }
     }, [item]);
 
-    const itemView = async (note: NoteEntryModel) => {
-        //console.log(note);
-    }
 
     return (
         <Dialog

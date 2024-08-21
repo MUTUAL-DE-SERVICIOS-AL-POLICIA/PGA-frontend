@@ -1,4 +1,4 @@
-import { Button, Chip, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Button, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import { ComponentSearch, ComponentTablePagination, SkeletonComponent } from "../../../components"
 import { useMaterialStore } from "../../../hooks";
 import React, { useEffect, useState } from "react";
@@ -14,9 +14,9 @@ interface tableProps {
 
 export const MaterialTable = (props: tableProps) => {
 
-    const { limitInit = 10, items, itemView, itemEdit } = props;
+    const { limitInit = 10, itemView, itemEdit } = props;
 
-    const { materials, flag, getMaterial, putState, deleteMaterial, viewMaterial } = useMaterialStore();
+    const { materials, flag, getMaterial, putState, deleteMaterial } = useMaterialStore();
 
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);

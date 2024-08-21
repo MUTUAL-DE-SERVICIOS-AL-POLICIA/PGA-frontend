@@ -1,4 +1,4 @@
-import { Stack, Box, Typography } from "@mui/material";
+import { Stack, Box } from "@mui/material";
 import { useCallback, useState } from "react";
 import { ClassifierModel } from "../../../models";
 import { ClassifierTable } from "./ClassifierTable";

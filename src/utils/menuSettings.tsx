@@ -1,4 +1,4 @@
-import { AutoStories, DocumentScanner, Home, HourglassBottom, Person, Wifi } from "@mui/icons-material"
+import { AutoStories, Person } from "@mui/icons-material"
 
 export const menuSettings = () => {
     return [

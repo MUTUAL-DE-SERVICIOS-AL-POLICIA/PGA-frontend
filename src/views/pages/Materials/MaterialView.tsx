@@ -6,7 +6,6 @@ import { useCallback, useState } from "react"
 import { MaterialModel } from "../../../models"
 import { CreateMaterials } from "./createMaterial"
 import { MaterialsDetail } from "./MaterialDetail"
-import { useMaterialStore } from "../../../hooks"
 import { MaterialEdit } from "./MaterialEdit"
 
 export const MaterialView = () => {
@@ -16,7 +15,6 @@ export const MaterialView = () => {
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
     const [itemEdit2, setItemEdit2] = useState<MaterialModel | null>(null);
     const [itemEdit, setItemEdit] = useState<MaterialModel | null>(null);
-    const { viewMaterial } = useMaterialStore();
     const [itemView, setItemView] = useState<MaterialModel | null>(null);
 
 

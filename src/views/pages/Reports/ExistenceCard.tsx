@@ -2,7 +2,7 @@ import { TableExistence } from "./TableExistence";
 import { useMaterialStore, useReportKardexStore } from "../../../hooks";
 import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
-import { ComponentButton, SelectComponent } from "../../../components";
+import { SelectComponent } from "../../../components";
 import { MaterialModel } from "../../../models";
 
 export const ExistenceCard = () => {
@@ -10,7 +10,7 @@ export const ExistenceCard = () => {
     const { materials = [], getMaterial } = useMaterialStore();
     const { report_kardexs, getReportKardex } = useReportKardexStore();
 
-    const [selectedMaterials, setSelectedMaterials] = useState<{ id: number, name: string, quantity: number, price: number, unit_material: string }[]>([]);
+    const [selectedMaterials] = useState<{ id: number, name: string, quantity: number, price: number, unit_material: string }[]>([]);
 
     const handleAddMaterial = (value: any) => {
         const material = materials.find((material: MaterialModel) => material.id === value);

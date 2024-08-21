@@ -20,4 +20,4 @@ git clone https://github.com/napoleonbaley2011/pga-backend.git
 ```
 PASO 2: Construir la imagen y ejecutar el contenedor:
 ```
-docker-compose up --build
+docker-compose up -d --build

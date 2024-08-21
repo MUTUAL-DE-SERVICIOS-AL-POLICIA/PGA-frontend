@@ -25,7 +25,7 @@ export const TopNav = (props: topProps) => {
     // Obtener la fecha y hora actual
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString(); // Formato de fecha
-    const formattedTime = currentDate.toLocaleTimeString(); // Formato de hora
+    //const formattedTime = currentDate.toLocaleTimeString(); // Formato de hora
 
     return (
         <>

@@ -21,6 +21,7 @@ export const CreateNote = () => {
     const [invoiceNumber, setInvoiceNumber] = useState<string>('');
     const [authorizationNumber, setAuthorizationNumber] = useState<string>('');
     const { postNoteEntry, PrintNoteEntry } = useNoteEntryStore();
+    console.log(formSubmitted);
 
     const navigate = useNavigate();
     const handleRederict = () => {
@@ -109,8 +110,8 @@ export const CreateNote = () => {
     }, []);
 
     const availableMaterials = materials.filter((material: MaterialModel) => !selectedMaterials.some(selected => selected.id === material.id));
-    
-    
+
+
     const isMaterialSelectDisabled = typeSelect === 0 || supplierSelect === 0;
 
     const [isMaterialsOpen, setIsMaterialsOpen] = useState(true); // Estado para controlar si la lista de materiales está abierta
@@ -231,8 +232,8 @@ export const CreateNote = () => {
                             variant="contained"
                             color="primary"
                             sx={{ mt: 2 }}
-                            startIcon={<Save/>}
-                            disabled={selectedMaterials.length === 0} 
+                            startIcon={<Save />}
+                            disabled={selectedMaterials.length === 0}
                         >
                             Guardar Nota
                         </Button>
@@ -322,7 +323,7 @@ export const CreateNote = () => {
                     open={openDialog}
                     handleClose={() => {
                         handleDialog(false);
-                        getSuppliersList(); 
+                        getSuppliersList();
                     }}
                     supplier={null}
                 />
@@ -332,7 +333,7 @@ export const CreateNote = () => {
                     open={openDialogMaterial}
                     handleClose={() => {
                         handleDialogMaterial(false);
-                        getMaterial(0, 10, ''); 
+                        getMaterial(0, 10, '');
                     }}
                     item={null}
                     type_material_select_base="Caja Chica"

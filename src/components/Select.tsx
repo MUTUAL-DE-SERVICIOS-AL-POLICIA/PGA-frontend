@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, Typography, TextField, Autocomplete } from "@mui/material";
+import { FormControl, IconButton, InputAdornment, InputLabel, Typography, TextField, Autocomplete } from "@mui/material";
 import { Clear as ClearIcon } from "@mui/icons-material";
 
 interface SelectComponentProps {
@@ -27,6 +27,7 @@ export const SelectComponent = (props: SelectComponentProps) => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: any) => {
     handleSelect(newValue);
+    event;
   };
 
   const handleClear = () => {

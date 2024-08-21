@@ -42,8 +42,12 @@ export const TableNotesRequest = (props: TableProps) => {
         if (reason === 'clickaway') {
             return;
         }
+        if (event) {
+            console.log(event);
+        }
         setOpen(false);
     };
+
 
     return (
         <Stack sx={{ padding: '10px' }}>

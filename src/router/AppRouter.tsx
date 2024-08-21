@@ -9,7 +9,7 @@ import { Layout } from '../views/layout/Layout';
 
 import { SupplierView } from '../views/pages/Suppliers';
 import { ClassifierView } from '../views/pages/Classifiers';
-import { GroupTableSec, GroupView } from '../views/pages/Groups';
+import { GroupTableSec } from '../views/pages/Groups';
 import { MaterialView } from '../views/pages/Materials';
 import { Dashboard } from '../views/pages/Dashboard';
 import { CreateNote } from '../views/pages/Note_Entry/CreateNote';
