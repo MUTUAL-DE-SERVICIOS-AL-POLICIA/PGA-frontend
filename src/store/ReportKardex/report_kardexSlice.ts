@@ -16,5 +16,4 @@ export const report_kardexSlice = createSlice({
     }
 });
 
-
 export const { setReportKardex, refreshReportKardex } = report_kardexSlice.actions;
