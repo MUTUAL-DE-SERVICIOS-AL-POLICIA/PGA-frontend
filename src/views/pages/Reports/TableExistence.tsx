@@ -28,15 +28,11 @@ const StyledContainer = styled(Paper)(({ theme }) => ({
 }));
 
 const formatNumber = (num: number | undefined) => {
-    console.log(num);
     return typeof num === 'number' ? num.toFixed(2) : '-';
 };
 
 export const TableExistence = (props: TableProps) => {
     const { itemKardex } = props;
-
-    console.log(itemKardex);
-    // Verifica si itemKardex y kardex_de_existencia están definidos
     if (!itemKardex || !itemKardex.kardex_de_existencia) {
         return (
             <StyledContainer>
@@ -58,24 +54,24 @@ export const TableExistence = (props: TableProps) => {
             <Grid container spacing={1}>
                 <Grid item xs={12} sm={5}>
                     <Typography sx={{ padding: '10px' }}>
-                        <strong>CÓDIGO: </strong> {itemKardex.code_material}
+                        <strong>Código: </strong> {itemKardex.code_material}
                     </Typography>
                 </Grid>
                 <Grid item xs={12} sm={5}>
                     <Typography sx={{ padding: '10px' }}>
-                        <strong>UNIDAD DE MEDIDA: </strong> {itemKardex.unit_material}
+                        <strong>Unidad de medida: </strong> {itemKardex.unit_material}
                     </Typography>
                 </Grid>
             </Grid>
             <Grid container spacing={1}>
                 <Grid item xs={12} sm={5}>
                     <Typography sx={{ padding: '10px' }}>
-                        <strong>DESCRIPCIÓN: </strong> {itemKardex.description}
+                        <strong>Descripción: </strong> {itemKardex.description}
                     </Typography>
                 </Grid>
                 <Grid item xs={12} sm={5}>
                     <Typography sx={{ padding: '10px' }}>
-                        <strong>GRUPO CONTABLE: </strong> {itemKardex.group}
+                        <strong>Grupo contable: </strong> {itemKardex.group}
                     </Typography>
                 </Grid>
             </Grid>
@@ -101,15 +97,15 @@ export const TableExistence = (props: TableProps) => {
                     <TableBody>
                         {itemKardex.kardex_de_existencia.map((entry: any, index: number) => (
                             <StyledTableRow key={index}>
-                                <TableCell align="center">{entry.date}</TableCell>
-                                <TableCell align="center">{entry.description}</TableCell>
+                                <TableCell align="left">{entry.date}</TableCell>
+                                <TableCell align="left">{entry.description}</TableCell>
                                 <TableCell align="center">{entry.entradas}</TableCell>
                                 <TableCell align="center">{entry.salidas}</TableCell>
-                                <TableCell align="center">{entry.stock_fisico}</TableCell>
-                                <TableCell align="center">{entry.cost_unit}</TableCell>
-                                <TableCell align="center">{entry.entradas ? '$' + formatNumber(entry.entradas * entry.cost_unit) : '-'}</TableCell>
-                                <TableCell align="center">{entry.salidas ? '$' + formatNumber(entry.salidas * entry.cost_unit) : '-'}</TableCell>
-                                <TableCell align="center">{entry.entradas || entry.salidas ? `$${entry.cost_total}` : '-'}</TableCell>
+                                <TableCell align="right">{entry.stock_fisico}</TableCell>
+                                <TableCell align="right">{entry.cost_unit}</TableCell>
+                                <TableCell align="right">{entry.entradas ? formatNumber(entry.entradas * entry.cost_unit) : '-'}</TableCell>
+                                <TableCell align="right">{entry.salidas ? formatNumber(entry.salidas * entry.cost_unit) : '-'}</TableCell>
+                                <TableCell align="right">{entry.entradas || entry.salidas ? `${entry.cost_total}` : '-'}</TableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>

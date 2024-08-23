@@ -60,7 +60,7 @@ export const Dashboard = () => {
                     <Button onClick={handleRederict2} fullWidth size="large" variant="contained" color="primary">Inventario Consolidado Fisico Valorado</Button>
                 </Grid>
                 <Grid item xs={12} sx={{ mb: -2.25 }}>
-                    <Typography variant="h5">Ordenes Recientes</Typography>
+                    <Typography variant="h5"></Typography>
                 </Grid>
             </Grid>
             <TableOrder />

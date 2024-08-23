@@ -48,9 +48,9 @@ export const AccountPopover = ({ anchorEl, onClose, open, onTapSettings }: { anc
                 <MenuItem
                     onClick={() => onTapSettings()}
                 >
-                    Configuraciones
+                    Reportes
                 </MenuItem>
-                <MenuItem           
+                <MenuItem
                     onClick={() => {
                         startLogout();
                         navigate('/');
