@@ -12,7 +12,6 @@ export const MaterialsDetail = (props: ViewProps) => {
     const { open, handleClose, item } = props;
     const { viewMaterial } = useMaterialStore();
     const [materialDetails, setMaterialDetails] = useState<any>(null);
-    //console.log(item);
     useEffect(() => {
         if (item != null) {
             viewMaterial(item)

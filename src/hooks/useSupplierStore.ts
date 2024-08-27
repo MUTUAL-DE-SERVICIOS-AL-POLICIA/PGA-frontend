@@ -23,7 +23,6 @@ export const useSupplierStore = () => {
     const getSuppliersList = async () =>{
         const { data } = await api.get('/auth/suppliers/');
         dispatch(setSupplier({ suppliers: data.suppliers }));
-        //console.log(dispatch(setSupplier({ suppliers: data.suppliers })));
         return data.total;
     }
 
@@ -51,7 +50,6 @@ export const useSupplierStore = () => {
 
     const patchUpdateSupplier = async (id: number, body: object) => {
         try {
-            //console.log(body)
             await api.patch(`/auth/suppliers/${id}/`, body);
             dispatch(refreshSupplier());
             Swal.fire('Proveedor Actualizado', '', 'success');

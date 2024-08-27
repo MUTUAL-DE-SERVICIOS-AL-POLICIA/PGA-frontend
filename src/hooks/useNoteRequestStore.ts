@@ -13,7 +13,6 @@ export const useNoteRequestStore = () => {
         let filter: any = { params: { page: page, limit: limit } };
         if (search !== '') filter.params.search = search;
         if (state !== '') filter.params.state = state;
-        // console.log(filter);
         const { data } = await api.get('/auth/noteRequest/', filter);
         dispatch(setNoteRequest({ note_requests: data.data }));
         return data.total;
@@ -37,8 +36,6 @@ export const useNoteRequestStore = () => {
     };
 
     const PrintNoteRequest = async (note_request: any) => {
-        // console.log(note_request.id_note);
-        // await api.get(`/auth/print_post_request/${note_request.id_note}/`)
         try {
             const response = await api.get(`/auth/print_post_request/${note_request.id_note}/`, {
                 responseType: 'arraybuffer', // Importante para descargar archivos

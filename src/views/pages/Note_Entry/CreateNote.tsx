@@ -96,7 +96,6 @@ export const CreateNote = () => {
 
         await postNoteEntry(formData).then((res) => {
             if (res) {
-                //console.log(res);
                 PrintNoteEntry(res);
                 handleRederict();
             }

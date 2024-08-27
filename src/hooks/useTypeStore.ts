@@ -12,9 +12,7 @@ export const useTypeStore = () => {
     const getTypes = async () => {
         try {
             const { data } = await api.get('/auth/types/');
-            //console.log(data);  
             dispatch(setTypes({ types: data }));
-            //console.log(dispatch(setTypes({ types: data })));
             return data.total;
         } catch (error: any) {
             if (error.response && error.response.status == 400) {

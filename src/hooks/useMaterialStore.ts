@@ -19,7 +19,6 @@ export const useMaterialStore = () => {
         if (search !== '') filter.params.search = search;
         const { data } = await api.get('/auth/materialslist', filter);
         dispatch(setMaterial({ materials: data.materials }))
-        //console.log(data);
         return data.total;
     }
 
@@ -30,7 +29,6 @@ export const useMaterialStore = () => {
         if (search !== '') filter.params.search = search;
         const { data } = await api.get('/auth/materialslistpettycash', filter);
         dispatch(setMaterial({ materials: data.materials }))
-        //console.log(data);
         return data.total;
     }
 
@@ -123,7 +121,6 @@ export const useMaterialStore = () => {
     const viewMaterial = async (material: MaterialModel) => {
         return api.get(`/auth/materials/${material.id}/`)
             .then(response => {
-                //console.log(response.data);
                 return response.data;
             })
             .catch(error => {

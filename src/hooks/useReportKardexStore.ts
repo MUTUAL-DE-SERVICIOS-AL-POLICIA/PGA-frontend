@@ -43,7 +43,6 @@ export const useReportKardexStore = () => {
             startDate,
             endDate,
         };
-        console.log(params);
         const { data } = await api.get('/auth/ReportPrintValuedPhysical/', { params });
         dispatch(setReportValued({ report_ValuedPhys: data }));
         return true;

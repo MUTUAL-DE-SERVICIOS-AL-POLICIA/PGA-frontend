@@ -25,9 +25,8 @@ export const useGroupStore = () => {
             if (limit != -1) filter.params.limit = limit;
             if (search !== '') filter.params.search = search;
             const { data } = await api.get('/auth/groups/', filter);
-            //console.log(data);
             const groups: any = []
-            data.data.forEach((element: any) => { //data se llama donde envio los datos
+            data.data.forEach((element: any) => { 
                 const group: any = {}
                 group.id = element.id
                 group.id_class = element.classifier.code_class
@@ -48,7 +47,6 @@ export const useGroupStore = () => {
                 })
                 element.materials = allMaterial
             });
-            //console.log(data.data)
             dispatch(setGroupMaterial({ allgroupsWithMaterial: data.data }))
             return data.total;
         } catch (error) {

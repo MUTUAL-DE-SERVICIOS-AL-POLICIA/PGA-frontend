@@ -99,7 +99,6 @@ export const useForm = (initialForm: any = {}, formValidations: any = {}) => {
     }
 
     setFormValidation(formCheckedValues);
-    //console.log('formCheckedValues:', formCheckedValues);
   };
 
   return {

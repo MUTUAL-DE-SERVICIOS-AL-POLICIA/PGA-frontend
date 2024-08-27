@@ -8,10 +8,9 @@ export const authSlice = createSlice({
     },
     reducers: {
         onLogin: (state, { payload }) => {
-            
+
             state.status = 'authenticated';
             state.user = payload;
-            //console.log(state.status)
         },
         onLogout: (state) => {
             state.status = 'not-authenticated';

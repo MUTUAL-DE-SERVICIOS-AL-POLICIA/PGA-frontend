@@ -25,9 +25,6 @@ export const Dashboard = () => {
     useEffect(() => {
         getDashboard();
     }, []);
-
-    //console.log(dashboards);
-
     if (!dashboards) {
         return <div>Cargando...</div>;
     }

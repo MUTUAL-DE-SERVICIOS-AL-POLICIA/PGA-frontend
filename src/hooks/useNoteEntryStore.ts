@@ -30,7 +30,6 @@ export const useNoteEntryStore = () => {
 
 
     const postNoteEntry = async (body: object) => {
-        //console.log(body)
         try {
             const { data } = await api.post('/auth/createNoteEntry/', body);
             dispatch(refreshNoteEntry());
@@ -51,7 +50,6 @@ export const useNoteEntryStore = () => {
     }
 
     const deleteNoteEntry = async (note_entry: NoteEntryModel) => {
-        //console.log(note_entry);
         const { dialogDelete } = DialogComponent();
         const state = await dialogDelete(`Se eliminara la nota de entrada ${note_entry.invoice_number}`);
         if (state) {
@@ -63,10 +61,9 @@ export const useNoteEntryStore = () => {
 
 
     const PrintNoteEntry = async (note_entry: any) => {
-        //console.log(note_entry)
         try {
             const response = await api.get(`/auth/printNoteEntry/${note_entry.id}/`, {
-                responseType: 'arraybuffer', // Importante para descargar archivos
+                responseType: 'arraybuffer',
             });
             printDocument(response)
             return true

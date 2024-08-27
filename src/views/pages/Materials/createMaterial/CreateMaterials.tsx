@@ -30,9 +30,6 @@ const formMaterialValidation: FormMaterialValidate = {
 
 export const CreateMaterials = (props: createProps) => {
     const { open, handleClose, item, type_material_select_base } = props
-
-    // console.log(item);
-
     const { postMaterial } = useMaterialStore();
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [modal, setModal] = useState(false);
@@ -58,7 +55,6 @@ export const CreateMaterials = (props: createProps) => {
         data.state = "Inhabilitado"
         data.min = 5;
         data.type = type_material_select_base;
-        //console.log(data);
         setLoading(true);
         if (item == null) {
             await postMaterial(data).then((res) => {
