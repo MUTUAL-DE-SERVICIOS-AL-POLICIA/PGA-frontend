@@ -1,5 +1,5 @@
-import { TextField } from "@mui/material";
-import { memo } from "react";
+import { TextField, InputAdornment } from "@mui/material";
+import { memo, ChangeEventHandler, ReactNode } from "react";
 
 export const ComponentInput = memo((
     {
@@ -15,7 +15,7 @@ export const ComponentInput = memo((
         helperText = '',
         disabled = false,
         customSx = {},
-        size = 'Normal',
+        size = 'medium',
         width = '100%',
         height = '50px',
         fullWidth = false
@@ -23,19 +23,19 @@ export const ComponentInput = memo((
         {
             id?: string,
             name: string,
-            value: any,
-            onChange?: any,
-            type: any,
+            value: string | number,
+            onChange?: ChangeEventHandler<HTMLInputElement>,
+            type?: string,
             label: string,
-            endAdornment?: any,
+            endAdornment?: ReactNode,
             multiline?: boolean,
             error?: boolean,
             helperText?: string,
             disabled?: boolean,
             customSx?: object,
-            size?: any,
-            width?: any,
-            height?: any,
+            size?: 'small' | 'medium',
+            width?: string | number,
+            height?: string | number,
             fullWidth?: boolean
         }) => {
     return (
@@ -55,7 +55,7 @@ export const ComponentInput = memo((
             helperText={helperText}
             fullWidth={fullWidth}
             InputProps={{
-                endAdornment,
+                endAdornment: endAdornment ? <InputAdornment position="end">{endAdornment}</InputAdornment> : undefined,
                 style: {
                     color: 'black',
                     height: height,

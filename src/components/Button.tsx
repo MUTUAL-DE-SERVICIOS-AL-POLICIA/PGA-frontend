@@ -1,5 +1,5 @@
 import LoadingButton from '@mui/lab/LoadingButton';
-import { memo } from 'react';
+import { memo, MouseEventHandler, ReactNode } from 'react';
 
 export const ComponentButton = memo(({
     type,
@@ -16,19 +16,19 @@ export const ComponentButton = memo(({
     sx = {},
     color
 }: {
-    type?: any,
+    type?: "button" | "submit" | "reset",
     text: string,
-    onClick?: any,
-    startIcon?: any,
-    endIcon?: any,
+    onClick?: MouseEventHandler<HTMLButtonElement>,
+    startIcon?: ReactNode,
+    endIcon?: ReactNode,
     disable?: boolean,
-    margin?: any,
-    height?: any,
+    margin?: string | number,
+    height?: string | number,
     fullWidth?: boolean,
     loading?: boolean,
-    variant?: any,
+    variant?: "contained" | "outlined" | "text",
     sx?: object,
-    color?: any
+    color?: "inherit" | "primary" | "secondary" | "success" | "error" | "info" | "warning" | undefined
 }) => {
     return (
         <LoadingButton

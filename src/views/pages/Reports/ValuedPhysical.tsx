@@ -23,7 +23,6 @@ const StyledHeaderCell = styled(TableCell)({
 });
 
 const StyledDescriptionCell = styled(TableCell)({
-    textAlign: 'center',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
@@ -33,7 +32,6 @@ const StyledDescriptionCell = styled(TableCell)({
 });
 
 const StyledBodyCell = styled(TableCell)({
-    textAlign: 'center',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
@@ -56,7 +54,7 @@ const StyledContainer = styled(Paper)({
 });
 
 export const ValuedPhysical = () => {
-    const { getReportValued, report_ValuedPhys } = useReportKardexStore();
+    const { getReportValued, report_ValuedPhys, PrintReportValued } = useReportKardexStore();
 
     const [endDate, setEndDate] = useState('');
 
@@ -84,6 +82,9 @@ export const ValuedPhysical = () => {
 
         return formattedDate;
     };
+    const handlePrintClick = () => {
+        PrintReportValued();
+    }
 
     return (
         <>
@@ -104,7 +105,7 @@ export const ValuedPhysical = () => {
                             <Tooltip title="Imprimir">
                                 <IconButton
                                     color="primary"
-
+                                    onClick={handlePrintClick}
                                 >
                                     <PrintIcon />
                                 </IconButton>
@@ -114,7 +115,6 @@ export const ValuedPhysical = () => {
                             <Tooltip title="Descargar">
                                 <IconButton
                                     color="primary"
-
                                 >
                                     <DownloadIcon />
                                 </IconButton>
@@ -129,6 +129,9 @@ export const ValuedPhysical = () => {
                 </Typography>
                 <Typography align="center" gutterBottom>
                     LA PAZ DEL {report_ValuedPhys.date_note?.toUpperCase()} AL {getFormattedEndDate()}
+                </Typography>
+                <Typography align="center" gutterBottom>
+                    (EXPRESADO EN BOLIVIANOS)
                 </Typography>
 
                 {report_ValuedPhys.data == null ? (
@@ -170,21 +173,21 @@ export const ValuedPhysical = () => {
                                             {item.materials.map((material: any, index: number) => {
                                                 return (
                                                     <StyledTableRow key={index}>
-                                                        <StyledBodyCell>{material.material_code}</StyledBodyCell>
-                                                        <StyledDescriptionCell>{material.description}</StyledDescriptionCell>
+                                                        <StyledBodyCell align='left'>{material.material_code}</StyledBodyCell>
+                                                        <StyledDescriptionCell align='left'>{material.description}</StyledDescriptionCell>
                                                         <StyledBodyCell>{material.unit}</StyledBodyCell>
 
-                                                        <StyledBodyCell>{material.total_amount_entries.toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell>{material.total_cost.toFixed(2)}</StyledBodyCell>
+                                                        <StyledBodyCell align='center'>{material.total_amount_entries.toFixed(2)}</StyledBodyCell>
+                                                        <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
+                                                        <StyledBodyCell align='right'>{material.total_cost.toFixed(2)}</StyledBodyCell>
 
-                                                        <StyledBodyCell>{(material.total_amount_entries - material.stock).toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell>{((material.total_amount_entries - material.stock) * material.average_cost_unit).toFixed(2)}</StyledBodyCell>
+                                                        <StyledBodyCell align='center'>{(material.total_amount_entries - material.stock).toFixed(2)}</StyledBodyCell>
+                                                        <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
+                                                        <StyledBodyCell align='right'>{((material.total_amount_entries - material.stock) * material.average_cost_unit).toFixed(2)}</StyledBodyCell>
 
-                                                        <StyledBodyCell>{material.stock.toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell>{(material.average_cost_unit * material.stock).toFixed(2)}</StyledBodyCell>
+                                                        <StyledBodyCell align='center'>{material.stock.toFixed(2)}</StyledBodyCell>
+                                                        <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
+                                                        <StyledBodyCell align='right'>{(material.average_cost_unit * material.stock).toFixed(2)}</StyledBodyCell>
                                                     </StyledTableRow>
                                                 );
                                             })}

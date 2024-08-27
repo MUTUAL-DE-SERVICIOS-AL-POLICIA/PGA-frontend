@@ -16,16 +16,14 @@ interface MainCardProps {
     shadow?: string;
     sx?: SxProps<Theme>;
     title?: ReactNode;
-    [key: string]: any; // Para permitir otros props adicionales
+    [key: string]: unknown;
 }
 
-// Estilo del header
 const headerSX = {
     p: 2.5,
     '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
 };
 
-// Componente MainCard
 export const MainCard = forwardRef<HTMLDivElement, MainCardProps>(
     (
         {
