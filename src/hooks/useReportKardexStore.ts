@@ -66,6 +66,24 @@ export const useReportKardexStore = () => {
             return false;
         }
     };
+    const DownloadReportValued = async (endDate?: string) => {
+        const params = {
+            endDate,
+        };
+
+        try {
+            const response = await api.get('/auth/PrintValuedPhysical/', {
+                params,
+                responseType: 'arraybuffer',
+            });
+            downloadDocument(response, 'Inventario_Fisico_Valorado.pdf');
+
+            return true;
+        } catch (error) {
+            console.error('Error al descargar el kardex:', error);
+            return false;
+        }
+    };
 
 
     return {
@@ -78,5 +96,6 @@ export const useReportKardexStore = () => {
         PrintReportKardex,
         DownloadReportKardex,
         PrintReportValued,
+        DownloadReportValued,
     }
 }

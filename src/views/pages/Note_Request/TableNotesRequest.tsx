@@ -90,11 +90,11 @@ export const TableNotesRequest = (props: TableProps) => {
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>
                         <TableRow sx={{ background: '#E2F6F0' }}>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Nro de Nota</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Solicitante</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Fecha de Solicitud</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Estado</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Nro de Nota</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Solicitante</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Fecha de Solicitud</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Estado</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -104,10 +104,10 @@ export const TableNotesRequest = (props: TableProps) => {
                             ) : (
                                 note_requests.map((note_request: NoteRequestModel, index: number) => (
                                     <TableRow key={index} sx={{ borderBottom: '2px solid #ccc' }}>
-                                        <TableCell>{note_request.number_note}</TableCell>
-                                        <TableCell>{note_request.employee}</TableCell>
-                                        <TableCell>{note_request.request_date}</TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">{note_request.number_note}</TableCell>
+                                        <TableCell align="left">{note_request.employee}</TableCell>
+                                        <TableCell align="center">{note_request.request_date}</TableCell>
+                                        <TableCell align="center">
                                             <Chip
                                                 label={note_request.state}
                                                 color={

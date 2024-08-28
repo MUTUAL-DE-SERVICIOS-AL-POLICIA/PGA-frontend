@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Divider, TextField, Grid, Tooltip, IconButton } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Divider, Grid, Tooltip, IconButton, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useReportKardexStore } from '../../../hooks';
 import React, { useEffect, useState } from 'react';
@@ -54,13 +54,15 @@ const StyledContainer = styled(Paper)({
 });
 
 export const ValuedPhysical = () => {
-    const { getReportValued, report_ValuedPhys, PrintReportValued } = useReportKardexStore();
+    const { getReportValued, report_ValuedPhys, PrintReportValued, DownloadReportValued } = useReportKardexStore();
 
     const [endDate, setEndDate] = useState('');
-
+    const [selectedGroup, setSelectedGroup] = useState('');
+    console.log(setEndDate);
     useEffect(() => {
-        getReportValued(endDate);
-    }, [endDate]);
+        getReportValued();
+    }, []);
+
     const getFormattedEndDate = () => {
         const today = new Date();
         const todayDate = today.getDate();
@@ -82,23 +84,37 @@ export const ValuedPhysical = () => {
 
         return formattedDate;
     };
+
     const handlePrintClick = () => {
         PrintReportValued();
-    }
+    };
+
+    const handleDownLoadClick = () => {
+        DownloadReportValued();
+    };
+
+    const handleGroupChange = (event: any) => {
+        setSelectedGroup(event.target.value);
+    };
 
     return (
         <>
             <Stack direction="row" marginTop={3} spacing={2} sx={{ mb: 2 }}>
-                <TextField
-                    label="Fecha Limite"
-                    type="date"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    sx={{ width: 200 }}
-                />
+                <FormControl sx={{ minWidth: 500 }}>
+                    <InputLabel>Seleccionar Grupo</InputLabel>
+                    <Select
+                        value={selectedGroup}
+                        onChange={handleGroupChange}
+                        label="Seleccionar Grupo"
+                    >
+                        <MenuItem value="">Todos los Grupos</MenuItem>
+                        {report_ValuedPhys.data?.map((item: any, index: number) => (
+                            <MenuItem key={index} value={item.group_code}>
+                                {item.group_name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <Grid item xs={12} sm={4}>
                     <Grid container spacing={1}>
                         <Grid item>
@@ -115,6 +131,7 @@ export const ValuedPhysical = () => {
                             <Tooltip title="Descargar">
                                 <IconButton
                                     color="primary"
+                                    onClick={handleDownLoadClick}
                                 >
                                     <DownloadIcon />
                                 </IconButton>
@@ -137,67 +154,69 @@ export const ValuedPhysical = () => {
                 {report_ValuedPhys.data == null ? (
                     <SkeletonComponent quantity={5} />
                 ) : (
-                    report_ValuedPhys.data.map((item: any, index: number) => {
-                        return (
-                            <React.Fragment key={index}>
-                                <TableContainer>
-                                    <Typography sx={{ padding: '10px', fontSize: '0.9rem' }}>
-                                        <strong>Grupo:</strong> {item.group_name}
-                                    </Typography>
-                                    <Typography sx={{ padding: '10px', fontSize: '0.9rem' }}>
-                                        <strong>Código:</strong> {item.group_code}
-                                    </Typography>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <StyledHeaderCell rowSpan={2}>CÓDIGO</StyledHeaderCell>
-                                                <StyledHeaderCell rowSpan={2}>DESCRIPCIÓN</StyledHeaderCell>
-                                                <StyledHeaderCell rowSpan={2}>UNIDAD</StyledHeaderCell>
-                                                <StyledHeaderCell colSpan={3}>ENTRADAS</StyledHeaderCell>
-                                                <StyledHeaderCell colSpan={3}>CANTIDADES</StyledHeaderCell>
-                                                <StyledHeaderCell colSpan={3}>SALDOS</StyledHeaderCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <StyledHeaderCell>EXIS. ALM.</StyledHeaderCell>
-                                                <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
-                                                <StyledHeaderCell>COS. TOTAL</StyledHeaderCell>
-                                                <StyledHeaderCell>SAL. EXIS. ALM</StyledHeaderCell>
-                                                <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
-                                                <StyledHeaderCell>COS. TOTAL</StyledHeaderCell>
-                                                <StyledHeaderCell>SAL. EXIS. ALM</StyledHeaderCell>
-                                                <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
-                                                <StyledHeaderCell>SALDO</StyledHeaderCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {item.materials.map((material: any, index: number) => {
-                                                return (
-                                                    <StyledTableRow key={index}>
-                                                        <StyledBodyCell align='left'>{material.material_code}</StyledBodyCell>
-                                                        <StyledDescriptionCell align='left'>{material.description}</StyledDescriptionCell>
-                                                        <StyledBodyCell>{material.unit}</StyledBodyCell>
+                    report_ValuedPhys.data
+                        .filter((item: any) => selectedGroup === '' || item.group_code === selectedGroup) // Filtrar por grupo
+                        .map((item: any, index: number) => {
+                            return (
+                                <React.Fragment key={index}>
+                                    <TableContainer>
+                                        <Typography sx={{ padding: '10px', fontSize: '0.9rem' }}>
+                                            <strong>Grupo:</strong> {item.group_name}
+                                        </Typography>
+                                        <Typography sx={{ padding: '10px', fontSize: '0.9rem' }}>
+                                            <strong>Código:</strong> {item.group_code}
+                                        </Typography>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <StyledHeaderCell rowSpan={2}>CÓDIGO</StyledHeaderCell>
+                                                    <StyledHeaderCell rowSpan={2}>DESCRIPCIÓN</StyledHeaderCell>
+                                                    <StyledHeaderCell rowSpan={2}>UNIDAD</StyledHeaderCell>
+                                                    <StyledHeaderCell colSpan={3}>ENTRADAS</StyledHeaderCell>
+                                                    <StyledHeaderCell colSpan={3}>CANTIDADES</StyledHeaderCell>
+                                                    <StyledHeaderCell colSpan={3}>SALDOS</StyledHeaderCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <StyledHeaderCell>EXIS. ALM.</StyledHeaderCell>
+                                                    <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
+                                                    <StyledHeaderCell>COS. TOTAL</StyledHeaderCell>
+                                                    <StyledHeaderCell>SAL. EXIS. ALM</StyledHeaderCell>
+                                                    <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
+                                                    <StyledHeaderCell>COS. TOTAL</StyledHeaderCell>
+                                                    <StyledHeaderCell>SAL. EXIS. ALM</StyledHeaderCell>
+                                                    <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
+                                                    <StyledHeaderCell>SALDO</StyledHeaderCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {item.materials.map((material: any, index: number) => {
+                                                    return (
+                                                        <StyledTableRow key={index}>
+                                                            <StyledBodyCell align='left'>{material.material_code}</StyledBodyCell>
+                                                            <StyledDescriptionCell align='left'>{material.description}</StyledDescriptionCell>
+                                                            <StyledBodyCell>{material.unit}</StyledBodyCell>
 
-                                                        <StyledBodyCell align='center'>{material.total_amount_entries.toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell align='right'>{material.total_cost.toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='center'>{material.total_amount_entries.toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{((material.total_amount_entries * material.average_cost_unit).toFixed(2))}</StyledBodyCell>
 
-                                                        <StyledBodyCell align='center'>{(material.total_amount_entries - material.stock).toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell align='right'>{((material.total_amount_entries - material.stock) * material.average_cost_unit).toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='center'>{(material.total_amount_entries - material.stock).toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{((material.total_amount_entries - material.stock) * material.average_cost_unit).toFixed(2)}</StyledBodyCell>
 
-                                                        <StyledBodyCell align='center'>{material.stock.toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
-                                                        <StyledBodyCell align='right'>{(material.average_cost_unit * material.stock).toFixed(2)}</StyledBodyCell>
-                                                    </StyledTableRow>
-                                                );
-                                            })}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                                <Divider />
-                            </React.Fragment>
-                        );
-                    })
+                                                            <StyledBodyCell align='center'>{material.stock.toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{(material.average_cost_unit * material.stock).toFixed(2)}</StyledBodyCell>
+                                                        </StyledTableRow>
+                                                    );
+                                                })}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    <Divider />
+                                </React.Fragment>
+                            );
+                        })
                 )}
             </StyledContainer>
         </>

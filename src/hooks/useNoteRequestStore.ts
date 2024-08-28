@@ -38,7 +38,7 @@ export const useNoteRequestStore = () => {
     const PrintNoteRequest = async (note_request: any) => {
         try {
             const response = await api.get(`/auth/print_post_request/${note_request.id_note}/`, {
-                responseType: 'arraybuffer', // Importante para descargar archivos
+                responseType: 'arraybuffer', 
             });
             printDocument(response)
             return true

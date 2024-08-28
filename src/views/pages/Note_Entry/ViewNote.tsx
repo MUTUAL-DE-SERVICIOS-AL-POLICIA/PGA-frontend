@@ -64,27 +64,27 @@ export const ViewNote = (props: ViewProps) => {
 
                         <Divider sx={{ my: 2, borderBottom: '2px solid #E2F6F0' }} />
 
-                        <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>Visualizar Materiales</Typography>
+                        <Typography variant="h6" sx={{ mb: 2 }}>Visualizar Materiales</Typography>
                         <Table size="small" sx={{ border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'hidden' }}>
                             <TableHead sx={{ backgroundColor: '#E2F6F0' }}>
                                 <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Código</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Descripción</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Unidad</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Cantidad</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Costo Unitario</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Costo Total</TableCell>
+                                    <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Código</TableCell>
+                                    <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Descripción</TableCell>
+                                    <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Unidad</TableCell>
+                                    <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Cantidad</TableCell>
+                                    <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Costo Unitario</TableCell>
+                                    <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid #e0e0e0', color: '#555' }}>Costo Total</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {item.materials.map((material: any, index: number) => (
                                     <TableRow key={index}>
-                                        <TableCell>{material.code_material}</TableCell>
-                                        <TableCell>{material.pivot?.name_material}</TableCell>
-                                        <TableCell>{material.unit_material}</TableCell>
-                                        <TableCell>{material.pivot?.amount_entries}</TableCell>
-                                        <TableCell>{material.pivot?.cost_unit}</TableCell>
-                                        <TableCell>{material.pivot?.cost_total}</TableCell>
+                                        <TableCell align="center">{material.code_material}</TableCell>
+                                        <TableCell align="left" >{material.pivot?.name_material}</TableCell>
+                                        <TableCell align="center" >{material.unit_material}</TableCell>
+                                        <TableCell align="center" >{material.pivot?.amount_entries}</TableCell>
+                                        <TableCell align="right" >{material.pivot?.cost_unit}</TableCell>
+                                        <TableCell align="right" >{material.pivot?.cost_total}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

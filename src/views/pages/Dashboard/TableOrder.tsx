@@ -39,11 +39,11 @@ export const TableOrder = () => {
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#E2F6F0' }}>
-                            <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>FECHA</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>DESCRIPCIÓN</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>CANTIDAD</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>TIPO</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>COSTO TOTAL</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', textAlign: 'center' }}>FECHA</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>DESCRIPCIÓN</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', textAlign: 'center' }}>CANTIDAD</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', textAlign: 'center' }}>TIPO</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', textAlign: 'center' }}>COSTO TOTAL</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -55,13 +55,13 @@ export const TableOrder = () => {
                             return (
                                 <TableRow key={index}>
                                     <TableCell sx={{ textAlign: 'center' }}>{item.date}</TableCell>
-                                    <TableCell>{item.material}</TableCell>
+                                    <TableCell align="left">{item.material}</TableCell>
                                     <TableCell sx={{ textAlign: 'center' }}>{amount}</TableCell>
                                     <TableCell sx={{ textAlign: 'center' }}>
                                         <CircleIcon sx={{ color: statusColor, fontSize: 'small', marginRight: 1 }} />
                                         {type}
                                     </TableCell>
-                                    <TableCell sx={{ textAlign: 'center' }}>{totalCost} Bs</TableCell>
+                                    <TableCell sx={{ textAlign: 'right' }}>{totalCost} Bs</TableCell>
                                 </TableRow>
                             );
                         })}

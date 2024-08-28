@@ -45,13 +45,13 @@ export const MaterialTable = (props: tableProps) => {
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>
                         <TableRow sx={{ background: '#E2F6F0' }}>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Cod. Material</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Descripción</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Unidad</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Stock</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Estado</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Tipo de Material</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Cod. Material</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Descripción</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Unidad</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Stock</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Estado</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Tipo de Material</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -60,11 +60,11 @@ export const MaterialTable = (props: tableProps) => {
                                 return (
                                     <React.Fragment key={index}>
                                         <TableRow sx={{ borderBottom: '2px solid #ccc' }}>
-                                            <TableCell>{material.code_material}</TableCell>
-                                            <TableCell>{material.description}</TableCell>
-                                            <TableCell>{material.unit_material}</TableCell>
-                                            <TableCell>{material.stock}</TableCell>
-                                            <TableCell>
+                                            <TableCell align="center">{material.code_material}</TableCell>
+                                            <TableCell align="left">{material.description}</TableCell>
+                                            <TableCell align="center">{material.unit_material}</TableCell>
+                                            <TableCell align="center">{material.stock}</TableCell>
+                                            <TableCell align="center">
                                                 <Button
                                                     variant="contained"
                                                     color={material.state === 'Habilitado' ? 'success' : 'error'}
@@ -73,7 +73,7 @@ export const MaterialTable = (props: tableProps) => {
                                                     {material.state === 'Habilitado' ? 'Habilitado' : 'Inhabilitado'}
                                                 </Button>
                                             </TableCell>
-                                            <TableCell>{material.type}</TableCell>
+                                            <TableCell align="center">{material.type}</TableCell>
                                             <TableCell>
                                                 <IconButton sx={{ p: 2 }} onClick={() => itemView!(material)}>
                                                     <CalendarMonth color="success" />

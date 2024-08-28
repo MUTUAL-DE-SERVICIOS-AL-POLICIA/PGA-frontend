@@ -67,11 +67,11 @@ export const TableNotesEntry = (props: tableProps) => {
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>
                         <TableRow sx={{ background: '#E2F6F0' }}>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Nro Nota</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Nro Factura</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Fecha de Ingreso</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Tipo de Nota de Entrada</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Nro Nota</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Nro Factura</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Fecha de Ingreso</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Tipo de Nota de Entrada</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -81,15 +81,15 @@ export const TableNotesEntry = (props: tableProps) => {
                             ) : (
                                 note_entries.map((note_entry: NoteEntryModel, index: number) => (
                                     <TableRow key={index} sx={{ borderBottom: '2px solid #ccc' }}>
-                                        <TableCell>{note_entry.number_note}</TableCell>
-                                        <TableCell>{note_entry.invoice_number}</TableCell>
-                                        <TableCell>{note_entry.delivery_date}</TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">{note_entry.number_note}</TableCell>
+                                        <TableCell align="center">{note_entry.invoice_number}</TableCell>
+                                        <TableCell align="center">{note_entry.delivery_date}</TableCell>
+                                        <TableCell align="center">
                                             <Typography variant="body2" sx={{ color: getTypeTextAndColor(note_entry.type_id).color }}>
                                                 {getTypeTextAndColor(note_entry.type_id).text}
                                             </Typography>
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">
                                             <Stack alignContent="center" direction="row">
                                                 <IconButton sx={{ p: 2 }} onClick={() => PrintNoteEntry(note_entry)}>
                                                     <Print color="info" />
