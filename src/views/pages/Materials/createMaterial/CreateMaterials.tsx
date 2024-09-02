@@ -73,25 +73,18 @@ export const CreateMaterials = (props: createProps) => {
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []); // Dependencia vacía para ejecutarse solo en montaje y desmontaje
+    }, []);
 
     const units = [
-        "HOJA",
+        "HOJAS",
         "ROLLO",
         "BLOCK",
         "CAJA",
-        "FRASCO",
-        "MTS",
         "PIEZAS",
         "OVILLO",
-        "PAR",
-        "BIDON",
-        "SET",
         "GLOBAL",
-        "UNIDAD",
-        "LITRO",
-        "JUEGO",
-        "PAQUETE"
+        "PAQUETE",
+        "RESMA"
     ];
 
     const type_material_select = [
@@ -110,7 +103,6 @@ export const CreateMaterials = (props: createProps) => {
                         opendrawer={modal}
                         handleDrawer={handleModal}
                     >
-                        {/*Colocar la tabla*/}
                         <GroupModal
                             stateSelect={true}
                             limitInit={5}

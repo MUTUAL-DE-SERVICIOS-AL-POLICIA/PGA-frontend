@@ -40,17 +40,19 @@ export const useReportKardexStore = () => {
     };
     const getReportValued = async (startDate?: string, endDate?: string) => {
         const params = {
-            startDate,
-            endDate,
+            start_date: startDate,
+            end_date: endDate,
         };
         const { data } = await api.get('/auth/ReportPrintValuedPhysical/', { params });
+        console.log(data);
         dispatch(setReportValued({ report_ValuedPhys: data }));
         return true;
     };
 
-    const PrintReportValued = async (endDate?: string) => {
+    const PrintReportValued = async (startDate?: string, endDate?: string) => {
         const params = {
-            endDate,
+            start_date: startDate,
+            end_date: endDate,
         };
 
         try {
@@ -66,9 +68,10 @@ export const useReportKardexStore = () => {
             return false;
         }
     };
-    const DownloadReportValued = async (endDate?: string) => {
+    const DownloadReportValued = async (startDate?: string, endDate?: string) => {
         const params = {
-            endDate,
+            start_date: startDate,
+            end_date: endDate,
         };
 
         try {

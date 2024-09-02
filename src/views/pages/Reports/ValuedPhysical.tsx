@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Divider, Grid, Tooltip, IconButton, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Divider, Grid, Tooltip, IconButton, MenuItem, Select, FormControl, InputLabel, TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useReportKardexStore } from '../../../hooks';
 import React, { useEffect, useState } from 'react';
@@ -56,12 +56,13 @@ const StyledContainer = styled(Paper)({
 export const ValuedPhysical = () => {
     const { getReportValued, report_ValuedPhys, PrintReportValued, DownloadReportValued } = useReportKardexStore();
 
+    const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [selectedGroup, setSelectedGroup] = useState('');
-    console.log(setEndDate);
+
     useEffect(() => {
-        getReportValued();
-    }, []);
+        getReportValued(startDate, endDate);
+    }, [startDate, endDate]);
 
     const getFormattedEndDate = () => {
         const today = new Date();
@@ -86,11 +87,11 @@ export const ValuedPhysical = () => {
     };
 
     const handlePrintClick = () => {
-        PrintReportValued();
+        PrintReportValued(startDate, endDate);
     };
 
     const handleDownLoadClick = () => {
-        DownloadReportValued();
+        DownloadReportValued(startDate, endDate);
     };
 
     const handleGroupChange = (event: any) => {
@@ -100,6 +101,27 @@ export const ValuedPhysical = () => {
     return (
         <>
             <Stack direction="row" marginTop={3} spacing={2} sx={{ mb: 2 }}>
+                <TextField
+                    label="Fecha de inicio"
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    sx={{ minWidth: 200 }}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+                <TextField
+                    label="Fecha de fin"
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    sx={{ minWidth: 200 }}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+
                 <FormControl sx={{ minWidth: 500 }}>
                     <InputLabel>Seleccionar Grupo</InputLabel>
                     <Select
@@ -109,12 +131,13 @@ export const ValuedPhysical = () => {
                     >
                         <MenuItem value="">Todos los Grupos</MenuItem>
                         {report_ValuedPhys.data?.map((item: any, index: number) => (
-                            <MenuItem key={index} value={item.group_code}>
-                                {item.group_name}
+                            <MenuItem key={index} value={item.codigo_grupo}>
+                                {item.grupo}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
+
                 <Grid item xs={12} sm={4}>
                     <Grid container spacing={1}>
                         <Grid item>
@@ -140,31 +163,38 @@ export const ValuedPhysical = () => {
                     </Grid>
                 </Grid>
             </Stack>
+
             <StyledContainer>
                 <Typography variant="h6" align="center" gutterBottom>
                     INVENTARIO FISICO VALORADO
                 </Typography>
                 <Typography align="center" gutterBottom>
-                    LA PAZ DEL {report_ValuedPhys.date_note?.toUpperCase()} AL {getFormattedEndDate()}
+                    LA PAZ DEL {startDate ? new Date(startDate).toLocaleDateString('es-ES', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    }).toUpperCase() : report_ValuedPhys.date_note} AL {getFormattedEndDate()}
                 </Typography>
                 <Typography align="center" gutterBottom>
                     (EXPRESADO EN BOLIVIANOS)
                 </Typography>
 
                 {report_ValuedPhys.data == null ? (
-                    <SkeletonComponent quantity={5} />
+                    <Typography variant="body2" align="center">
+                        <SkeletonComponent quantity={5} />
+                    </Typography>
                 ) : (
                     report_ValuedPhys.data
-                        .filter((item: any) => selectedGroup === '' || item.group_code === selectedGroup) // Filtrar por grupo
+                        .filter((item: any) => selectedGroup === '' || item.codigo_grupo === selectedGroup)
                         .map((item: any, index: number) => {
                             return (
                                 <React.Fragment key={index}>
                                     <TableContainer>
                                         <Typography sx={{ padding: '10px', fontSize: '0.9rem' }}>
-                                            <strong>Grupo:</strong> {item.group_name}
+                                            <strong>Grupo:</strong> {item.grupo}
                                         </Typography>
                                         <Typography sx={{ padding: '10px', fontSize: '0.9rem' }}>
-                                            <strong>Código:</strong> {item.group_code}
+                                            <strong>Código:</strong> {item.codigo_grupo}
                                         </Typography>
                                         <Table>
                                             <TableHead>
@@ -189,31 +219,31 @@ export const ValuedPhysical = () => {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {item.materials.map((material: any, index: number) => {
+                                                {item.materiales.map((material: any, index: number) => {
                                                     return (
                                                         <StyledTableRow key={index}>
-                                                            <StyledBodyCell align='left'>{material.material_code}</StyledBodyCell>
-                                                            <StyledDescriptionCell align='left'>{material.description}</StyledDescriptionCell>
-                                                            <StyledBodyCell>{material.unit}</StyledBodyCell>
+                                                            <StyledBodyCell align='left'>{material.codigo_material}</StyledBodyCell>
+                                                            <StyledDescriptionCell align='left'>{material.nombre_material}</StyledDescriptionCell>
+                                                            <StyledBodyCell>{material.unidad_material}</StyledBodyCell>
 
-                                                            <StyledBodyCell align='center'>{material.total_amount_entries.toFixed(2)}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{((material.total_amount_entries * material.average_cost_unit).toFixed(2))}</StyledBodyCell>
+                                                            <StyledBodyCell align='center'>{material.total_ingresado}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{material.promedio_costo_unitario}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{((material.total_ingresado * material.promedio_costo_unitario).toFixed(2))}</StyledBodyCell>
 
-                                                            <StyledBodyCell align='center'>{(material.total_amount_entries - material.stock).toFixed(2)}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{((material.total_amount_entries - material.stock) * material.average_cost_unit).toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='center'>{material.total_entregado}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{material.promedio_costo_unitario}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{(material.total_entregado * material.promedio_costo_unitario).toFixed(2)}</StyledBodyCell>
 
-                                                            <StyledBodyCell align='center'>{material.stock.toFixed(2)}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{material.average_cost_unit.toFixed(2)}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{(material.average_cost_unit * material.stock).toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='center'>{material.total_ingresado - material.total_entregado}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{material.promedio_costo_unitario}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{((material.total_ingresado - material.total_entregado) * material.promedio_costo_unitario).toFixed(2)}</StyledBodyCell>
                                                         </StyledTableRow>
-                                                    );
+                                                    )
                                                 })}
                                             </TableBody>
                                         </Table>
+                                        <Divider sx={{ mt: 2 }} />
                                     </TableContainer>
-                                    <Divider />
                                 </React.Fragment>
                             );
                         })
