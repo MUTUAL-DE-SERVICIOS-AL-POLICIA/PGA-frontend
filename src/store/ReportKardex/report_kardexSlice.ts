@@ -5,6 +5,7 @@ export const report_kardexSlice = createSlice({
     initialState: {
         report_kardexs: <any[] | null>null || [],
         report_ValuedPhys: <any[] | null>null || [],
+        report_ValuedPhy_Consolids: <any[] | null>null || [],
         flag: false,
     },
     reducers: {
@@ -14,10 +15,13 @@ export const report_kardexSlice = createSlice({
         setReportValued: (state, action) => {
             state.report_ValuedPhys = action.payload.report_ValuedPhys;
         },
+        setReportValuedConsolid: (state, action) => {
+            state.report_ValuedPhy_Consolids = action.payload.report_ValuedPhy_Consolids;
+        },
         refreshReportKardex: (state) => {
             state.flag = !state.flag
         },
     }
 });
 
-export const { setReportKardex, refreshReportKardex, setReportValued } = report_kardexSlice.actions;
+export const { setReportKardex, refreshReportKardex, setReportValued, setReportValuedConsolid } = report_kardexSlice.actions;

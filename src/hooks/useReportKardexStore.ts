@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { coffeApi } from "../services"
-import { setReportKardex, setReportValued } from "../store";
+import { setReportKardex, setReportValued, setReportValuedConsolid } from "../store";
 import { printDocument, downloadDocument } from "../utils/helper";
 
 const api = coffeApi;
 
 export const useReportKardexStore = () => {
-    const { report_ValuedPhys, report_kardexs = [], flag } = useSelector((state: any) => state.report_kardexs);
+    const { report_ValuedPhys, report_kardexs = [], report_ValuedPhy_Consolids, flag } = useSelector((state: any) => state.report_kardexs);
     const dispatch = useDispatch();
 
     const getReportKardex = async (material_id: any) => {
@@ -44,7 +44,6 @@ export const useReportKardexStore = () => {
             end_date: endDate,
         };
         const { data } = await api.get('/auth/ReportPrintValuedPhysical/', { params });
-        console.log(data);
         dispatch(setReportValued({ report_ValuedPhys: data }));
         return true;
     };
@@ -88,11 +87,21 @@ export const useReportKardexStore = () => {
         }
     };
 
+    const getReportValuedConsolid = async () => {
+        const { data } = await api.get('/auth/ReportPrintValuedPhysicalConsolidated/');
+        dispatch(setReportValuedConsolid({ report_ValuedPhy_Consolids: data }));
+        return true;
+    }
+
+
+
+
 
     return {
         report_kardexs,
         flag,
         report_ValuedPhys,
+        report_ValuedPhy_Consolids,
 
         getReportKardex,
         getReportValued,
@@ -100,5 +109,6 @@ export const useReportKardexStore = () => {
         DownloadReportKardex,
         PrintReportValued,
         DownloadReportValued,
+        getReportValuedConsolid,
     }
 }
