@@ -38,7 +38,9 @@ export const ExistenceCard = () => {
         getMaterial(0, 5000, '');
     }, []);
 
-    const availableMaterials = materials.filter((material: MaterialModel) => !selectedMaterials.some(selected => selected.id === material.id));
+    const availableMaterials = materials.filter((material: MaterialModel) => {
+        return !material.description.includes("(CAJA CHICA)");
+    });
 
     return (
         <>

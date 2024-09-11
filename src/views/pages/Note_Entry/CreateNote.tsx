@@ -108,7 +108,16 @@ export const CreateNote = () => {
         getMaterial(0, 5000, '');
     }, []);
 
-    const availableMaterials = materials.filter((material: MaterialModel) => !selectedMaterials.some(selected => selected.id === material.id));
+    const availableMaterials = materials.filter((material: MaterialModel) => {
+        if (typeSelect === 0) return false;
+        if (typeSelect === 2) {
+            return material.description.includes("(CAJA CHICA)");
+        }
+        if (typeSelect === 1) {
+            return !material.description.includes("(CAJA CHICA)");
+        }
+        return true;
+    });
 
 
     const isMaterialSelectDisabled = typeSelect === 0 || supplierSelect === 0;
