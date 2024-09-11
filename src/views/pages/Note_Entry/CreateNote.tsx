@@ -24,7 +24,7 @@ export const CreateNote = () => {
     console.log(formSubmitted);
 
     const navigate = useNavigate();
-    const handleRederict = () => {
+    const handleRedirect = () => {
         navigate('/entryView');
     }
 
@@ -97,7 +97,7 @@ export const CreateNote = () => {
         await postNoteEntry(formData).then((res) => {
             if (res) {
                 PrintNoteEntry(res);
-                handleRederict();
+                handleRedirect();
             }
         });
     }
@@ -111,14 +111,13 @@ export const CreateNote = () => {
     const availableMaterials = materials.filter((material: MaterialModel) => {
         if (typeSelect === 0) return false;
         if (typeSelect === 2) {
-            return material.description.includes("(CAJA CHICA)");
+            return material.description.includes("(CAJA CHICA)") && !selectedMaterials.some(m => m.id === material.id);
         }
         if (typeSelect === 1) {
-            return !material.description.includes("(CAJA CHICA)");
+            return !material.description.includes("(CAJA CHICA)") && !selectedMaterials.some(m => m.id === material.id);
         }
-        return true;
+        return !selectedMaterials.some(m => m.id === material.id);
     });
-
 
     const isMaterialSelectDisabled = typeSelect === 0 || supplierSelect === 0;
 

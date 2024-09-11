@@ -11,7 +11,6 @@ export const ExistenceCard = () => {
     const { materials = [], getMaterial } = useMaterialStore();
     const { report_kardexs, getReportKardex, PrintReportKardex, DownloadReportKardex } = useReportKardexStore();
 
-    const [selectedMaterials] = useState<{ id: number, name: string, quantity: number, price: number, unit_material: string }[]>([]);
     const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
 
     const handleAddMaterial = (value: any) => {
