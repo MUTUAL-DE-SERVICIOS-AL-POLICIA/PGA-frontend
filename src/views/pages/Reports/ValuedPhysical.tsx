@@ -210,36 +210,39 @@ export const ValuedPhysical = () => {
                                                     <StyledHeaderCell>EXIS. ALM.</StyledHeaderCell>
                                                     <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
                                                     <StyledHeaderCell>COS. TOTAL</StyledHeaderCell>
+                                                    <StyledHeaderCell>COS. TOTAL</StyledHeaderCell>
                                                     <StyledHeaderCell>SAL. EXIS. ALM</StyledHeaderCell>
                                                     <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
-                                                    <StyledHeaderCell>COS. TOTAL</StyledHeaderCell>
                                                     <StyledHeaderCell>SAL. EXIS. ALM</StyledHeaderCell>
                                                     <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
                                                     <StyledHeaderCell>SALDO</StyledHeaderCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {item.materiales.map((material: any, index: number) => {
-                                                    return (
-                                                        <StyledTableRow key={index}>
-                                                            <StyledBodyCell align='left'>{material.codigo_material}</StyledBodyCell>
-                                                            <StyledDescriptionCell align='left'>{material.nombre_material}</StyledDescriptionCell>
-                                                            <StyledBodyCell>{material.unidad_material}</StyledBodyCell>
+                                                {item.materiales.map((material: any, index: number) => (
+                                                    material.lotes.map((lote: any, loteIndex: number) => (
+                                                        <StyledTableRow key={`${index}-${loteIndex}`}>
+                                                            {loteIndex === 0 && (
+                                                                <>
+                                                                    <StyledBodyCell rowSpan={material.lotes.length} align='left'>{material.codigo_material}</StyledBodyCell>
+                                                                    <StyledDescriptionCell rowSpan={material.lotes.length} align='left'>{material.nombre_material}</StyledDescriptionCell>
+                                                                    <StyledBodyCell rowSpan={material.lotes.length}>{material.unidad_material}</StyledBodyCell>
+                                                                </>
+                                                            )}
+                                                            <StyledBodyCell align='center'>{lote.cantidad_inicial}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{lote.precio_unitario}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{(lote.cantidad_inicial * lote.precio_unitario).toFixed(2)}</StyledBodyCell>
 
-                                                            <StyledBodyCell align='center'>{material.total_ingresado}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{material.promedio_costo_unitario}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{((material.total_ingresado * material.promedio_costo_unitario).toFixed(2))}</StyledBodyCell>
+                                                            <StyledBodyCell align='center'>{lote.cantidad_inicial - lote.cantidad_restante}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{lote.precio_unitario}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{((lote.cantidad_inicial - lote.cantidad_restante) * lote.precio_unitario).toFixed(2)}</StyledBodyCell>
 
-                                                            <StyledBodyCell align='center'>{material.total_entregado}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{material.promedio_costo_unitario}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{(material.total_entregado * material.promedio_costo_unitario).toFixed(2)}</StyledBodyCell>
-
-                                                            <StyledBodyCell align='center'>{material.total_ingresado - material.total_entregado}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{material.promedio_costo_unitario}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{((material.total_ingresado - material.total_entregado) * material.promedio_costo_unitario).toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='center'>{lote.cantidad_restante}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{lote.precio_unitario}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{(lote.cantidad_restante * lote.precio_unitario).toFixed(2)}</StyledBodyCell>
                                                         </StyledTableRow>
-                                                    )
-                                                })}
+                                                    ))
+                                                ))}
                                             </TableBody>
                                         </Table>
                                         <Divider sx={{ mt: 2 }} />
