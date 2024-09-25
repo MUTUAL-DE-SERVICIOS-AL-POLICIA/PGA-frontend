@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Divider, Grid, Tooltip, IconButton, MenuItem, Select, FormControl, InputLabel, TextField } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Divider, Grid, Tooltip, IconButton, MenuItem, Select, FormControl, InputLabel, TextField, CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useReportKardexStore } from '../../../hooks';
 import React, { useEffect, useState } from 'react';
@@ -59,6 +59,7 @@ export const ValuedPhysical = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [selectedGroup, setSelectedGroup] = useState('');
+    const [loading, setLoading] = useState(false); // Loading state
 
     useEffect(() => {
         getReportValued(startDate, endDate);
@@ -87,11 +88,17 @@ export const ValuedPhysical = () => {
     };
 
     const handlePrintClick = () => {
-        PrintReportValued(startDate, endDate);
+        setLoading(true); // Start loading
+        PrintReportValued(startDate, endDate).finally(() => {
+            setLoading(false); // Stop loading
+        });
     };
 
     const handleDownLoadClick = () => {
-        DownloadReportValued(startDate, endDate);
+        setLoading(true); // Start loading
+        DownloadReportValued(startDate, endDate).finally(() => {
+            setLoading(false); // Stop loading
+        });
     };
 
     const handleGroupChange = (event: any) => {
@@ -145,8 +152,9 @@ export const ValuedPhysical = () => {
                                 <IconButton
                                     color="primary"
                                     onClick={handlePrintClick}
+                                    disabled={loading} // Disable while loading
                                 >
-                                    <PrintIcon />
+                                    {loading ? <CircularProgress size={24} /> : <PrintIcon />}
                                 </IconButton>
                             </Tooltip>
                         </Grid>
@@ -155,8 +163,9 @@ export const ValuedPhysical = () => {
                                 <IconButton
                                     color="primary"
                                     onClick={handleDownLoadClick}
+                                    disabled={loading} // Disable while loading
                                 >
-                                    <DownloadIcon />
+                                    {loading ? <CircularProgress size={24} /> : <DownloadIcon />}
                                 </IconButton>
                             </Tooltip>
                         </Grid>

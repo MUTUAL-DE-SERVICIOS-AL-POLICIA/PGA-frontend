@@ -12,7 +12,8 @@ export const MaterialsDetail = (props: ViewProps) => {
     const { open, handleClose, item } = props;
     const { viewMaterial } = useMaterialStore();
     const [materialDetails, setMaterialDetails] = useState<any>(null);
-    const [showAll, setShowAll] = useState(false); 
+    const [showAll, setShowAll] = useState(false);
+    console.log(materialDetails);
 
     useEffect(() => {
         if (item != null) {
@@ -30,7 +31,10 @@ export const MaterialsDetail = (props: ViewProps) => {
         setShowAll(event.target.checked);
     };
 
-    const filteredEntries = materialDetails?.entries.filter((entry: any) => showAll || entry.request !== 0) || [];
+    // const filteredEntries = materialDetails?.entries.filter((entry: any) => showAll || entry.request !== 0) || [];
+    const filteredEntries = (materialDetails?.entries || [])
+        .filter((entry: any) => showAll || entry.request !== 0)
+        .sort((a: any, b: any) => a.note_number - b.note_number);
 
     return (
         <Dialog
