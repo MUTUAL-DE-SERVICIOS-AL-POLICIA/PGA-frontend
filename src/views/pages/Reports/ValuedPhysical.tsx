@@ -1,7 +1,7 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Divider, Grid, Tooltip, IconButton, MenuItem, Select, FormControl, InputLabel, TextField, CircularProgress } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Divider, Grid, Tooltip, IconButton, MenuItem, Select, FormControl, InputLabel, TextField, CircularProgress, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useReportKardexStore } from '../../../hooks';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SkeletonComponent } from '../../../components';
 import { Stack } from '@mui/system';
 import PrintIcon from '@mui/icons-material/Print';
@@ -13,7 +13,7 @@ const StyledHeaderCell = styled(TableCell)({
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: '0.75rem',
-    border: '1px solid #ddd',
+    border: '1px solid #ddd',  // Añadir borde
     padding: '2px',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -29,6 +29,8 @@ const StyledDescriptionCell = styled(TableCell)({
     fontSize: '0.75rem',
     width: '400px',
     maxWidth: '400px',
+    border: '1px solid #ddd',  // Añadir borde
+    backgroundColor: '#fff',  // Fondo blanco
 });
 
 const StyledBodyCell = styled(TableCell)({
@@ -38,14 +40,17 @@ const StyledBodyCell = styled(TableCell)({
     width: '100px',
     maxWidth: '100px',
     fontSize: '0.7rem',
+    border: '1px solid #ddd',  // Añadir borde
+    backgroundColor: '#fff',  // Fondo blanco
 });
 
 const StyledTableRow = styled(TableRow)({
     '&:nth-of-type(odd)': {
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#f5f5f5', // Intercalado en filas
     },
     height: '24px',
 });
+
 
 const StyledContainer = styled(Paper)({
     margin: '32px 0',
@@ -59,11 +64,30 @@ export const ValuedPhysical = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [selectedGroup, setSelectedGroup] = useState('');
-    const [loading, setLoading] = useState(false); // Loading state
+    const [loading, setLoading] = useState(false); // Estado de carga
+    const [openDialog, setOpenDialog] = useState(false); // Estado del diálogo de confirmación
 
-    useEffect(() => {
-        getReportValued(startDate, endDate);
-    }, [startDate, endDate]);
+    const handleUpdateClick = () => {
+        setOpenDialog(true); // Abre el diálogo de confirmación
+    };
+
+    const confirmUpdate = () => {
+        setOpenDialog(false); // Cierra el diálogo de confirmación
+        setLoading(true); // Inicia carga
+        if (startDate && endDate) {
+            getReportValued(startDate, endDate).finally(() => {
+                setLoading(false); // Detiene carga
+            });
+        } else {
+            getReportValued().finally(() => {
+                setLoading(false); // Detiene carga
+            }); // Muestra todos los datos si no hay fechas
+        }
+    };
+
+    const cancelUpdate = () => {
+        setOpenDialog(false); // Cierra el diálogo de confirmación
+    };
 
     const getFormattedEndDate = () => {
         const today = new Date();
@@ -88,16 +112,16 @@ export const ValuedPhysical = () => {
     };
 
     const handlePrintClick = () => {
-        setLoading(true); // Start loading
+        setLoading(true); // Inicia carga
         PrintReportValued(startDate, endDate).finally(() => {
-            setLoading(false); // Stop loading
+            setLoading(false); // Detiene carga
         });
     };
 
     const handleDownLoadClick = () => {
-        setLoading(true); // Start loading
+        setLoading(true); // Inicia carga
         DownloadReportValued(startDate, endDate).finally(() => {
-            setLoading(false); // Stop loading
+            setLoading(false); // Detiene carga
         });
     };
 
@@ -148,11 +172,23 @@ export const ValuedPhysical = () => {
                 <Grid item xs={12} sm={4}>
                     <Grid container spacing={1}>
                         <Grid item>
+                            <Tooltip title="Actualizar">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleUpdateClick}
+                                    disabled={loading}
+                                >
+                                    Actualizar
+                                </Button>
+                            </Tooltip>
+                        </Grid>
+                        <Grid item>
                             <Tooltip title="Imprimir">
                                 <IconButton
                                     color="primary"
                                     onClick={handlePrintClick}
-                                    disabled={loading} // Disable while loading
+                                    disabled={loading}
                                 >
                                     {loading ? <CircularProgress size={24} /> : <PrintIcon />}
                                 </IconButton>
@@ -163,7 +199,7 @@ export const ValuedPhysical = () => {
                                 <IconButton
                                     color="primary"
                                     onClick={handleDownLoadClick}
-                                    disabled={loading} // Disable while loading
+                                    disabled={loading}
                                 >
                                     {loading ? <CircularProgress size={24} /> : <DownloadIcon />}
                                 </IconButton>
@@ -188,13 +224,15 @@ export const ValuedPhysical = () => {
                     (EXPRESADO EN BOLIVIANOS)
                 </Typography>
 
-                {report_ValuedPhys.data == null ? (
+                {loading ? ( // Muestra el indicador de carga si loading es verdadero
+                    <CircularProgress sx={{ display: 'block', margin: 'auto', padding: '20px' }} />
+                ) : report_ValuedPhys.data == null ? (
                     <Typography variant="body2" align="center">
                         <SkeletonComponent quantity={5} />
                     </Typography>
                 ) : (
                     report_ValuedPhys.data
-                        .filter((item: any) => selectedGroup === '' || item.codigo_grupo === selectedGroup)
+                        .filter((item: any) => (selectedGroup === '' || item.codigo_grupo === selectedGroup))
                         .map((item: any, index: number) => {
                             return (
                                 <React.Fragment key={index}>
@@ -212,19 +250,19 @@ export const ValuedPhysical = () => {
                                                     <StyledHeaderCell rowSpan={2}>DESCRIPCIÓN</StyledHeaderCell>
                                                     <StyledHeaderCell rowSpan={2}>UNIDAD</StyledHeaderCell>
                                                     <StyledHeaderCell colSpan={3}>ENTRADAS</StyledHeaderCell>
-                                                    <StyledHeaderCell colSpan={3}>CANTIDADES</StyledHeaderCell>
-                                                    <StyledHeaderCell colSpan={3}>SALDOS</StyledHeaderCell>
+                                                    <StyledHeaderCell colSpan={3}>SALIDAS</StyledHeaderCell>
+                                                    <StyledHeaderCell colSpan={3}>SALDO</StyledHeaderCell>
                                                 </TableRow>
                                                 <TableRow>
-                                                    <StyledHeaderCell>EXIS. ALM.</StyledHeaderCell>
-                                                    <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
-                                                    <StyledHeaderCell>COS. TOTAL</StyledHeaderCell>
-                                                    <StyledHeaderCell>COS. TOTAL</StyledHeaderCell>
-                                                    <StyledHeaderCell>SAL. EXIS. ALM</StyledHeaderCell>
-                                                    <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
-                                                    <StyledHeaderCell>SAL. EXIS. ALM</StyledHeaderCell>
-                                                    <StyledHeaderCell>COS. UNI.</StyledHeaderCell>
-                                                    <StyledHeaderCell>SALDO</StyledHeaderCell>
+                                                    <StyledHeaderCell>CANTIDAD</StyledHeaderCell>
+                                                    <StyledHeaderCell>PRECIO</StyledHeaderCell>
+                                                    <StyledHeaderCell>TOTAL</StyledHeaderCell>
+                                                    <StyledHeaderCell>CANTIDAD</StyledHeaderCell>
+                                                    <StyledHeaderCell>PRECIO</StyledHeaderCell>
+                                                    <StyledHeaderCell>TOTAL</StyledHeaderCell>
+                                                    <StyledHeaderCell>CANTIDAD</StyledHeaderCell>
+                                                    <StyledHeaderCell>PRECIO</StyledHeaderCell>
+                                                    <StyledHeaderCell>TOTAL</StyledHeaderCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
@@ -261,6 +299,21 @@ export const ValuedPhysical = () => {
                         })
                 )}
             </StyledContainer>
+
+            <Dialog open={openDialog} onClose={cancelUpdate}>
+                <DialogTitle>Confirmar Actualización</DialogTitle>
+                <DialogContent>
+                    <Typography>¿Está seguro de que desea actualizar el reporte?</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={cancelUpdate} color="primary">
+                        Cancelar
+                    </Button>
+                    <Button onClick={confirmUpdate} color="primary">
+                        Confirmar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 };
