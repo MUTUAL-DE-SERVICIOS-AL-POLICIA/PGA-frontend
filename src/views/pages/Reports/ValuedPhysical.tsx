@@ -13,7 +13,7 @@ const StyledHeaderCell = styled(TableCell)({
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: '0.75rem',
-    border: '1px solid #ddd',  // Añadir borde
+    border: '1px solid #ddd',  
     padding: '2px',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -29,8 +29,8 @@ const StyledDescriptionCell = styled(TableCell)({
     fontSize: '0.75rem',
     width: '400px',
     maxWidth: '400px',
-    border: '1px solid #ddd',  // Añadir borde
-    backgroundColor: '#fff',  // Fondo blanco
+    border: '1px solid #ddd',  
+    backgroundColor: '#fff', 
 });
 
 const StyledBodyCell = styled(TableCell)({
@@ -40,13 +40,13 @@ const StyledBodyCell = styled(TableCell)({
     width: '100px',
     maxWidth: '100px',
     fontSize: '0.7rem',
-    border: '1px solid #ddd',  // Añadir borde
-    backgroundColor: '#fff',  // Fondo blanco
+    border: '1px solid #ddd',  
+    backgroundColor: '#fff',  
 });
 
 const StyledTableRow = styled(TableRow)({
     '&:nth-of-type(odd)': {
-        backgroundColor: '#f5f5f5', // Intercalado en filas
+        backgroundColor: '#f5f5f5', 
     },
     height: '24px',
 });
@@ -64,29 +64,29 @@ export const ValuedPhysical = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [selectedGroup, setSelectedGroup] = useState('');
-    const [loading, setLoading] = useState(false); // Estado de carga
-    const [openDialog, setOpenDialog] = useState(false); // Estado del diálogo de confirmación
+    const [loading, setLoading] = useState(false); 
+    const [openDialog, setOpenDialog] = useState(false); 
 
     const handleUpdateClick = () => {
-        setOpenDialog(true); // Abre el diálogo de confirmación
+        setOpenDialog(true); 
     };
 
     const confirmUpdate = () => {
-        setOpenDialog(false); // Cierra el diálogo de confirmación
-        setLoading(true); // Inicia carga
+        setOpenDialog(false); 
+        setLoading(true); 
         if (startDate && endDate) {
             getReportValued(startDate, endDate).finally(() => {
-                setLoading(false); // Detiene carga
+                setLoading(false); 
             });
         } else {
             getReportValued().finally(() => {
-                setLoading(false); // Detiene carga
-            }); // Muestra todos los datos si no hay fechas
+                setLoading(false); 
+            }); 
         }
     };
 
     const cancelUpdate = () => {
-        setOpenDialog(false); // Cierra el diálogo de confirmación
+        setOpenDialog(false);
     };
 
     const getFormattedEndDate = () => {
@@ -112,16 +112,16 @@ export const ValuedPhysical = () => {
     };
 
     const handlePrintClick = () => {
-        setLoading(true); // Inicia carga
+        setLoading(true); 
         PrintReportValued(startDate, endDate).finally(() => {
-            setLoading(false); // Detiene carga
+            setLoading(false); 
         });
     };
 
     const handleDownLoadClick = () => {
-        setLoading(true); // Inicia carga
+        setLoading(true); 
         DownloadReportValued(startDate, endDate).finally(() => {
-            setLoading(false); // Detiene carga
+            setLoading(false); 
         });
     };
 
@@ -224,7 +224,7 @@ export const ValuedPhysical = () => {
                     (EXPRESADO EN BOLIVIANOS)
                 </Typography>
 
-                {loading ? ( // Muestra el indicador de carga si loading es verdadero
+                {loading ? ( 
                     <CircularProgress sx={{ display: 'block', margin: 'auto', padding: '20px' }} />
                 ) : report_ValuedPhys.data == null ? (
                     <Typography variant="body2" align="center">
