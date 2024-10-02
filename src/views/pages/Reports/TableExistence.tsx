@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 
 interface TableProps {
     itemKardex: any;
+    date_report: any;
 }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -32,7 +33,10 @@ const formatNumber = (num: number | undefined) => {
 };
 
 export const TableExistence = (props: TableProps) => {
-    const { itemKardex } = props;
+    const { itemKardex, date_report } = props;
+
+    console.log(date_report);
+
     if (!itemKardex || !itemKardex.kardex_de_existencia) {
         return (
             <StyledContainer>

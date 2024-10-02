@@ -1,7 +1,7 @@
 import { TableExistence } from "./TableExistence";
 import { useMaterialStore, useReportKardexStore } from "../../../hooks";
 import { useEffect, useState } from "react";
-import { Grid, IconButton, Tooltip } from "@mui/material";
+import { Grid, IconButton, TextField, Tooltip } from "@mui/material";
 import { SelectComponent } from "../../../components";
 import { MaterialModel } from "../../../models";
 import PrintIcon from '@mui/icons-material/Print';
@@ -10,7 +10,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 export const ExistenceCard = () => {
     const { materials = [], getMaterial } = useMaterialStore();
     const { report_kardexs, getReportKardex, PrintReportKardex, DownloadReportKardex } = useReportKardexStore();
-
+    const [endDate, setEndDate] = useState('');
     const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
 
     const handleAddMaterial = (value: any) => {
@@ -45,35 +45,55 @@ export const ExistenceCard = () => {
         <>
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12} sm={8}>
-                    <SelectComponent
-                        handleSelect={handleAddMaterial}
-                        label={""}
-                        options={[...availableMaterials.map((material: MaterialModel) => ({ id: material.id, name: material.description }))]}
-                        value={selectedMaterialId ?? ''}
-                    />
+                    <Grid container spacing={2} alignItems="center">
+                        <Grid item xs={8}>
+                            <SelectComponent
+                                handleSelect={handleAddMaterial}
+                                label={""}
+                                options={[...availableMaterials.map((material: MaterialModel) => ({ id: material.id, name: material.description }))]}
+                                value={selectedMaterialId ?? ''}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                label="Fecha de fin"
+                                type="date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                                sx={{ minWidth: 150 }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <Grid container spacing={1}>
                         <Grid item>
                             <Tooltip title="Imprimir">
-                                <IconButton
-                                    color="primary"
-                                    disabled={selectedMaterialId === null}
-                                    onClick={handlePrintClick}
-                                >
-                                    <PrintIcon />
-                                </IconButton>
+                                <span>
+                                    <IconButton
+                                        color="primary"
+                                        disabled={selectedMaterialId === null}
+                                        onClick={handlePrintClick}
+                                    >
+                                        <PrintIcon />
+                                    </IconButton>
+                                </span>
                             </Tooltip>
                         </Grid>
                         <Grid item>
                             <Tooltip title="Descargar">
-                                <IconButton
-                                    color="primary"
-                                    disabled={selectedMaterialId === null}
-                                    onClick={handleDownloadClick}
-                                >
-                                    <DownloadIcon />
-                                </IconButton>
+                                <span>
+                                    <IconButton
+                                        color="primary"
+                                        disabled={selectedMaterialId === null}
+                                        onClick={handleDownloadClick}
+                                    >
+                                        <DownloadIcon />
+                                    </IconButton>
+                                </span>
                             </Tooltip>
                         </Grid>
                     </Grid>
@@ -81,6 +101,7 @@ export const ExistenceCard = () => {
             </Grid>
             <TableExistence
                 itemKardex={report_kardexs}
+                date_report={endDate}
             />
         </>
     );

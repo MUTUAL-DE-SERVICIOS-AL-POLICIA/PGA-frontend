@@ -47,6 +47,9 @@ export const ViewNoteRequest = (props: ViewProps) => {
         setMaterials(newMaterials);
     };
 
+    const canApprove = () => {
+        return materials.every((material: any) => material.amount_to_deliver !== '' && material.amount_to_deliver > 0);
+    };
 
     const handleSubmit = async (status: string) => {
         const dataToSend = {
@@ -197,6 +200,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
                                 variant="contained"
                                 color="success"
                                 sx={{ boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2)', borderRadius: '8px', marginRight: '8px' }}
+                                disabled={!canApprove()} // Desactiva si no se puede aprobar
                             >
                                 {isApproving ? 'Confirmar Aprobación' : 'Aprobar'}
                             </Button>
