@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNoteRequestStore } from "../../../hooks/useNoteRequestStore";
 import { NoteRequestModel } from "../../../models/NoteRequestModel";
-import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, FormControl, Select, InputLabel, MenuItem, Snackbar, Chip } from "@mui/material";
+import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, FormControl, Select, InputLabel, MenuItem, Snackbar, Chip, Switch } from "@mui/material";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
 import { Description, Print } from "@mui/icons-material";
 
@@ -19,6 +19,7 @@ export const TableNotesRequest = (props: TableProps) => {
     const [state, setState] = useState('');
     const [previousCount, setPreviousCount] = useState(0);
     const [open, setOpen] = useState(false);
+    const [filterNumberNote, setFilterNumberNote] = useState(false); // Estado del Switch
 
     useEffect(() => {
         const fetchData = async () => {
@@ -47,6 +48,9 @@ export const TableNotesRequest = (props: TableProps) => {
         setOpen(false);
     };
 
+    const filteredNotes = filterNumberNote
+        ? note_requests?.filter((note: NoteRequestModel) => note.number_note !== 0)
+        : note_requests;
 
     return (
         <Stack sx={{ padding: '10px' }}>
@@ -85,6 +89,14 @@ export const TableNotesRequest = (props: TableProps) => {
                         <MenuItem value="Aceptado">Aceptado</MenuItem>
                     </Select>
                 </FormControl>
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <Typography>Mostrar</Typography>
+                    <Switch
+                        checked={filterNumberNote}
+                        onChange={() => setFilterNumberNote(!filterNumberNote)}
+                        color="primary"
+                    />
+                </Stack>
             </Stack>
             <TableContainer>
                 <Table sx={{ minWidth: 350 }} size="small">
@@ -99,12 +111,12 @@ export const TableNotesRequest = (props: TableProps) => {
                     </TableHead>
                     <TableBody>
                         {
-                            !note_requests ? (
+                            !filteredNotes ? (
                                 <SkeletonComponent quantity={4} />
                             ) : (
-                                note_requests.map((note_request: NoteRequestModel, index: number) => (
+                                filteredNotes.map((note_request: NoteRequestModel, index: number) => (
                                     <TableRow key={index} sx={{ borderBottom: '2px solid #ccc' }}>
-                                        <TableCell align="center">{note_request.number_note}</TableCell>
+                                        <TableCell align="center">{note_request.number_note === 0 ? 'N/A' : note_request.number_note}</TableCell>
                                         <TableCell align="left">{note_request.employee}</TableCell>
                                         <TableCell align="center">{note_request.request_date}</TableCell>
                                         <TableCell align="center">
@@ -128,9 +140,7 @@ export const TableNotesRequest = (props: TableProps) => {
                                                     <IconButton sx={{ p: 2 }} onClick={() => PrintNoteRequest(note_request)}>
                                                         <Print color="info" />
                                                     </IconButton>
-                                                ) : null
-
-                                                }
+                                                ) : null}
                                             </Stack>
                                         </TableCell>
                                     </TableRow>
