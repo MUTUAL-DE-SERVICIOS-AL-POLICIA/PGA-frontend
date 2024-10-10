@@ -35,12 +35,6 @@ export const menuSettings = () => {
                     icon: <Person />,
                     //permission: "show-users"
                 },
-                // {
-                //     path: "/users/rolesView",
-                //     title: "Roles",
-                //     icon: <Wifi />,
-                //     permission: "show-roles"
-                // }
             ]
         },
     ]

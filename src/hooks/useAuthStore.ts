@@ -10,11 +10,13 @@ export const useAuthStore = () => {
     const startlogin = async ({ username, password }: { username: string, password: string }) => {
         try {
             const { data } = await coffeApi.post('/auth/login', { username, password });
+            console.log(data);
             localStorage.setItem('token', data.token);
             const user = data.user;
             localStorage.setItem('id', data.id);
             localStorage.setItem('user', JSON.stringify(user));
             localStorage.setItem('rol', data.role);
+            localStorage.setItem('permission', data.permissions);
             dispatch(onLogin(user));
         } catch (error: any) {
             console.error('Login Error:', error.response ? error.response.data : error.message);
