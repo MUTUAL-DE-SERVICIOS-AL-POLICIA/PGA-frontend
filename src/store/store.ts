@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authSlice, supplierSlice, classifierSlice, groupSlice, materialSlice, note_entrySlice, typeSlice, note_requestSLice, report_kardexSlice, dashboardSlice } from '.';
+import { authSlice, supplierSlice, classifierSlice, groupSlice, materialSlice, note_entrySlice, typeSlice, note_requestSLice, report_kardexSlice, dashboardSlice, userSlice } from '.';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +13,7 @@ export const store = configureStore({
     note_requests: note_requestSLice.reducer,
     report_kardexs: report_kardexSlice.reducer,
     dashboards: dashboardSlice.reducer,
+    user_requests: userSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
