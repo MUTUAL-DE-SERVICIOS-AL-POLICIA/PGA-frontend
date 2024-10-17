@@ -32,6 +32,8 @@ const StyledContainer = styled(Paper)(({ theme }) => ({
 export const TableUserRequest = (props: TableProps) => {
     const { itemKardex } = props;
 
+    console.log(itemKardex);
+
     if (!itemKardex || itemKardex.length === 0) {
         return (
             <StyledContainer>

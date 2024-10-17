@@ -55,6 +55,31 @@ export const useUserRequestStore = () => {
         }
     }
 
+
+    const PrintRequestDirectory = async (directory: any) => {
+        try {
+            const response = await api.get(`/auth/printListRequestDirections/${directory}/`, {
+                responseType: 'arraybuffer'
+            });
+            printDocument(response);
+            return true;
+        } catch (error) {
+            console.error('Error al imprimir la nota ', error);
+        }
+    }
+
+    const DownloadRequestDirectory = async (directory: any) => {
+        try {
+            const response = await api.get(`/auth/printListRequestDirections/${directory}/`, {
+                responseType: 'arraybuffer'
+            });
+            downloadDocument(response, `report_request_user_${directory}.pdf`);
+            return true;
+        } catch (error) {
+            console.error('Error al descargar la nota: ', error);
+        }
+    }
+
     return {
         user_requests,
         user_uniques,
@@ -66,6 +91,8 @@ export const useUserRequestStore = () => {
         getDirectoryRequest,
         PrintRequestUser,
         DownloadRequestUser,
+        PrintRequestDirectory,
+        DownloadRequestDirectory,
     }
 
 }
