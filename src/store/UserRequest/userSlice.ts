@@ -3,8 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
     name: 'user_request',
     initialState: {
-        user_requests: <any[] | null>null || [],
-        user_uniques: <any[] | null>null || [],
+        user_requests: [] as any[],
+        user_uniques: [] as any[],
+        directories: [] as any[],
         flag: false
     },
     reducers: {
@@ -14,10 +15,13 @@ export const userSlice = createSlice({
         setUserUnique: (state, action) => {
             state.user_uniques = action.payload.user_uniques;
         },
+        setDirectory: (state, action) => {
+            state.directories = action.payload.directories;
+        },
         refreshUserRequest: (state) => {
-            state.flag = !state.flag
+            state.flag = !state.flag;
         },
     }
 });
 
-export const { setUserRequest, refreshUserRequest, setUserUnique } = userSlice.actions;
+export const { setUserRequest, refreshUserRequest, setUserUnique, setDirectory } = userSlice.actions;

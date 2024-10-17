@@ -36,7 +36,7 @@ export const TableUserRequest = (props: TableProps) => {
         return (
             <StyledContainer>
                 <Typography variant="h6" align="center" gutterBottom>
-                    Seleccione un Material
+                    Seleccione un funcionario
                 </Typography>
             </StyledContainer>
         );
@@ -73,9 +73,9 @@ export const TableUserRequest = (props: TableProps) => {
                         {itemKardex[0].materials.map((material: any) => (
                             <StyledTableRow key={material.material_id}>
                                 <TableCell>{material.name_material}</TableCell>
-                                <TableCell>{material.amount_requested}</TableCell>
-                                <TableCell>{material.delivered_quantity}</TableCell>
-                                <TableCell>{material.unit_material}</TableCell>
+                                <TableCell align='center'>{material.amount_requested}</TableCell>
+                                <TableCell align='center'>{material.delivered_quantity}</TableCell>
+                                <TableCell align='center'>{material.unit_material}</TableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>

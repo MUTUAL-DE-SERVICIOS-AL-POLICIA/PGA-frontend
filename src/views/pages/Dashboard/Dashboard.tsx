@@ -1,30 +1,43 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography, Menu, MenuItem } from "@mui/material";
 import AnalyticCard from "../../../components/AnalyticCard";
 import { useNavigate } from "react-router-dom";
 import { TableOrder } from "./TableOrder";
 import { useDashboardStore } from "../../../hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ListAlt } from '@mui/icons-material'; // Importar iconos
 
 export const Dashboard = () => {
     const navigate = useNavigate();
-
-    const handleRederict = () => {
-        navigate('/reportExistence');
-    }
-
-    const handleRederict1 = () => {
-        navigate('/reportValuedPhysical');
-    }
-
-    const handleRederict2 = () => {
-        navigate('/reportValuedPhysicalConsolided');
-    }
-
     const { dashboards, getDashboard } = useDashboardStore();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [anchorElSubMenu, setAnchorElSubMenu] = useState<null | HTMLElement>(null);
 
     useEffect(() => {
         getDashboard();
     }, []);
+
+    const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+        setAnchorElSubMenu(null); 
+    };
+
+    const handleRedirect = (path: string) => {
+        navigate(path);
+        handleMenuClose();
+    };
+
+    const handleSubMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElSubMenu(event.currentTarget);
+    };
+
+    const handleSubMenuClose = () => {
+        setAnchorElSubMenu(null);
+    };
+
     if (!dashboards) {
         return <div>Cargando...</div>;
     }
@@ -48,13 +61,44 @@ export const Dashboard = () => {
                     <Typography variant="h5">Reportes</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
-                    <Button onClick={handleRederict} fullWidth size="large" variant="contained" color="primary">Reporte de Existencia</Button>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
-                    <Button onClick={handleRederict1} fullWidth size="large" variant="contained" color="primary">Inventario Fisico Valorado</Button>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                    <Button onClick={handleRederict2} fullWidth size="large" variant="contained" color="primary">Inventario Consolidado Fisico Valorado</Button>
+                    <Button
+                        onClick={handleMenuClick}
+                        fullWidth
+                        size="large"
+                        variant="contained"
+                        color="primary">
+                        Reportes
+                    </Button>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                    >
+                        <MenuItem onClick={() => handleRedirect('/reportExistence')}>
+                            <ListAlt sx={{ mr: 1 }} /> Reporte de Existencia
+                        </MenuItem>
+                        <MenuItem onClick={() => handleRedirect('/reportValuedPhysical')}>
+                            <ListAlt sx={{ mr: 1 }} /> Inventario Fisico Valorado
+                        </MenuItem>
+                        <MenuItem onClick={() => handleRedirect('/reportValuedPhysicalConsolided')}>
+                            <ListAlt sx={{ mr: 1 }} /> Inventario Consolidado Fisico Valorado
+                        </MenuItem>
+                        <MenuItem onClick={handleSubMenuClick}>
+                            <ListAlt sx={{ mr: 1 }} /> Salidas
+                        </MenuItem>
+                    </Menu>
+                    <Menu
+                        anchorEl={anchorElSubMenu}
+                        open={Boolean(anchorElSubMenu)}
+                        onClose={handleSubMenuClose}
+                    >
+                        <MenuItem onClick={() => { handleRedirect('/listUserRequest'); handleSubMenuClose(); }}>
+                            <ListAlt sx={{ mr: 1 }} /> Salidas por Funcionario
+                        </MenuItem>
+                        <MenuItem onClick={() => { handleRedirect('/listDirectoryRequest'); handleSubMenuClose(); }}>
+                            <ListAlt sx={{ mr: 1 }} /> Salidas por Direcciones
+                        </MenuItem>
+                    </Menu>
                 </Grid>
                 <Grid item xs={12} sx={{ mb: -2.25 }}>
                     <Typography variant="h5"></Typography>
