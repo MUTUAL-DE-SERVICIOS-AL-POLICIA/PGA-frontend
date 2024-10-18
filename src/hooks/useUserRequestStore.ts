@@ -19,21 +19,21 @@ export const useUserRequestStore = () => {
         return data;
     }
 
-    const getRequests = async (user_request: any) => {
-        const { data } = await api.get(`/auth/listEmployees/${user_request}`);
+    const getRequests = async (user_request: any, startDate: string | null, endDate: string | null) => {
+        const { data } = await api.get(`/auth/listEmployees/${user_request}?start_date=${startDate || ''}&end_date=${endDate || ''}`);
         dispatch(setUserUnique({ user_uniques: data }));
         return data;
     }
 
-    const getDirectoryRequest = async (directory: any) => {
-        const { data } = await api.get(`/auth/listRequestDirections/${directory}`)
+    const getDirectoryRequest = async (directory: any, startDate: string | null, endDate: string | null) => {
+        const { data } = await api.get(`/auth/listRequestDirections/${directory}?start_date=${startDate || ''}&end_date=${endDate || ''}`)
         dispatch(setDirectory({ directories: data }));
         return data;
     }
 
-    const PrintRequestUser = async (user_request: any) => {
+    const PrintRequestUser = async (user_request: any, startDate: string | null, endDate: string | null) => {
         try {
-            const response = await api.get(`/auth/printListEmployee/${user_request}/`, {
+            const response = await api.get(`/auth/printListEmployee/${user_request}?start_date=${startDate || ''}&end_date=${endDate || ''}`, {
                 responseType: 'arraybuffer'
             });
             printDocument(response);
@@ -43,9 +43,9 @@ export const useUserRequestStore = () => {
         }
     }
 
-    const DownloadRequestUser = async (user_request: any) => {
+    const DownloadRequestUser = async (user_request: any, startDate: string | null, endDate: string | null) => {
         try {
-            const response = await api.get(`/auth/printListEmployee/${user_request}/`, {
+            const response = await api.get(`/auth/printListEmployee/${user_request}?start_date=${startDate || ''}&end_date=${endDate || ''}`, {
                 responseType: 'arraybuffer',
             })
             downloadDocument(response, `report_request_user_${user_request}.pdf`);
@@ -56,9 +56,9 @@ export const useUserRequestStore = () => {
     }
 
 
-    const PrintRequestDirectory = async (directory: any) => {
+    const PrintRequestDirectory = async (directory: any, startDate: string | null, endDate: string | null) => {
         try {
-            const response = await api.get(`/auth/printListRequestDirections/${directory}/`, {
+            const response = await api.get(`/auth/printListRequestDirections/${directory}?start_date=${startDate || ''}&end_date=${endDate || ''}`, {
                 responseType: 'arraybuffer'
             });
             printDocument(response);
@@ -68,9 +68,9 @@ export const useUserRequestStore = () => {
         }
     }
 
-    const DownloadRequestDirectory = async (directory: any) => {
+    const DownloadRequestDirectory = async (directory: any, startDate: string | null, endDate: string | null) => {
         try {
-            const response = await api.get(`/auth/printListRequestDirections/${directory}/`, {
+            const response = await api.get(`/auth/printListRequestDirections/${directory}?start_date=${startDate || ''}&end_date=${endDate || ''}`, {
                 responseType: 'arraybuffer'
             });
             downloadDocument(response, `report_request_user_${directory}.pdf`);

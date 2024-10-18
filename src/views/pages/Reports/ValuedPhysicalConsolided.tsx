@@ -1,8 +1,10 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { useReportKardexStore } from "../../../hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SkeletonComponent } from "../../../components";
+import PrintIcon from '@mui/icons-material/Print';
+import DownloadIcon from '@mui/icons-material/Download';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
@@ -25,24 +27,84 @@ const StyledContainer = styled(Paper)(({ theme }) => ({
     borderRadius: theme.shape.borderRadius,
     boxShadow: theme.shadows[4],
 }));
-export const ValuedPhysicalConsolided = () => {
 
-    const { report_ValuedPhy_Consolids, getReportValuedConsolid } = useReportKardexStore()
+export const ValuedPhysicalConsolided = () => {
+    const { report_ValuedPhy_Consolids, getReportValuedConsolid } = useReportKardexStore();
+
+    const [openConfirm, setOpenConfirm] = useState(false);
+
+    const handleSubmit = () => {
+
+        console.log('Gestion Cerrada');
+        setOpenConfirm(false);
+    };
+
+    const handlePrintClick = () => {
+        console.log('Imprimir clicked');
+    };
+
+    const handleDownloadClick = () => {
+        console.log('Descargar clicked');
+    };
+
+    const handleCloseConfirmDialog = () => {
+        setOpenConfirm(false);
+    };
+
+    const handleOpenConfirmDialog = () => {
+        setOpenConfirm(true);
+    };
 
     useEffect(() => {
         getReportValuedConsolid();
-    }, [])
-
-    console.log(report_ValuedPhy_Consolids);
+    }, []);
 
     return (
         <>
+            <Grid container spacing={2} alignItems="center">
+                <Grid container item spacing={2} alignItems="center" direction="row">
+
+                    <Grid item xs={12} sm={3}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            onClick={handleOpenConfirmDialog}
+                        >
+                            Cerrar Gestion
+                        </Button>
+                    </Grid>
+
+                    <Grid item>
+                        <Tooltip title="Imprimir">
+                            <span>
+                                <IconButton
+                                    color="primary"
+                                    onClick={handlePrintClick}
+                                >
+                                    <PrintIcon />
+                                </IconButton>
+                            </span>
+                        </Tooltip>
+                    </Grid>
+
+                    <Grid item>
+                        <Tooltip title="Descargar">
+                            <span>
+                                <IconButton
+                                    color="primary"
+                                    onClick={handleDownloadClick}
+                                >
+                                    <DownloadIcon />
+                                </IconButton>
+                            </span>
+                        </Tooltip>
+                    </Grid>
+                </Grid>
+            </Grid>
             <StyledContainer>
                 <Typography variant="h6" align="center" gutterBottom>
                     INVENTARIO CONSOLIDADO FISICO VALORADO
-                </Typography>
-                <Typography align="center" gutterBottom>
-                    LA PAZ, FECHA AL FECHA DE AÑO PRESENTE
                 </Typography>
                 <TableContainer>
                     <Table>
@@ -75,7 +137,6 @@ export const ValuedPhysicalConsolided = () => {
                                         <TableCell align="right">{group.latest_total_cost}</TableCell>
                                         <TableCell align="center">{group.latest_request_sum}</TableCell>
                                         <TableCell align="right">{group.latest_request_cost}</TableCell>
-
                                     </StyledTableRow>
                                 ))
                             }
@@ -83,6 +144,26 @@ export const ValuedPhysicalConsolided = () => {
                     </Table>
                 </TableContainer>
             </StyledContainer>
+
+            <Dialog
+                open={openConfirm}
+                onClose={handleCloseConfirmDialog}
+            >
+                <DialogTitle>Confirmar Cierre de Gestión</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        ¿Está seguro de que desea cerrar la gestión? Esta acción no se puede deshacer.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseConfirmDialog} color="primary">
+                        Cancelar
+                    </Button>
+                    <Button onClick={handleSubmit} color="primary" autoFocus>
+                        Confirmar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
-    )
-}
+    );
+};

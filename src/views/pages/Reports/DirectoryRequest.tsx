@@ -25,21 +25,18 @@ export const DirectoryRequest = () => {
     };
 
     const handleSubmit = () => {
-        console.log(selectedUserId);
-        getDirectoryRequest(selectedUserId);
-        console.log(directories);
-
+        getDirectoryRequest(selectedUserId, startDate || null, endDate || null);
     };
 
     const handlePrintClick = () => {
         if (selectedUserId !== null) {
-            PrintRequestDirectory(selectedUserId);
+            PrintRequestDirectory(selectedUserId, startDate || null, endDate || null);
         }
     }
 
     const handleDownloadClick = () => {
         if (selectedUserId !== null) {
-            DownloadRequestDirectory(selectedUserId);
+            DownloadRequestDirectory(selectedUserId, startDate || null, endDate || null);
         }
     };
 

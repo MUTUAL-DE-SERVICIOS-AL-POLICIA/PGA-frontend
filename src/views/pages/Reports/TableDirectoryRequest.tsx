@@ -43,7 +43,7 @@ export const TableDirectoryRequest = (props: TableProps) => {
     return (
         <StyledContainer>
             <Typography variant='h6' align='center' gutterBottom>
-                Detalle de Materiales Solicitados para {itemDirectory.name}
+                Detalle de Materiales Solicitados: {itemDirectory.name}
             </Typography>
             <TableContainer>
                 <Table>
@@ -52,6 +52,7 @@ export const TableDirectoryRequest = (props: TableProps) => {
                             <StyledTableCell>Nombre Material</StyledTableCell>
                             <StyledTableCell>Total Entregado</StyledTableCell>
                             <StyledTableCell>Unidad de Medida</StyledTableCell>
+                            <StyledTableCell>Costo total</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -60,6 +61,7 @@ export const TableDirectoryRequest = (props: TableProps) => {
                                 <TableCell>{material.material_name}</TableCell>
                                 <TableCell align='center'>{material.total_amount_requested}</TableCell>
                                 <TableCell align='center'>{material.unit_material}</TableCell>
+                                <TableCell align='center'>{material.cost}</TableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>

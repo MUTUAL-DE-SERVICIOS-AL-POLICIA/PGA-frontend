@@ -19,18 +19,18 @@ export const UserRequest = () => {
 
     const handlePrintClick = () => {
         if (selectedUserId !== null) {
-            PrintRequestUser(selectedUserId);
+            PrintRequestUser(selectedUserId, startDate || null, endDate || null);
         }
     }
 
     const handleDownloadClick = () => {
         if (selectedUserId !== null) {
-            DownloadRequestUser(selectedUserId);
+            DownloadRequestUser(selectedUserId, startDate || null, endDate || null);
         }
     };
 
     const handleCalculate = () => {
-        getRequests(selectedUserId);
+        getRequests(selectedUserId, startDate || null, endDate || null);
     };
     useEffect(() => {
         getUserRequest();

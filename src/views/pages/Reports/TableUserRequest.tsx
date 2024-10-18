@@ -1,8 +1,28 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+interface Material {
+    material_id: number;
+    name_material: string;
+    amount_requested: number;
+    delivered_quantity: number;
+    unit_material: string;
+    cost: number;
+}
+
+interface Employee {
+    id: number;
+    name: string;
+    position_name: string;
+}
+
+interface KardexItem {
+    employee: Employee;
+    materials: Material[];
+}
+
 interface TableProps {
-    itemKardex: any;
+    itemKardex: KardexItem | null;
 }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -27,14 +47,17 @@ const StyledContainer = styled(Paper)(({ theme }) => ({
     boxShadow: theme.shadows[4],
 }));
 
-
+// Helper function to capitalize the first letter of each word
+const capitalizeWords = (str: string): string => {
+    return str
+        .toLowerCase()
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+};
 
 export const TableUserRequest = (props: TableProps) => {
     const { itemKardex } = props;
 
-    console.log(itemKardex);
-
-    if (!itemKardex || itemKardex.length === 0) {
+    if (!itemKardex || !itemKardex.employee || itemKardex.materials.length === 0) {
         return (
             <StyledContainer>
                 <Typography variant="h6" align="center" gutterBottom>
@@ -46,18 +69,16 @@ export const TableUserRequest = (props: TableProps) => {
 
     return (
         <StyledContainer>
-            <Typography variant='h6' align='center' gutterBottom>
+            <Typography variant="h6" align="center" gutterBottom>
                 Detalle de Materiales Solicitados
             </Typography>
             <Grid container spacing={1}>
-                <Grid item xs={12} sm={5}>
+                <Grid item xs={12} sm={6}>
                     <Typography sx={{ padding: '10px' }}>
-                        <strong>FUNCIONARIO: </strong> {itemKardex[0]?.employee?.name}
+                        <strong>FUNCIONARIO: </strong> {capitalizeWords(itemKardex.employee.name)}
                     </Typography>
-                </Grid>
-                <Grid item xs={12} sm={5}>
                     <Typography sx={{ padding: '10px' }}>
-                        <strong>CARGO: </strong> {itemKardex[0]?.employee?.name}
+                        <strong>CARGO: </strong> {capitalizeWords(itemKardex.employee.position_name)}
                     </Typography>
                 </Grid>
             </Grid>
@@ -68,16 +89,18 @@ export const TableUserRequest = (props: TableProps) => {
                             <StyledTableCell>Nombre del Material</StyledTableCell>
                             <StyledTableCell>Cantidad Solicitada</StyledTableCell>
                             <StyledTableCell>Cantidad Entregada</StyledTableCell>
+                            <StyledTableCell>Costo Total</StyledTableCell>
                             <StyledTableCell>Unidad</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {itemKardex[0].materials.map((material: any) => (
+                        {itemKardex.materials.map((material) => (
                             <StyledTableRow key={material.material_id}>
                                 <TableCell>{material.name_material}</TableCell>
-                                <TableCell align='center'>{material.amount_requested}</TableCell>
-                                <TableCell align='center'>{material.delivered_quantity}</TableCell>
-                                <TableCell align='center'>{material.unit_material}</TableCell>
+                                <TableCell align="center">{material.amount_requested}</TableCell>
+                                <TableCell align="center">{material.delivered_quantity}</TableCell>
+                                <TableCell align="center">{material.unit_material}</TableCell>
+                                <TableCell align="center">{(material.delivered_quantity * material.cost)}</TableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>
