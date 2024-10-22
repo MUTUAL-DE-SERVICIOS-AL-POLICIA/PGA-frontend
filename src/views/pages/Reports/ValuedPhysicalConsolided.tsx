@@ -1,4 +1,4 @@
-import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { useReportKardexStore } from "../../../hooks";
 import { useEffect, useState } from "react";
@@ -29,22 +29,42 @@ const StyledContainer = styled(Paper)(({ theme }) => ({
 }));
 
 export const ValuedPhysicalConsolided = () => {
-    const { report_ValuedPhy_Consolids, getReportValuedConsolid } = useReportKardexStore();
+    const { report_ValuedPhy_Consolids, managements, listManagement, getReportValuedConsolid, PrintReportConsolidatedInventory, DownloadReportConsolidatedInventory, ClosureMagementStore } = useReportKardexStore();
 
     const [openConfirm, setOpenConfirm] = useState(false);
+    const [selectedManagement, setSelectedManagement] = useState('');
+
+    const getPermissionsFromStorage = () => {
+        let permissions: string[] = [];
+
+        try {
+            const storedPermissions = localStorage.getItem('permission');
+
+            if (storedPermissions) {
+                permissions = storedPermissions.split(',');
+            }
+        } catch (error) {
+            console.error("Error processing permissions from localStorage:", error);
+            permissions = [];
+        }
+
+        return permissions;
+    };
+
+    const permissions = getPermissionsFromStorage();
 
     const handleSubmit = () => {
-
-        console.log('Gestion Cerrada');
+        ClosureMagementStore();
         setOpenConfirm(false);
+        getReportValuedConsolid();
     };
 
     const handlePrintClick = () => {
-        console.log('Imprimir clicked');
+        PrintReportConsolidatedInventory();
     };
 
     const handleDownloadClick = () => {
-        console.log('Descargar clicked');
+        DownloadReportConsolidatedInventory();
     };
 
     const handleCloseConfirmDialog = () => {
@@ -55,8 +75,16 @@ export const ValuedPhysicalConsolided = () => {
         setOpenConfirm(true);
     };
 
+    const handleManagementChange = (event: any) => {
+        setSelectedManagement(event.target.value);
+    };
+
     useEffect(() => {
         getReportValuedConsolid();
+    }, []);
+
+    useEffect(() => {
+        listManagement();
     }, []);
 
     return (
@@ -65,15 +93,36 @@ export const ValuedPhysicalConsolided = () => {
                 <Grid container item spacing={2} alignItems="center" direction="row">
 
                     <Grid item xs={12} sm={3}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            onClick={handleOpenConfirmDialog}
-                        >
-                            Cerrar Gestion
-                        </Button>
+                        <FormControl fullWidth>
+                            <InputLabel id="management-select-label">Seleccionar Gestión</InputLabel>
+                            <Select
+                                labelId="management-select-label"
+                                value={selectedManagement}
+                                onChange={handleManagementChange}
+                                label="Seleccionar Gestión"
+                            >
+                                {managements?.map((management: any) => (
+                                    <MenuItem key={management.id} value={management.id}>
+                                        {management.period_name} - {management.state}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Grid>
+
+                    {/* Conditionally render the button based on permissions */}
+                    {permissions.includes('create-employee') && (
+                        <Grid item xs={12} sm={3}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                onClick={handleOpenConfirmDialog}
+                            >
+                                Cerrar Gestión
+                            </Button>
+                        </Grid>
+                    )}
 
                     <Grid item>
                         <Tooltip title="Imprimir">
@@ -102,6 +151,7 @@ export const ValuedPhysicalConsolided = () => {
                     </Grid>
                 </Grid>
             </Grid>
+
             <StyledContainer>
                 <Typography variant="h6" align="center" gutterBottom>
                     INVENTARIO CONSOLIDADO FISICO VALORADO

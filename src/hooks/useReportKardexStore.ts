@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { coffeApi } from "../services"
-import { setReportKardex, setReportValued, setReportValuedConsolid } from "../store";
+import { setReportKardex, setReportValued, setReportValuedConsolid, setManagement } from "../store";
 import { printDocument, downloadDocument } from "../utils/helper";
+import Swal from "sweetalert2";
 
 const api = coffeApi;
 
 export const useReportKardexStore = () => {
-    const { report_ValuedPhys, report_kardexs = [], report_ValuedPhy_Consolids, flag } = useSelector((state: any) => state.report_kardexs);
+    const { report_ValuedPhys, report_kardexs = [], report_ValuedPhy_Consolids, managements, flag } = useSelector((state: any) => state.report_kardexs);
     const dispatch = useDispatch();
 
     const getReportKardex = async (material_id: any) => {
@@ -93,7 +94,50 @@ export const useReportKardexStore = () => {
         return true;
     }
 
+    const PrintReportConsolidatedInventory = async () => {
+        try {
+            const response = await api.get('/auth/PrintValuedPhysicalConsolidated/', {
+                responseType: 'arraybuffer',
+            });
+            printDocument(response);
 
+            return true;
+        } catch (error) {
+            console.error('Error al imprimir el informe:', error);
+            return false;
+        }
+    };
+
+    const DownloadReportConsolidatedInventory = async () => {
+        try {
+            const response = await api.get('/auth/PrintValuedPhysicalConsolidated/', {
+                responseType: 'arraybuffer',
+            });
+            downloadDocument(response, 'Inventario_Fisico_Valorado_Consolidado.pdf');
+
+            return true;
+        } catch (error) {
+            console.error('Error al descargar el kardex:', error);
+            return false;
+        }
+    };
+
+    const ClosureMagementStore = async () => {
+        try {
+            const { data } = await api.get('/auth/ManagementClosure');
+            Swal.fire('Cierre de Gestion Realizado!!!', '', 'success');
+            return data;
+        } catch (error) {
+            console.error('Error al cerra la gestión', error);
+            return false
+        }
+    }
+
+    const listManagement = async () => {
+        const { data } = await api.get('/auth/listManagement');
+        dispatch(setManagement({ managements: data }));
+        return data;
+    }
 
 
 
@@ -102,6 +146,7 @@ export const useReportKardexStore = () => {
         flag,
         report_ValuedPhys,
         report_ValuedPhy_Consolids,
+        managements,
 
         getReportKardex,
         getReportValued,
@@ -110,5 +155,9 @@ export const useReportKardexStore = () => {
         PrintReportValued,
         DownloadReportValued,
         getReportValuedConsolid,
+        PrintReportConsolidatedInventory,
+        DownloadReportConsolidatedInventory,
+        ClosureMagementStore,
+        listManagement,
     }
 }

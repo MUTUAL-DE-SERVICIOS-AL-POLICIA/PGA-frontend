@@ -33,9 +33,7 @@ const formatNumber = (num: number | undefined) => {
 };
 
 export const TableExistence = (props: TableProps) => {
-    const { itemKardex, date_report } = props;
-
-    console.log(date_report);
+    const { itemKardex } = props;
 
     if (!itemKardex || !itemKardex.kardex_de_existencia) {
         return (

@@ -13,8 +13,6 @@ export const MaterialsDetail = (props: ViewProps) => {
     const { viewMaterial } = useMaterialStore();
     const [materialDetails, setMaterialDetails] = useState<any>(null);
     const [showAll, setShowAll] = useState(false);
-    console.log(materialDetails);
-
     useEffect(() => {
         if (item != null) {
             viewMaterial(item)

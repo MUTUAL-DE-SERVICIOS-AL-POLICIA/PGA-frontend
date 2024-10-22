@@ -40,8 +40,6 @@ export const DirectoryRequest = () => {
         }
     };
 
-    console.log(directories);
-
     return (
         <>
             <Grid container spacing={2} alignItems="center">
