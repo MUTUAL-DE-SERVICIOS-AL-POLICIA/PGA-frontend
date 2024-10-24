@@ -13,7 +13,7 @@ const StyledHeaderCell = styled(TableCell)({
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: '0.75rem',
-    border: '1px solid #ddd',  
+    border: '1px solid #ddd',
     padding: '2px',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -29,8 +29,8 @@ const StyledDescriptionCell = styled(TableCell)({
     fontSize: '0.75rem',
     width: '400px',
     maxWidth: '400px',
-    border: '1px solid #ddd',  
-    backgroundColor: '#fff', 
+    border: '1px solid #ddd',
+    backgroundColor: '#fff',
 });
 
 const StyledBodyCell = styled(TableCell)({
@@ -40,13 +40,13 @@ const StyledBodyCell = styled(TableCell)({
     width: '100px',
     maxWidth: '100px',
     fontSize: '0.7rem',
-    border: '1px solid #ddd',  
-    backgroundColor: '#fff',  
+    border: '1px solid #ddd',
+    backgroundColor: '#fff',
 });
 
 const StyledTableRow = styled(TableRow)({
     '&:nth-of-type(odd)': {
-        backgroundColor: '#f5f5f5', 
+        backgroundColor: '#f5f5f5',
     },
     height: '24px',
 });
@@ -64,24 +64,24 @@ export const ValuedPhysical = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [selectedGroup, setSelectedGroup] = useState('');
-    const [loading, setLoading] = useState(false); 
-    const [openDialog, setOpenDialog] = useState(false); 
+    const [loading, setLoading] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const handleUpdateClick = () => {
-        setOpenDialog(true); 
+        setOpenDialog(true);
     };
 
     const confirmUpdate = () => {
-        setOpenDialog(false); 
-        setLoading(true); 
+        setOpenDialog(false);
+        setLoading(true);
         if (startDate && endDate) {
             getReportValued(startDate, endDate).finally(() => {
-                setLoading(false); 
+                setLoading(false);
             });
         } else {
             getReportValued().finally(() => {
-                setLoading(false); 
-            }); 
+                setLoading(false);
+            });
         }
     };
 
@@ -112,16 +112,16 @@ export const ValuedPhysical = () => {
     };
 
     const handlePrintClick = () => {
-        setLoading(true); 
+        setLoading(true);
         PrintReportValued(startDate, endDate).finally(() => {
-            setLoading(false); 
+            setLoading(false);
         });
     };
 
     const handleDownLoadClick = () => {
-        setLoading(true); 
+        setLoading(true);
         DownloadReportValued(startDate, endDate).finally(() => {
-            setLoading(false); 
+            setLoading(false);
         });
     };
 
@@ -161,7 +161,7 @@ export const ValuedPhysical = () => {
                         label="Seleccionar Grupo"
                     >
                         <MenuItem value="">Todos los Grupos</MenuItem>
-                        {report_ValuedPhys.data?.map((item: any, index: number) => (
+                        {report_ValuedPhys?.data?.map((item: any, index: number) => (
                             <MenuItem key={index} value={item.codigo_grupo}>
                                 {item.grupo}
                             </MenuItem>
@@ -218,15 +218,15 @@ export const ValuedPhysical = () => {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric'
-                    }).toUpperCase() : report_ValuedPhys.date_note} AL {getFormattedEndDate()}
+                    }).toUpperCase() : report_ValuedPhys?.date_note} AL {getFormattedEndDate()}
                 </Typography>
                 <Typography align="center" gutterBottom>
                     (EXPRESADO EN BOLIVIANOS)
                 </Typography>
 
-                {loading ? ( 
+                {loading ? (
                     <CircularProgress sx={{ display: 'block', margin: 'auto', padding: '20px' }} />
-                ) : report_ValuedPhys.data == null ? (
+                ) : !report_ValuedPhys || !report_ValuedPhys.data ? (
                     <Typography variant="body2" align="center">
                         <SkeletonComponent quantity={5} />
                     </Typography>
