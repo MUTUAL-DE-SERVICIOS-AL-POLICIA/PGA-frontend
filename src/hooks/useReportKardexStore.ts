@@ -122,14 +122,31 @@ export const useReportKardexStore = () => {
         }
     };
 
+    // const ClosureMagementStore = async () => {
+    //     try {
+    //         const { data } = await api.get('/auth/ManagementClosure');
+    //         Swal.fire('Cierre de Gestion Realizado!!!', '', 'success');
+    //         return data;
+    //     } catch (error) {
+    //         console.error('Error al cerra la gestión', error);
+    //         return false
+    //     }
+    // }
+
     const ClosureMagementStore = async () => {
         try {
             const { data } = await api.get('/auth/ManagementClosure');
-            Swal.fire('Cierre de Gestion Realizado!!!', '', 'success');
+            if (data.error) {
+                Swal.fire('Error', data.error, 'warning');
+            } else {
+                Swal.fire('Cierre de Gestion Realizado!!!', '', 'success');
+            }
+
             return data;
         } catch (error) {
-            console.error('Error al cerra la gestión', error);
-            return false
+            console.error('Error al cerrar la gestión', error);
+            Swal.fire('Error', 'Existen Solicitudes ', 'error');
+            return false;
         }
     }
 
