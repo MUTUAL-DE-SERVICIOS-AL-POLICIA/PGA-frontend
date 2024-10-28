@@ -47,7 +47,6 @@ const StyledContainer = styled(Paper)(({ theme }) => ({
     boxShadow: theme.shadows[4],
 }));
 
-// Helper function to capitalize the first letter of each word
 const capitalizeWords = (str: string): string => {
     return str
         .toLowerCase()
@@ -89,8 +88,8 @@ export const TableUserRequest = (props: TableProps) => {
                             <StyledTableCell>Nombre del Material</StyledTableCell>
                             <StyledTableCell>Cantidad Solicitada</StyledTableCell>
                             <StyledTableCell>Cantidad Entregada</StyledTableCell>
-                            <StyledTableCell>Costo Total</StyledTableCell>
                             <StyledTableCell>Unidad</StyledTableCell>
+                            <StyledTableCell>Costo Total</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -100,7 +99,7 @@ export const TableUserRequest = (props: TableProps) => {
                                 <TableCell align="center">{material.amount_requested}</TableCell>
                                 <TableCell align="center">{material.delivered_quantity}</TableCell>
                                 <TableCell align="center">{material.unit_material}</TableCell>
-                                <TableCell align="center">{(material.delivered_quantity * material.cost)}</TableCell>
+                                <TableCell align="center">{(material.delivered_quantity * material.cost).toFixed(2)}</TableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>
