@@ -88,15 +88,15 @@ export const useReportKardexStore = () => {
         }
     };
 
-    const getReportValuedConsolid = async () => {
-        const { data } = await api.get('/auth/ReportPrintValuedPhysicalConsolidated/');
+    const getReportValuedConsolid = async (idManagement: any) => {
+        const { data } = await api.get(`/auth/ReportPrintValuedPhysicalConsolidated/${idManagement}/`);
         dispatch(setReportValuedConsolid({ report_ValuedPhy_Consolids: data }));
         return true;
     }
 
-    const PrintReportConsolidatedInventory = async () => {
+    const PrintReportConsolidatedInventory = async (idManagement: any) => {
         try {
-            const response = await api.get('/auth/PrintValuedPhysicalConsolidated/', {
+            const response = await api.get(`/auth/PrintValuedPhysicalConsolidated/${idManagement}/`, {
                 responseType: 'arraybuffer',
             });
             printDocument(response);
@@ -108,9 +108,9 @@ export const useReportKardexStore = () => {
         }
     };
 
-    const DownloadReportConsolidatedInventory = async () => {
+    const DownloadReportConsolidatedInventory = async (idManagement: any) => {
         try {
-            const response = await api.get('/auth/PrintValuedPhysicalConsolidated/', {
+            const response = await api.get(`/auth/PrintValuedPhysicalConsolidated/${idManagement}/`, {
                 responseType: 'arraybuffer',
             });
             downloadDocument(response, 'Inventario_Fisico_Valorado_Consolidado.pdf');
@@ -122,16 +122,6 @@ export const useReportKardexStore = () => {
         }
     };
 
-    // const ClosureMagementStore = async () => {
-    //     try {
-    //         const { data } = await api.get('/auth/ManagementClosure');
-    //         Swal.fire('Cierre de Gestion Realizado!!!', '', 'success');
-    //         return data;
-    //     } catch (error) {
-    //         console.error('Error al cerra la gestión', error);
-    //         return false
-    //     }
-    // }
 
     const ClosureMagementStore = async () => {
         try {

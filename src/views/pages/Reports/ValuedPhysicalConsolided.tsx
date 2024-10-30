@@ -53,18 +53,23 @@ export const ValuedPhysicalConsolided = () => {
 
     const permissions = getPermissionsFromStorage();
 
+    console.log(selectedManagement);
+
     const handleSubmit = () => {
         ClosureMagementStore();
         setOpenConfirm(false);
-        getReportValuedConsolid();
+    };
+
+    const handleCalculateClick = () => {
+        getReportValuedConsolid(selectedManagement);
     };
 
     const handlePrintClick = () => {
-        PrintReportConsolidatedInventory();
+        PrintReportConsolidatedInventory(selectedManagement);
     };
 
     const handleDownloadClick = () => {
-        DownloadReportConsolidatedInventory();
+        DownloadReportConsolidatedInventory(selectedManagement);
     };
 
     const handleCloseConfirmDialog = () => {
@@ -80,7 +85,7 @@ export const ValuedPhysicalConsolided = () => {
     };
 
     useEffect(() => {
-        getReportValuedConsolid();
+        getReportValuedConsolid(selectedManagement);
     }, []);
 
     useEffect(() => {
@@ -91,7 +96,6 @@ export const ValuedPhysicalConsolided = () => {
         <>
             <Grid container spacing={2} alignItems="center">
                 <Grid container item spacing={2} alignItems="center" direction="row">
-
                     <Grid item xs={12} sm={3}>
                         <FormControl fullWidth>
                             <InputLabel id="management-select-label">Seleccionar Gestión</InputLabel>
@@ -110,18 +114,30 @@ export const ValuedPhysicalConsolided = () => {
                         </FormControl>
                     </Grid>
 
-                    {/* Conditionally render the button based on permissions */}
+                    {/* Conditionally render the buttons based on permissions */}
                     {permissions.includes('create-employee') && (
-                        <Grid item xs={12} sm={3}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                fullWidth
-                                onClick={handleOpenConfirmDialog}
-                            >
-                                Cerrar Gestión
-                            </Button>
-                        </Grid>
+                        <>
+                            <Grid item xs={12} sm={3}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    fullWidth
+                                    onClick={handleOpenConfirmDialog}
+                                >
+                                    Cerrar Gestión
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    fullWidth
+                                    onClick={handleCalculateClick}
+                                >
+                                    Calcular
+                                </Button>
+                            </Grid>
+                        </>
                     )}
 
                     <Grid item>

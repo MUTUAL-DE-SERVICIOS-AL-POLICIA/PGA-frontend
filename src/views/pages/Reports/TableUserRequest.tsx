@@ -66,6 +66,11 @@ export const TableUserRequest = (props: TableProps) => {
         );
     }
 
+    // Calcula los totales de las columnas
+    const totalRequested = itemKardex.materials.reduce((sum, material) => sum + material.amount_requested, 0);
+    const totalDelivered = itemKardex.materials.reduce((sum, material) => sum + material.delivered_quantity, 0);
+    const totalCost = itemKardex.materials.reduce((sum, material) => sum + (material.delivered_quantity * material.cost), 0);
+
     return (
         <StyledContainer>
             <Typography variant="h6" align="center" gutterBottom>
@@ -102,6 +107,13 @@ export const TableUserRequest = (props: TableProps) => {
                                 <TableCell align="center">{(material.delivered_quantity * material.cost).toFixed(2)}</TableCell>
                             </StyledTableRow>
                         ))}
+                        <StyledTableRow>
+                            <TableCell align="center">Total</TableCell>
+                            <TableCell align="center">{totalRequested}</TableCell>
+                            <TableCell align="center">{totalDelivered}</TableCell>
+                            <TableCell align="center"></TableCell>
+                            <TableCell align="center">{totalCost.toFixed(2)}</TableCell>
+                        </StyledTableRow>
                     </TableBody>
                 </Table>
             </TableContainer>

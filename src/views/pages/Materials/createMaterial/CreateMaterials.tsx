@@ -1,15 +1,14 @@
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import { FormMaterialModel, GroupModel, MaterialModel, FormMaterialValidate } from "../../../../models";
 import { useForm, useMaterialStore } from "../../../../hooks";
 import { ComponentInput, ComponentInputSelect, ModalSelectComponent } from "../../../../components";
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, InputLabel, MenuItem, Select, Stack, Typography, FormHelperText } from "@mui/material";
 import { GroupModal } from "../../Groups";
 
 interface createProps {
     open: boolean;
     handleClose: () => void;
     item: MaterialModel | null;
-    type_material_select_base: string;
 }
 
 const formMaterialFields: FormMaterialModel = {
@@ -22,18 +21,19 @@ const formMaterialFields: FormMaterialModel = {
 
 const formMaterialValidation: FormMaterialValidate = {
     group_id: [(value: GroupModel) => value !== null, 'Debe pertenecer a un Grupo'],
-    code_material: [(value: string | null) => value == null, 'Debe ingresar el codigo correspondiente del material'],
-    description: [(value: string | null) => value == null, 'Debe ingresar la descripcion del material'],
-    unit_material: [(value: string | null) => value == null, 'Debe ingresar la unidad del material'],
-    barcode: [(value: string | null) => value == null, 'Debe ingresar la codigo de barra del material']
+    code_material: [(value: string | null) => value !== null, 'Debe ingresar el código correspondiente del material'],
+    description: [(value: string | null) => value !== null, 'Debe ingresar la descripción del material'],
+    unit_material: [(value: string | null) => value !== null, 'Debe ingresar la unidad del material'],
+    barcode: [(value: string | null) => value !== null, 'Debe ingresar el código de barra del material']
 }
 
 export const CreateMaterials = (props: createProps) => {
-    const { open, handleClose, item, type_material_select_base } = props
+    const { open, handleClose, item } = props;
     const { postMaterial } = useMaterialStore();
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [modal, setModal] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [typeMaterial, setTypeMaterial] = useState("");
 
     const { group_id, code_material, description, unit_material, barcode,
         onInputChange, onValueChange, onResetForm,
@@ -41,20 +41,24 @@ export const CreateMaterials = (props: createProps) => {
 
     const handleModal = useCallback((value: boolean) => setModal(value), []);
 
+    console.log(group_id);
+
     const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setFormSubmitted(true);
-        let data: { group_id: number, code_material?: string, description?: string, unit_material?: string, barcode?: string, stock?: number, state?: string, min?: number, type?: string } = {
-            group_id: group_id.id
-        }
-        data.code_material = code_material;
-        data.description = description;
-        data.unit_material = unit_material;
-        data.barcode = barcode;
-        data.stock = 0;
-        data.state = "Inhabilitado"
-        data.min = 5;
-        data.type = type_material_select_base;
+
+        const data = {
+            group_id: group_id.id,
+            code_material,
+            description,
+            unit_material,
+            barcode,
+            stock: 0,
+            state: "Inhabilitado",
+            min: 5,
+            type: typeMaterial,
+        };
+
         setLoading(true);
         if (item == null) {
             await postMaterial(data).then((res) => {
@@ -67,163 +71,128 @@ export const CreateMaterials = (props: createProps) => {
         setLoading(false);
     }
 
-    useEffect(() => {
-        const handleResize = () => {
-            // Aquí podrías usar screenHeight si fuera necesario
-        };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    const units = [
-        "HOJAS",
-        "ROLLO",
-        "BLOCK",
-        "CAJA",
-        "PIEZAS",
-        "OVILLO",
-        "GLOBAL",
-        "PAQUETE",
-        "RESMA"
-    ];
-
-    const type_material_select = [
-        "Almacen", "Caja Chica", "Fondo en Avance"
-    ];
+    const units = ["HOJAS", "ROLLO", "BLOCK", "CAJA", "PIEZAS", "OVILLO", "GLOBAL", "PAQUETE", "RESMA"];
+    const type_material_select = ["Almacen", "Caja Chica", "Fondo en Avance"];
     units.sort((a, b) => a.localeCompare(b));
 
     return (
         <>
-            {
-                modal ?
-                    <ModalSelectComponent
+            {modal && (
+                <ModalSelectComponent
+                    stateSelect={true}
+                    stateMultiple={false}
+                    title="Seleccione el grupo del nuevo material"
+                    opendrawer={modal}
+                    handleDrawer={handleModal}
+                >
+                    <GroupModal
                         stateSelect={true}
-                        stateMultiple={false}
-                        title='Seleccione el grupo del nuevo material'
-                        opendrawer={modal}
-                        handleDrawer={handleModal}
-                    >
-                        <GroupModal
-                            stateSelect={true}
-                            limitInit={5}
-                            itemSelect={(v) => {
-                                onValueChange('group_id', v);
-                                handleModal(false)
-                            }}
-                        />
-                    </ModalSelectComponent> :
-                    <></>
-            }
-            <Dialog open={open} onClose={handleClose} fullWidth={true}>
-                <DialogTitle>Nuevo Material</DialogTitle>
+                        limitInit={5}
+                        itemSelect={(v) => {
+                            onValueChange("group_id", v);
+                            handleModal(false);
+                        }}
+                    />
+                </ModalSelectComponent>
+            )}
+            <Dialog open={open} onClose={handleClose} fullWidth>
+                <DialogTitle sx={{ fontWeight: "bold", fontSize: "1.3rem" }}>
+                    Crear Nuevo Material
+                </DialogTitle>
                 <form onSubmit={sendSubmit}>
-                    <DialogContent>
-                        <Grid container>
-                            <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
+                    <DialogContent dividers>
+                        {/* Selección de Grupo */}
+                        <Stack spacing={2} sx={{ mb: 2 }}>
+                            <FormControl fullWidth error={!!group_idValid && formSubmitted}>
+                                <Typography variant="subtitle1" sx={{ fontWeight: "500" }}>Seleccionar Grupo</Typography>
                                 <ComponentInputSelect
-                                    label={group_id != null ? "Grupos" : ''}
-                                    title={group_id != null ? group_id.name_group : "Seleccionar Grupo"}
+                                    label={group_id ? "Grupo Seleccionado" : ''}
+                                    title={group_id ? group_id.name_group : "Seleccione un Grupo"}
                                     onPressed={() => handleModal(true)}
-                                    error={!!group_idValid && formSubmitted}
-                                    helperText={formSubmitted ? group_idValid : ''}
                                 />
-                            </Grid>
-                            {
-                                group_id && (
-                                    <>
-                                        <Stack direction="row" justifyContent="center">
-                                            <Typography></Typography>
-                                            <Typography>Agregar los datos del nuevo material</Typography>
-                                        </Stack>
-                                        <Stack direction="row">
-                                            <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
-                                                <ComponentInput
-                                                    type="number"
-                                                    label="Codigo"
-                                                    name="code_material"
-                                                    value={code_material}
-                                                    onChange={(V: any) => onInputChange(V, false, false)}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
-                                                <ComponentInput
-                                                    type="text"
-                                                    label="Codigo de Barra"
-                                                    name="barcode"
-                                                    value={barcode}
-                                                    onChange={(V: any) => onInputChange(V, false, false)}
-                                                />
-                                            </Grid>
-                                        </Stack>
+                                {formSubmitted && group_idValid && (
+                                    <FormHelperText>{group_idValid}</FormHelperText>
+                                )}
+                            </FormControl>
+                        </Stack>
 
-                                        <Grid container spacing={2}>
+                        <Divider sx={{ my: 2 }} />
 
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <InputLabel>Tipo de material</InputLabel>
-                                                    <Select
-                                                        label="Tipo de Material"
-                                                        name="type_material"
-                                                        value={type_material_select_base}
-                                                        onChange={(V: any) => onInputChange(V, false, false)}
-                                                    >
-                                                        {type_material_select.map((unit, index) => (
-                                                            <MenuItem key={index} value={unit}>
-                                                                {unit}
-                                                            </MenuItem>
-                                                        ))}
+                        <Typography variant="subtitle1" sx={{ fontWeight: "500", mb: 1 }}>
+                            Detalles del Material
+                        </Typography>
+                        <Stack spacing={2} direction="row" sx={{ mb: 2 }}>
+                            <ComponentInput
+                                type="number"
+                                label="Código"
+                                name="code_material"
+                                value={code_material}
+                                onChange={(V: any) => onInputChange(V, false, false)}
+                            />
+                            <ComponentInput
+                                type="text"
+                                label="Código de Barra"
+                                name="barcode"
+                                value={barcode}
+                                onChange={(V: any) => onInputChange(V, false, false)}
+                            />
+                        </Stack>
 
-                                                    </Select>
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <InputLabel>Unidad</InputLabel>
-                                                    <Select
-                                                        label="Unidad"
-                                                        name="unit_material"
-                                                        value={unit_material}
-                                                        onChange={(V: any) => onInputChange(V, false, false)}
-                                                    >
-                                                        {units.map((unit, index) => (
-                                                            <MenuItem key={index} value={unit}>
-                                                                {unit}
-                                                            </MenuItem>
-                                                        ))}
+                        <Stack direction="row" spacing={2}>
+                            <FormControl fullWidth>
+                                <InputLabel>Tipo de Material</InputLabel>
+                                <Select
+                                    label="Tipo de Material"
+                                    name="type_material"
+                                    value={typeMaterial}
+                                    onChange={(event) => setTypeMaterial(event.target.value)}
+                                >
+                                    {type_material_select.map((type, index) => (
+                                        <MenuItem key={index} value={type}>{type}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth>
+                                <InputLabel>Unidad</InputLabel>
+                                <Select
+                                    label="Unidad"
+                                    name="unit_material"
+                                    value={unit_material}
+                                    onChange={(V: any) => onInputChange(V, false, false)}
+                                >
+                                    {units.map((unit, index) => (
+                                        <MenuItem key={index} value={unit}>{unit}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Stack>
 
-                                                    </Select>
-                                                </FormControl>
-                                            </Grid>
-                                        </Grid>
-
-                                        <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
-                                            <ComponentInput
-                                                type="text"
-                                                label="Nombre del Material"
-                                                name="description"
-                                                value={description}
-                                                onChange={(V: any) => onInputChange(V, false, false)}
-                                            />
-                                        </Grid>
-                                    </>
-                                )
-                            }
-                        </Grid>
+                        <Stack spacing={2} sx={{ mt: 2 }}>
+                            <ComponentInput
+                                type="text"
+                                label="Descripción del Material"
+                                name="description"
+                                value={description}
+                                onChange={(V: any) => onInputChange(V, false, false)}
+                            />
+                        </Stack>
                     </DialogContent>
-                    <DialogActions>
-                        {
-                            loading ?
-                                <CircularProgress color="success" size={30} /> :
-                                <>
-                                    <Button onClick={handleClose}>CANCELAR</Button>
-                                    <Button type="submit">
-                                        {item == null ? 'CREAR' : 'GUARDAR'}
-                                    </Button>
-                                </>
-                        }
+                    <DialogActions sx={{ p: 2, justifyContent: "space-between" }}>
+                        {loading ? (
+                            <CircularProgress color="success" size={30} />
+                        ) : (
+                            <>
+                                <Button onClick={handleClose} color="error" variant="contained">
+                                    Cancelar
+                                </Button>
+                                <Button type="submit" color="primary" variant="contained">
+                                    {item == null ? "Crear" : "Guardar"}
+                                </Button>
+                            </>
+                        )}
                     </DialogActions>
                 </form>
             </Dialog>
         </>
     );
-}
+};

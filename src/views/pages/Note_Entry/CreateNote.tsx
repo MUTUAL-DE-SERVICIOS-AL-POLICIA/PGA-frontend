@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Grid, Grow, IconButton, Paper, TextField, Typography, Box, Divider, Button } from "@mui/material";
+import { Grid, Grow, IconButton, Paper, TextField, Typography, Box, Divider, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 import { Delete, ExpandLess, ExpandMore, Save } from "@mui/icons-material";
 import { ComponentButton, SelectComponent } from "../../../components";
 import { useMaterialStore, useNoteEntryStore, useSupplierStore, useTypeStore } from "../../../hooks";
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 export const CreateNote = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [confirmOpen, setConfirmOpen] = useState(false);
     const { types = [], getTypes } = useTypeStore();
     const { suppliers = [], getSuppliersList } = useSupplierStore();
     const { materials = [], getMaterial } = useMaterialStore();
@@ -24,6 +25,7 @@ export const CreateNote = () => {
     console.log(formSubmitted);
 
     const navigate = useNavigate();
+
     const handleRedirect = () => {
         navigate('/entryView');
     }
@@ -80,8 +82,15 @@ export const CreateNote = () => {
         return `${year}-${month}-${day}`;
     }
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleOpenConfirm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setConfirmOpen(true);
+    };
+
+    const handleConfirmSubmit = async () => {
+        setConfirmOpen(false);
+        setFormSubmitted(true);
+
         const formData = {
             type: typeSelect,
             id_supplier: supplierSelect,
@@ -92,7 +101,6 @@ export const CreateNote = () => {
             authorization_number: authorizationNumber,
             id_user: localStorage.getItem('id')
         };
-        setFormSubmitted(true);
 
         await postNoteEntry(formData).then((res) => {
             if (res) {
@@ -100,7 +108,11 @@ export const CreateNote = () => {
                 handleRedirect();
             }
         });
-    }
+    };
+
+    const handleCloseConfirm = () => {
+        setConfirmOpen(false);
+    };
 
     useEffect(() => {
         getSuppliersList();
@@ -121,7 +133,7 @@ export const CreateNote = () => {
 
     const isMaterialSelectDisabled = typeSelect === 0 || supplierSelect === 0;
 
-    const [isMaterialsOpen, setIsMaterialsOpen] = useState(true); // Estado para controlar si la lista de materiales está abierta
+    const [isMaterialsOpen, setIsMaterialsOpen] = useState(true); 
 
     const toggleMaterialsList = () => {
         setIsMaterialsOpen(!isMaterialsOpen);
@@ -132,7 +144,7 @@ export const CreateNote = () => {
             <Paper sx={{ margin: '10px 0px', padding: '10px', borderRadius: '10px', backgroundColor: '#d3f4eb' }}>
                 <Typography variant="h6" style={{ textAlign: 'center', fontSize: '1rem' }}>Nueva Nota de Entrada</Typography>
                 <Grow in={true}>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleOpenConfirm}>
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={5}>
                                 <SelectComponent
@@ -325,6 +337,66 @@ export const CreateNote = () => {
                     />
                 </Grid>
             </Paper>
+
+            <Dialog
+                open={confirmOpen}
+                onClose={handleCloseConfirm}
+                PaperProps={{
+                    style: {
+                        borderRadius: 15, 
+                        padding: '20px',
+                        backgroundColor: '#f5f5f5',
+                    },
+                }}
+            >
+                <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#333', fontWeight: 'bold' }}>
+                    Confirmación de Guardado
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText textAlign="center" color="#666" fontSize="1rem" sx={{ mt: 2, mb: 4 }}>
+                        Por favor, revisa la información antes de guardar:
+                    </DialogContentText>
+                    <Typography fontWeight="bold" color="#333" fontSize="1rem">Tipo de Ingreso: {typeSelect}</Typography>
+                    <Typography fontWeight="bold" color="#333" fontSize="1rem">Proveedor: {supplierSelect}</Typography>
+                    <Typography fontWeight="bold" color="#333" fontSize="1rem">Número de Factura: {invoiceNumber}</Typography>
+                    <Typography fontWeight="bold" color="#333" fontSize="1rem">Número de Autorización: {authorizationNumber}</Typography>
+                    <Typography fontWeight="bold" color="#333" fontSize="1rem">Total General: {getTotal().toFixed(2)}</Typography>
+                    <Divider sx={{ margin: '10px 0', backgroundColor: '#ddd' }} />
+                    <Typography variant="h6" fontWeight="bold" color="#333" textAlign="center" style={{ fontSize: '1rem' }}>Materiales:</Typography>
+                    {selectedMaterials.map((material) => (
+                        <Typography key={material.id} fontSize="0.875rem" color="#555">
+                            {material.name}: {material.quantity} x Bs{material.price} = Bs{(material.quantity * material.price).toFixed(2)}
+                        </Typography>
+                    ))}
+                </DialogContent>
+                <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                        onClick={handleCloseConfirm}
+                        variant="outlined"
+                        color="error"
+                        sx={{ borderRadius: '20px', padding: '8px 20px', marginRight: '10px' }}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        onClick={handleConfirmSubmit}
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                            backgroundColor: '#4caf50',
+                            color: '#fff',
+                            borderRadius: '20px',
+                            padding: '8px 20px',
+                            "&:hover": { backgroundColor: '#388e3c' }
+                        }}
+                    >
+                        Confirmar y Guardar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+
+
             {openDialog && (
                 <CreateSupplier
                     open={openDialog}
@@ -340,10 +412,9 @@ export const CreateNote = () => {
                     open={openDialogMaterial}
                     handleClose={() => {
                         handleDialogMaterial(false);
-                        getMaterial(0, 10, '');
+                        getMaterial(0, 5000, '');
                     }}
                     item={null}
-                    type_material_select_base="Caja Chica"
                 />
             )}
         </>
