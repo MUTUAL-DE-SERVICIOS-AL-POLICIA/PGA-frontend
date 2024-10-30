@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { TableOrder } from "./TableOrder";
 import { useDashboardStore } from "../../../hooks";
 import { useEffect, useState } from "react";
-import { ListAlt } from '@mui/icons-material'; // Importar iconos
-
+import { ListAlt } from '@mui/icons-material';
 export const Dashboard = () => {
     const navigate = useNavigate();
     const { dashboards, getDashboard } = useDashboardStore();
@@ -22,7 +21,7 @@ export const Dashboard = () => {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
-        setAnchorElSubMenu(null); 
+        setAnchorElSubMenu(null);
     };
 
     const handleRedirect = (path: string) => {
@@ -57,9 +56,30 @@ export const Dashboard = () => {
                 <Grid item xs={12} sm={6} md={4} lg={4}>
                     <AnalyticCard title="Pedidos Entregados" count={dashboards['num_delivery']} extra={dashboards['num_order_total']} />
                 </Grid>
+                <Grid item xs={12} sx={{ mb: -2.25, display: 'flex', gap: 2 }}>
+                    <Button
+                        fullWidth
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleRedirect('/createNote')}
+                    >
+                        Nueva Nota
+                    </Button>
+                    <Button
+                        fullWidth
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleRedirect('/requestView')}
+                    >
+                        Solicitudes
+                    </Button>
+                </Grid>
                 <Grid item xs={12} sx={{ mb: -2.25 }}>
                     <Typography variant="h5">Reportes</Typography>
                 </Grid>
+
                 <Grid item xs={12} sm={6} md={4} lg={3}>
                     <Button
                         onClick={handleMenuClick}
