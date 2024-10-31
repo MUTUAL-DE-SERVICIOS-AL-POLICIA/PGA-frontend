@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { setShoppingCart, setNoteEntry, refreshNoteEntry } from "../store";
+import { setShoppingCart, setNoteEntry, refreshNoteEntry, setNoteEntryRevision } from "../store";
 import { coffeApi } from "../services";
 import Swal from "sweetalert2";
 import { NoteEntryModel } from "../models";
@@ -9,7 +9,7 @@ import { printDocument } from "../utils/helper";
 const api = coffeApi;
 
 export const useNoteEntryStore = () => {
-    const { note_entries = [], flag, shoppingCart = [] } = useSelector((state: any) => state.note_entries);
+    const { note_entries = [], note_entrie_revisions = [], flag, shoppingCart = [] } = useSelector((state: any) => state.note_entries);
     const dispatch = useDispatch();
 
 
@@ -25,6 +25,17 @@ export const useNoteEntryStore = () => {
         if (endDate !== '') filter.params.end_date = endDate;
         const { data } = await api.get('/auth/notes/', filter);
         dispatch(setNoteEntry({ note_entries: data.data }));
+        return data.total;
+    };
+
+    const getNoteEntryRevision = async (page: number, limit: number, search: string, startDate?: string, endDate?: string) => {
+        let filter: any = { params: { page: page } };
+        if (limit != -1) filter.params.limit = limit;
+        if (search !== '') filter.params.search = search;
+        if (startDate !== '') filter.params.start_date = startDate;
+        if (endDate !== '') filter.params.end_date = endDate;
+        const { data } = await api.get('/auth/notesRevision/', filter);
+        dispatch(setNoteEntryRevision({ note_entrie_revisions: data.data }));
         return data.total;
     };
 
@@ -77,11 +88,13 @@ export const useNoteEntryStore = () => {
         note_entries,
         flag,
         shoppingCart,
+        note_entrie_revisions,
 
         setUpdateShoppingCart,
         postNoteEntry,
         getNoteEntry,
         deleteNoteEntry,
         PrintNoteEntry,
+        getNoteEntryRevision
     }
 }

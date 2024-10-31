@@ -5,15 +5,19 @@ export const note_entrySlice = createSlice({
     name: 'note_entry',
     initialState: {
         note_entries: <NoteEntryModel[] | null>null || [],
+        note_entrie_revisions: <NoteEntryModel[] | null>null || [],
         shoppingCart: <any>[],
         flag: false
     },
-    reducers:{
+    reducers: {
         setShoppingCart: (state, action) => {
             state.shoppingCart = action.payload.shoppingCart;
         },
-        setNoteEntry : (state, action)=>{
+        setNoteEntry: (state, action) => {
             state.note_entries = action.payload.note_entries;
+        },
+        setNoteEntryRevision: (state, action) => {
+            state.note_entrie_revisions = action.payload.note_entrie_revisions;
         },
         refreshNoteEntry: (state) => {
             state.flag = !state.flag
@@ -21,4 +25,4 @@ export const note_entrySlice = createSlice({
     }
 });
 
-export const {setShoppingCart, setNoteEntry, refreshNoteEntry} = note_entrySlice.actions;
+export const { setShoppingCart, setNoteEntry, refreshNoteEntry, setNoteEntryRevision } = note_entrySlice.actions;
