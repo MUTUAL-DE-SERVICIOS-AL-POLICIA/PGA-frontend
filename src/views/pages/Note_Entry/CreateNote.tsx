@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Grid, Grow, IconButton, Paper, TextField, Typography, Box, Divider, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
+import { Grid, Grow, IconButton, Paper, TextField, Typography, Box, Divider, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Table, TableBody, TableRow, TableCell } from "@mui/material";
 import { Delete, ExpandLess, ExpandMore, Save } from "@mui/icons-material";
 import { ComponentButton, SelectComponent } from "../../../components";
 import { useMaterialStore, useNoteEntryStore, useSupplierStore, useTypeStore } from "../../../hooks";
@@ -23,7 +23,6 @@ export const CreateNote = () => {
     const [authorizationNumber, setAuthorizationNumber] = useState<string>('');
     const { postNoteEntry, PrintNoteEntry } = useNoteEntryStore();
     console.log(formSubmitted);
-
     const navigate = useNavigate();
 
     const handleRedirect = () => {
@@ -76,7 +75,7 @@ export const CreateNote = () => {
     const getCurrentDate = () => {
         const today = new Date();
         const day = String(today.getDate()).padStart(2, '0');
-        const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        const month = String(today.getMonth() + 1).padStart(2, '0');
         const year = today.getFullYear();
 
         return `${year}-${month}-${day}`;
@@ -133,7 +132,7 @@ export const CreateNote = () => {
 
     const isMaterialSelectDisabled = typeSelect === 0 || supplierSelect === 0;
 
-    const [isMaterialsOpen, setIsMaterialsOpen] = useState(true); 
+    const [isMaterialsOpen, setIsMaterialsOpen] = useState(true);
 
     const toggleMaterialsList = () => {
         setIsMaterialsOpen(!isMaterialsOpen);
@@ -343,7 +342,7 @@ export const CreateNote = () => {
                 onClose={handleCloseConfirm}
                 PaperProps={{
                     style: {
-                        borderRadius: 15, 
+                        borderRadius: 15,
                         padding: '20px',
                         backgroundColor: '#f5f5f5',
                     },
@@ -356,23 +355,49 @@ export const CreateNote = () => {
                     <DialogContentText textAlign="center" color="#666" fontSize="1rem" sx={{ mt: 2, mb: 4 }}>
                         Por favor, revisa la información antes de guardar:
                     </DialogContentText>
-                    <Typography fontWeight="bold" color="#333" fontSize="1rem">Tipo de Ingreso: {typeSelect}</Typography>
-                    <Typography fontWeight="bold" color="#333" fontSize="1rem">Proveedor: {supplierSelect}</Typography>
-                    <Typography fontWeight="bold" color="#333" fontSize="1rem">Número de Factura: {invoiceNumber}</Typography>
-                    <Typography fontWeight="bold" color="#333" fontSize="1rem">Número de Autorización: {authorizationNumber}</Typography>
-                    <Typography fontWeight="bold" color="#333" fontSize="1rem">Total General: {getTotal().toFixed(2)}</Typography>
+
+                    {/* Table for Summary */}
+                    <Table sx={{ mb: 2 }}>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell align="right" sx={{ fontWeight: 'bold', color: '#333' }}>Número de Factura:</TableCell>
+                                <TableCell>{invoiceNumber}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="right" sx={{ fontWeight: 'bold', color: '#333' }}>Número de Autorización:</TableCell>
+                                <TableCell>{authorizationNumber}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="right" sx={{ fontWeight: 'bold', color: '#333' }}>Total General:</TableCell>
+                                <TableCell>{getTotal().toFixed(2)}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+
                     <Divider sx={{ margin: '10px 0', backgroundColor: '#ddd' }} />
-                    <Typography variant="h6" fontWeight="bold" color="#333" textAlign="center" style={{ fontSize: '1rem' }}>Materiales:</Typography>
-                    {selectedMaterials.map((material) => (
-                        <Typography key={material.id} fontSize="0.875rem" color="#555">
-                            {material.name}: {material.quantity} x Bs{material.price} = Bs{(material.quantity * material.price).toFixed(2)}
-                        </Typography>
-                    ))}
+
+                    <Typography variant="h6" fontWeight="bold" color="#333" textAlign="center" sx={{ mb: 1, fontSize: '1rem' }}>
+                        Materiales
+                    </Typography>
+
+                    {/* Table for Materials */}
+                    <Table>
+                        <TableBody>
+                            {selectedMaterials.map((material) => (
+                                <TableRow key={material.id}>
+                                    <TableCell sx={{ fontSize: '0.875rem', color: '#555' }}>{material.name}</TableCell>
+                                    <TableCell align="right" sx={{ fontSize: '0.875rem', color: '#555' }}>
+                                        {material.quantity} x Bs{material.price} = Bs{(material.quantity * material.price).toFixed(2)}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
                 </DialogContent>
                 <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Button
                         onClick={handleCloseConfirm}
-                        variant="outlined"
+                        variant="contained"
                         color="error"
                         sx={{ borderRadius: '20px', padding: '8px 20px', marginRight: '10px' }}
                     >
@@ -394,6 +419,7 @@ export const CreateNote = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
 
 
 

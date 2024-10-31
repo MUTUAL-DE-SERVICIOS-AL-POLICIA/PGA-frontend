@@ -1,4 +1,4 @@
-import { Home, Bento, Group, Checklist, NoteAdd, NoteAlt } from "@mui/icons-material";
+import { Home, Bento, Group, Checklist, NoteAdd, NoteAlt, Notes } from "@mui/icons-material";
 
 const getPermissionsFromStorage = () => {
     let permissions: string[] = [];
@@ -18,9 +18,9 @@ const getPermissionsFromStorage = () => {
 };
 
 const hasPermission = (userPermissions: string[], requiredPermissions?: string | string[]) => {
-    if (!requiredPermissions) return true; 
+    if (!requiredPermissions) return true;
     if (typeof requiredPermissions === 'string') {
-        return userPermissions.includes(requiredPermissions); 
+        return userPermissions.includes(requiredPermissions);
     }
     return requiredPermissions.some(permission => userPermissions.includes(permission));
 };
@@ -33,37 +33,49 @@ export const menu = () => {
             path: "/dashboardView",
             title: "Inicio",
             icon: <Home />,
-            requiredPermission: undefined, 
+            requiredPermission: undefined,
         },
         {
             path: "/supplierView",
             title: "Proveedores",
             icon: <Group />,
-            requiredPermission: "create-employee", 
+            requiredPermission: "create-employee",
         },
         {
             path: "/classifierView",
             title: "Clasificador",
             icon: <Bento />,
-            requiredPermission: ["create-employee", "read-supplies", "create-material", "edit-material"], 
+            requiredPermission: ["create-employee", "read-supplies", "create-material", "edit-material"],
         },
         {
             path: "/materialsView",
             title: "Materiales",
             icon: <Checklist />,
-            requiredPermission: ["create-employee", "create-material", "edit-material", "delete-material"], 
+            requiredPermission: ["create-employee", "create-material", "edit-material", "delete-material"],
         },
         {
             path: "/entryView",
             title: "Entradas",
             icon: <NoteAdd />,
-            requiredPermission: ["create-employee", "read-supply-requests"], 
+            requiredPermission: ["create-employee", "read-supply-requests"],
+        },
+        {
+            path: "/entryNoteRecived",
+            title: "Revision Nota",
+            icon: <Notes />,
+            requiredPermission: "create-employee",
         },
         {
             path: "/requestView",
             title: "Solicitudes",
             icon: <NoteAlt />,
-            requiredPermission: "create-employee", 
+            requiredPermission: "create-employee",
+        },
+        {
+            path: "/requestViewPettyCash",
+            title: "Caja Chica",
+            icon: <Notes />,
+            requiredPermission: ["create-employee", "read-supply-requests"],
         },
     ].filter(item => {
         return hasPermission(permissions, item.requiredPermission);

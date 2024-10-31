@@ -10,19 +10,20 @@ interface TableProps {
     itemView: (note_request: NoteRequestModel) => void;
 }
 
-export const TableNotesRequest = (props: TableProps) => {
+export const TableNoteRequestPettyCash = (props: TableProps) => {
     const { limitInit = 5, itemView } = props;
-    const { note_requests, flag, getNoteRequest, PrintNoteRequest, PrintNoteRequestDelivery } = useNoteRequestStore();
+    const { note_requests_petty_cashs, flag, getNoteRequestPettyCash, PrintNoteRequest, PrintNoteRequestDelivery } = useNoteRequestStore();
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(limitInit);
     const [state, setState] = useState('');
     const [previousCount, setPreviousCount] = useState(0);
     const [open, setOpen] = useState(false);
-    const [filterNumberNote, setFilterNumberNote] = useState(false); 
+    const [filterNumberNote, setFilterNumberNote] = useState(false); // Estado del Switch
+
     useEffect(() => {
         const fetchData = async () => {
-            const totalNotes = await getNoteRequest(page, limit, '', state);
+            const totalNotes = await getNoteRequestPettyCash(page, limit, '', state);
             setTotal(totalNotes);
             if (totalNotes > previousCount) {
                 setOpen(true);
@@ -37,6 +38,8 @@ export const TableNotesRequest = (props: TableProps) => {
         return () => clearInterval(intervalId);
     }, [page, limit, flag, previousCount, state]);
 
+
+    console.log(note_requests_petty_cashs);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
@@ -48,8 +51,8 @@ export const TableNotesRequest = (props: TableProps) => {
     };
 
     const filteredNotes = filterNumberNote
-        ? note_requests?.filter((note: NoteRequestModel) => note.number_note !== 0)
-        : note_requests;
+        ? note_requests_petty_cashs?.filter((note: NoteRequestModel) => note.number_note !== 0)
+        : note_requests_petty_cashs;
 
     return (
         <Stack sx={{ padding: '10px' }}>

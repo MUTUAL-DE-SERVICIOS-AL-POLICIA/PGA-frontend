@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { coffeApi } from "../services"
-import { refreshNoteRequest, setNoteRequest } from "../store";
+import { refreshNoteRequest, setNoteRequest, setNoteRequestPettyCash } from "../store";
 import Swal from "sweetalert2";
 import { printDocument } from "../utils/helper";
 
 const api = coffeApi;
 export const useNoteRequestStore = () => {
-    const { note_requests = [], flag } = useSelector((state: any) => state.note_requests);
+    const { note_requests = [], note_requests_petty_cashs = [], flag } = useSelector((state: any) => state.note_requests);
     const dispatch = useDispatch();
 
     const getNoteRequest = async (page: number, limit: number, search: string, state: string) => {
@@ -15,6 +15,16 @@ export const useNoteRequestStore = () => {
         if (state !== '') filter.params.state = state;
         const { data } = await api.get('/auth/noteRequest/', filter);
         dispatch(setNoteRequest({ note_requests: data.data }));
+        return data.total;
+    };
+
+    const getNoteRequestPettyCash = async (page: number, limit: number, search: string, state: string) => {
+        let filter: any = { params: { page: page, limit: limit } };
+        if (search !== '') filter.params.search = search;
+        if (state !== '') filter.params.state = state;
+        const { data } = await api.get('/auth/noteRequestPettyCash/', filter);
+        console.log(data);
+        dispatch(setNoteRequestPettyCash({ note_requests_petty_cashs: data.data }));
         return data.total;
     };
 
@@ -38,7 +48,20 @@ export const useNoteRequestStore = () => {
     const PrintNoteRequest = async (note_request: any) => {
         try {
             const response = await api.get(`/auth/print_post_request/${note_request.id_note}/`, {
-                responseType: 'arraybuffer', 
+                responseType: 'arraybuffer',
+            });
+            printDocument(response)
+            return true
+
+        } catch (error) {
+            console.error('Error al imprimir la nota de entrada:', error);
+        }
+    };
+
+    const PrintNoteRequestDelivery = async (note_request: any) => {
+        try {
+            const response = await api.get(`/auth/printRequest/${note_request.id_note}/`, {
+                responseType: 'arraybuffer',
             });
             printDocument(response)
             return true
@@ -51,11 +74,13 @@ export const useNoteRequestStore = () => {
 
     return {
         note_requests,
+        note_requests_petty_cashs,
         flag,
-
+        getNoteRequestPettyCash,
         getNoteRequest,
         postNoteRequest,
-        PrintNoteRequest
+        PrintNoteRequest,
+        PrintNoteRequestDelivery
     }
 
 }

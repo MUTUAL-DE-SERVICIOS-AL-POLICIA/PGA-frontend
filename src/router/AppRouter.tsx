@@ -13,8 +13,8 @@ import { GroupTableSec } from '../views/pages/Groups';
 import { MaterialView } from '../views/pages/Materials';
 import { Dashboard } from '../views/pages/Dashboard';
 import { CreateNote } from '../views/pages/Note_Entry/CreateNote';
-import { NoteEntryView } from '../views/pages/Note_Entry';
-import { NoteRequestView } from '../views/pages/Note_Request';
+import { NoteEntryRevised, NoteEntryView } from '../views/pages/Note_Entry';
+import { NoteRequestPettyCash, NoteRequestView } from '../views/pages/Note_Request';
 import { UsersView } from '../views/pages/Users';
 import { DirectoryRequest, ExistenceCard, UserRequest, ValuedPhysical, ValuedPhysicalConsolided } from '../views/pages/Reports';
 
@@ -36,8 +36,10 @@ export const AppRouter = () => {
                     <Route path='/groupView' element={<GroupTableSec />} />
                     <Route path='/materialsView' element={<MaterialView />} />
                     <Route path='/entryView' element={<NoteEntryView />} />
+                    <Route path='/entryNoteRecived' element={<NoteEntryRevised />} />
                     <Route path='/createNote' element={<CreateNote />} />
                     <Route path='/requestView' element={<NoteRequestView />} />
+                    <Route path='/requestViewPettyCash' element={<NoteRequestPettyCash />} />
                     <Route path='/reportExistence' element={<ExistenceCard />} />
                     <Route path='/reportValuedPhysical' element={<ValuedPhysical />} />
                     <Route path='/reportValuedPhysicalConsolided' element={<ValuedPhysicalConsolided />} />
