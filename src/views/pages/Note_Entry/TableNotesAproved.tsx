@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Chip } from "@mui/material";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
-import { Description } from "@mui/icons-material";
+import { DeleteOutline, Description } from "@mui/icons-material";
 import { useNoteEntryStore } from "../../../hooks";
 
 interface TableProps {
@@ -11,7 +11,7 @@ interface TableProps {
 
 export const TableNotesAproved = (props: TableProps) => {
     const { limitInit = 5, itemView } = props;
-    const { note_entrie_revisions, flag, getNoteEntryRevision } = useNoteEntryStore();
+    const { note_entrie_revisions, flag, getNoteEntryRevision, deleteNoteEntry } = useNoteEntryStore();
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(limitInit);
@@ -75,6 +75,9 @@ export const TableNotesAproved = (props: TableProps) => {
                                             <Stack alignContent="center" direction="row">
                                                 <IconButton sx={{ p: 2 }} onClick={() => itemView!(note_request)}>
                                                     <Description color="success" />
+                                                </IconButton>
+                                                <IconButton sx={{ p: 2 }} onClick={() => deleteNoteEntry(note_request)}>
+                                                    <DeleteOutline color="error" />
                                                 </IconButton>
                                             </Stack>
                                         </TableCell>

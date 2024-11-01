@@ -3,7 +3,7 @@ import { useNoteEntryStore } from "../../../hooks";
 import { useEffect, useState } from "react";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
 import { NoteEntryModel } from "../../../models";
-import { DeleteOutline, Description, Print } from "@mui/icons-material";
+import { Description, Print } from "@mui/icons-material";
 
 interface tableProps {
     limitInit?: number;
@@ -26,7 +26,7 @@ const getTypeTextAndColor = (typeId: number) => {
 export const TableNotesEntry = (props: tableProps) => {
     const { limitInit = 5, itemView } = props;
 
-    const { note_entries, flag, getNoteEntry, deleteNoteEntry, PrintNoteEntry } = useNoteEntryStore();
+    const { note_entries, flag, getNoteEntry, PrintNoteEntry } = useNoteEntryStore();
 
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
@@ -96,9 +96,6 @@ export const TableNotesEntry = (props: tableProps) => {
                                                 </IconButton>
                                                 <IconButton sx={{ p: 2 }} onClick={() => itemView!(note_entry)}>
                                                     <Description color="success" />
-                                                </IconButton>
-                                                <IconButton sx={{ p: 2 }} onClick={() => deleteNoteEntry(note_entry)}>
-                                                    <DeleteOutline color="error" />
                                                 </IconButton>
                                             </Stack>
                                         </TableCell>

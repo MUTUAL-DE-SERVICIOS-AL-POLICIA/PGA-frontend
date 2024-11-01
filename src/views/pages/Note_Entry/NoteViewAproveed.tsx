@@ -1,22 +1,7 @@
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    Table,
-    TableHead,
-    TableBody,
-    TableRow,
-    TableCell,
-    Typography,
-    Divider,
-    DialogActions,
-    Button,
-    TextField,
-    IconButton
-} from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, Typography, Divider, DialogActions, Button, TextField, IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect } from "react";
-import { useNoteRequestStore } from "../../../hooks/useNoteRequestStore";
+import { useNoteEntryStore } from "../../../hooks";
 
 interface ViewProps {
     open: boolean;
@@ -27,9 +12,7 @@ interface ViewProps {
 export const NoteViewAproveed = (props: ViewProps) => {
     const { open, handleClose, item } = props;
     const [materials, setMaterials] = useState(item?.materials || []);
-    const [cancelComment, setCancelComment] = useState('');
-    const [approveComment, setApproveComment] = useState('');
-    const { postNoteRequest } = useNoteRequestStore();
+    const { postNoteEntryApproved } = useNoteEntryStore();
 
     useEffect(() => {
         if (item) {
@@ -65,19 +48,22 @@ export const NoteViewAproveed = (props: ViewProps) => {
         setMaterials(newMaterials);
     };
 
+    console.log(item);
     const handleSubmit = async (status: string) => {
         const dataToSend = {
-            noteRequestId: item.id_note,
+            noteEntryId: item.id,
             materials: materials.map((material: any) => ({
                 id_material: material.id,
                 amount_entries: material.amount_entries,
                 cost_unit: material.cost_unit
             })),
             status,
-            comment: status === 'Cancelled' ? cancelComment : approveComment
+            comment: '' 
         };
 
-        await postNoteRequest(dataToSend).then((res) => {
+        console.log(dataToSend);
+
+        await postNoteEntryApproved(dataToSend).then((res) => {
             if (res) {
                 handleClose();
             }
@@ -167,9 +153,6 @@ export const NoteViewAproveed = (props: ViewProps) => {
             <DialogActions sx={{ padding: '16px', flexDirection: 'column', alignItems: 'center' }}>
                 <Button onClick={() => handleSubmit('Approved')} variant="contained" color="success">
                     Aprobar
-                </Button>
-                <Button onClick={() => handleSubmit('Cancelled')} variant="contained" color="error">
-                    Anular
                 </Button>
             </DialogActions>
         </Dialog>

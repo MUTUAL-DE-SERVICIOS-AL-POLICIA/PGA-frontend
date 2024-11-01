@@ -39,6 +39,26 @@ export const useNoteEntryStore = () => {
         return data.total;
     };
 
+    const postNoteEntryApproved = async (body: object) => {
+        try {
+            const { data } = await api.post('/auth/approvedNoteEntry/', body);
+            dispatch(refreshNoteEntry());
+            Swal.fire('Nota de Entrada Aceptada Correctamente !!! ', '', 'success');
+            return data;
+        } catch (error: any) {
+            if (error.response && error.response.status == 403) {
+                const message = error.response;
+                Swal.fire('Acceso Denegado', message, 'warning')
+            } else {
+                const message = error.response.data.error
+                Swal.fire('Error', message, 'error');
+            }
+
+            return false;
+        }
+
+    }
+
 
     const postNoteEntry = async (body: object) => {
         try {
@@ -95,6 +115,7 @@ export const useNoteEntryStore = () => {
         getNoteEntry,
         deleteNoteEntry,
         PrintNoteEntry,
-        getNoteEntryRevision
+        getNoteEntryRevision,
+        postNoteEntryApproved,
     }
 }
