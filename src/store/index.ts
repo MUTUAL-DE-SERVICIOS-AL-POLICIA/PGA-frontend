@@ -8,5 +8,6 @@ export * from './Type/typeSlice';
 export * from './NoteRequest/note_requestSlice';
 export * from './ReportKardex/report_kardexSlice';
 export * from './Dasboard/dashboardSlice';
-export * from './UserRequest/userSlice'
+export * from './UserRequest/userSlice';
+export * from './UserStore/storeSlice';
 export * from './store';
