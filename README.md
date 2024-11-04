@@ -14,9 +14,9 @@
 ## Despligue con docker
 PASO 1: Copiar el proyecto de github
 ```
-git clone git@github.com:napoleonbaley2011/pga-backend.git
+gh repo clone MUTUAL-DE-SERVICIOS-AL-POLICIA/PGA-frontend
 o
-git clone https://github.com/napoleonbaley2011/pga-backend.git
+https://github.com/MUTUAL-DE-SERVICIOS-AL-POLICIA/PGA-frontend.git
 ```
 PASO 2: Construir la imagen y ejecutar el contenedor:
 ```
