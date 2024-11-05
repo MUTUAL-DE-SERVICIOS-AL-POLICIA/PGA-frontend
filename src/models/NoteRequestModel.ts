@@ -5,6 +5,7 @@ export interface NoteRequestModel {
     number_note: number;
     state: string;
     observation:string;
+    observation_request:string;
     user_register: number;
     request_date: string;
     employee: string;

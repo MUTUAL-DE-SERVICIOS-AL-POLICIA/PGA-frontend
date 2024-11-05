@@ -17,6 +17,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
     const [cancelComment, setCancelComment] = useState('');
     const [approveComment, setApproveComment] = useState('');
     const { postNoteRequest } = useNoteRequestStore();
+    console.log(item)
 
     useEffect(() => {
         if (item) {
@@ -117,6 +118,10 @@ export const ViewNoteRequest = (props: ViewProps) => {
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Estado:</TableCell>
                                     <TableCell>{item.state}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Comentario:</TableCell>
+                                    <TableCell>{item.observation_request}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
