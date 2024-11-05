@@ -1,4 +1,4 @@
-import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Switch, Button, Typography, } from "@mui/material";
+import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Switch, Button, Typography } from "@mui/material";
 import { useUserStore } from "../../../hooks/useUserStore";
 import { useEffect, useState } from "react";
 
@@ -47,14 +47,16 @@ export const UsersTable = () => {
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#E2F6F0' }}>
+                            <TableCell sx={{ fontWeight: 'bold' }}>#</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Nombre</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Rol</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {user_stores.map((user: any) => (
+                        {user_stores.map((user: any, index: number) => (
                             <TableRow key={user.id}>
+                                <TableCell>{index + 1}</TableCell>
                                 <TableCell>{user.username}</TableCell>
                                 <TableCell>{user.position}</TableCell>
                                 <TableCell>
