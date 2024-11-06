@@ -48,7 +48,6 @@ export const NoteViewAproveed = (props: ViewProps) => {
         setMaterials(newMaterials);
     };
 
-    console.log(item);
     const handleSubmit = async (status: string) => {
         const dataToSend = {
             noteEntryId: item.id,
@@ -61,7 +60,6 @@ export const NoteViewAproveed = (props: ViewProps) => {
             comment: '' 
         };
 
-        console.log(dataToSend);
 
         await postNoteEntryApproved(dataToSend).then((res) => {
             if (res) {

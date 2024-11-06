@@ -41,8 +41,6 @@ export const CreateMaterials = (props: createProps) => {
 
     const handleModal = useCallback((value: boolean) => setModal(value), []);
 
-    console.log(group_id);
-
     const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setFormSubmitted(true);

@@ -53,8 +53,6 @@ export const ValuedPhysicalConsolided = () => {
 
     const permissions = getPermissionsFromStorage();
 
-    console.log(selectedManagement);
-
     const handleSubmit = () => {
         ClosureMagementStore();
         setOpenConfirm(false);

@@ -38,8 +38,6 @@ export const TableNoteRequestPettyCash = (props: TableProps) => {
         return () => clearInterval(intervalId);
     }, [page, limit, flag, previousCount, state]);
 
-
-    console.log(note_requests_petty_cashs);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;

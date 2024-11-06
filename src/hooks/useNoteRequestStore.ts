@@ -23,7 +23,6 @@ export const useNoteRequestStore = () => {
         if (search !== '') filter.params.search = search;
         if (state !== '') filter.params.state = state;
         const { data } = await api.get('/auth/noteRequestPettyCash/', filter);
-        console.log(data);
         dispatch(setNoteRequestPettyCash({ note_requests_petty_cashs: data.data }));
         return data.total;
     };

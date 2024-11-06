@@ -24,7 +24,6 @@ export const UsersTable = () => {
 
     const handleSubmitChanges = () => {
         const usersToSubmit = Array.from(modifiedUsers.values());
-        console.log("Usuarios a enviar:", usersToSubmit);
         postUserStore(usersToSubmit);
         getUserStore();
         setModifiedUsers(new Map());

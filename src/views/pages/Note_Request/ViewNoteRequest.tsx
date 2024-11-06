@@ -17,7 +17,6 @@ export const ViewNoteRequest = (props: ViewProps) => {
     const [cancelComment, setCancelComment] = useState('');
     const [approveComment, setApproveComment] = useState('');
     const { postNoteRequest } = useNoteRequestStore();
-    console.log(item)
 
     useEffect(() => {
         if (item) {
