@@ -12,7 +12,7 @@ interface TableProps {
 
 export const TableNoteRequestPettyCash = (props: TableProps) => {
     const { limitInit = 5, itemView } = props;
-    const { note_requests_petty_cashs, flag, getNoteRequestPettyCash, PrintNoteRequest, PrintNoteRequestDelivery } = useNoteRequestStore();
+    const { note_requests_petty_cashs, flag, getNoteRequestPettyCash, PrintNoteRequest } = useNoteRequestStore();
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(limitInit);
@@ -141,9 +141,6 @@ export const TableNoteRequestPettyCash = (props: TableProps) => {
                                                         <Print color="info" />
                                                     </IconButton>
                                                 ) : null}
-                                                <IconButton sx={{ p: 2 }} onClick={() => PrintNoteRequestDelivery(note_request)}>
-                                                    <Print color="error" />
-                                                </IconButton>
                                             </Stack>
                                         </TableCell>
                                     </TableRow>

@@ -11,6 +11,7 @@ export const useReportKardexStore = () => {
     const dispatch = useDispatch();
 
     const getReportKardex = async (material_id: any) => {
+        console.log(material_id);
         const { data } = await api.get(`/auth/ReportPrintKardex/${material_id}/`);
         dispatch(setReportKardex({ report_kardexs: data }))
         return true;

@@ -61,7 +61,7 @@ export const TableDirectoryRequest = (props: TableProps) => {
                                 <TableCell>{material.material_name}</TableCell>
                                 <TableCell align='center'>{material.total_amount_requested}</TableCell>
                                 <TableCell align='center'>{material.unit_material}</TableCell>
-                                <TableCell align='center'>{material.cost}</TableCell>
+                                <TableCell align='center'>{(material.cost).toFixed(2)}</TableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>
