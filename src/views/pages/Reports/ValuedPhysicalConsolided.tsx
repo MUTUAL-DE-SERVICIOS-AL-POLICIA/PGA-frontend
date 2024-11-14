@@ -125,18 +125,18 @@ export const ValuedPhysicalConsolided = () => {
                                     Cerrar Gestión
                                 </Button>
                             </Grid>
-                            <Grid item xs={12} sm={3}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    fullWidth
-                                    onClick={handleCalculateClick}
-                                >
-                                    Calcular
-                                </Button>
-                            </Grid>
                         </>
                     )}
+                    <Grid item xs={12} sm={3}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            onClick={handleCalculateClick}
+                        >
+                            Calcular
+                        </Button>
+                    </Grid>
 
                     <Grid item>
                         <Tooltip title="Imprimir">

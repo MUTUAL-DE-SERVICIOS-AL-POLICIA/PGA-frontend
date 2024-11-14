@@ -239,7 +239,7 @@ export const CreateMaterials = (props: createProps) => {
     }
 
     const units = ["HOJAS", "ROLLO", "BLOCK", "CAJA", "PIEZAS", "OVILLO", "GLOBAL", "PAQUETE", "RESMA"];
-    const type_material_select = ["Almacen", "Caja Chica", "Fondo en Avance"];
+    const type_material_select = ["Almacen", "Caja Chica, Fondo en Avance, Reposicion"];
     units.sort((a, b) => a.localeCompare(b));
 
     return (

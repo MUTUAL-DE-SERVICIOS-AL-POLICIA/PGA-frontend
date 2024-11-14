@@ -1,41 +1,58 @@
 import { TableExistence } from "./TableExistence";
 import { useMaterialStore, useReportKardexStore } from "../../../hooks";
 import { useEffect, useState } from "react";
-import { Grid, IconButton, TextField, Tooltip } from "@mui/material";
+import { Grid, IconButton, TextField, Tooltip, Button } from "@mui/material";
 import { SelectComponent } from "../../../components";
 import { MaterialModel } from "../../../models";
 import PrintIcon from '@mui/icons-material/Print';
 import DownloadIcon from '@mui/icons-material/Download';
 
+const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+};
+
 export const ExistenceCard = () => {
     const { materials = [], getMaterial } = useMaterialStore();
     const { report_kardexs, getReportKardex, PrintReportKardex, DownloadReportKardex } = useReportKardexStore();
-    const [endDate, setEndDate] = useState('');
+
+
+    const [endDate, setEndDate] = useState(getTodayDate());
     const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
+    const [isCalculateEnabled, setIsCalculateEnabled] = useState(false);
+
+    useEffect(() => {
+        getMaterial(0, 5000, '');
+    }, []);
+
+    useEffect(() => {
+        setIsCalculateEnabled(!!selectedMaterialId);
+    }, [selectedMaterialId, endDate]);
 
     const handleAddMaterial = (value: any) => {
         const material = materials.find((material: MaterialModel) => material.id === value);
         if (material) {
             setSelectedMaterialId(material.id);
-            getReportKardex(material.id);
+        }
+    }
+
+    const handleCalculateClick = () => {
+        if (selectedMaterialId !== null) {
+            getReportKardex(selectedMaterialId, endDate || null);
         }
     }
 
     const handlePrintClick = () => {
         if (selectedMaterialId !== null) {
-            PrintReportKardex(selectedMaterialId);
+            PrintReportKardex(selectedMaterialId, endDate || null);
         }
     }
 
     const handleDownloadClick = () => {
         if (selectedMaterialId !== null) {
-            DownloadReportKardex(selectedMaterialId);
+            DownloadReportKardex(selectedMaterialId, endDate || null);
         }
     };
-
-    useEffect(() => {
-        getMaterial(0, 5000, '');
-    }, []);
 
     const availableMaterials = materials.filter((material: MaterialModel) => {
         return !material.description.includes("(CAJA CHICA)");
@@ -71,11 +88,21 @@ export const ExistenceCard = () => {
                 <Grid item xs={12} sm={4}>
                     <Grid container spacing={1}>
                         <Grid item>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleCalculateClick}
+                                disabled={!isCalculateEnabled}
+                            >
+                                Calcular
+                            </Button>
+                        </Grid>
+                        <Grid item>
                             <Tooltip title="Imprimir">
                                 <span>
                                     <IconButton
                                         color="primary"
-                                        disabled={selectedMaterialId === null}
+                                        disabled={!isCalculateEnabled}
                                         onClick={handlePrintClick}
                                     >
                                         <PrintIcon />
@@ -88,7 +115,7 @@ export const ExistenceCard = () => {
                                 <span>
                                     <IconButton
                                         color="primary"
-                                        disabled={selectedMaterialId === null}
+                                        disabled={!isCalculateEnabled}
                                         onClick={handleDownloadClick}
                                     >
                                         <DownloadIcon />

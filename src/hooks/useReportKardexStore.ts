@@ -10,16 +10,15 @@ export const useReportKardexStore = () => {
     const { report_ValuedPhys, report_kardexs = [], report_ValuedPhy_Consolids, managements, flag } = useSelector((state: any) => state.report_kardexs);
     const dispatch = useDispatch();
 
-    const getReportKardex = async (material_id: any) => {
-        console.log(material_id);
-        const { data } = await api.get(`/auth/ReportPrintKardex/${material_id}/`);
+    const getReportKardex = async (material_id: any, endDate: string | null) => {
+        const { data } = await api.get(`/auth/ReportPrintKardex/${material_id}?end_date=${endDate || ''}`);
         dispatch(setReportKardex({ report_kardexs: data }))
         return true;
     }
 
-    const PrintReportKardex = async (material_id: any) => {
+    const PrintReportKardex = async (material_id: any, endDate: string | null) => {
         try {
-            const response = await api.get(`/auth/PrintKardex/${material_id}/`, {
+            const response = await api.get(`/auth/PrintKardex/${material_id}?end_date=${endDate || ''}/`, {
                 responseType: 'arraybuffer',
             });
             printDocument(response)
@@ -29,9 +28,9 @@ export const useReportKardexStore = () => {
             console.error('Error al imprimir la nota de entrada:', error);
         }
     };
-    const DownloadReportKardex = async (material_id: any) => {
+    const DownloadReportKardex = async (material_id: any, endDate: string | null) => {
         try {
-            const response = await api.get(`/auth/PrintKardex/${material_id}/`, {
+            const response = await api.get(`/auth/PrintKardex/${material_id}?end_date=${endDate || ''}/`, {
                 responseType: 'arraybuffer',
             });
             downloadDocument(response, `report_kardex_${material_id}.pdf`);
