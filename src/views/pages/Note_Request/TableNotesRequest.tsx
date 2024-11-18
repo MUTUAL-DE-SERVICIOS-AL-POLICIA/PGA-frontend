@@ -3,7 +3,7 @@ import { useNoteRequestStore } from "../../../hooks/useNoteRequestStore";
 import { NoteRequestModel } from "../../../models/NoteRequestModel";
 import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, FormControl, Select, InputLabel, MenuItem, Snackbar, Chip, Switch } from "@mui/material";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
-import { Description, Print } from "@mui/icons-material";
+import { CheckCircle, Print } from "@mui/icons-material";
 
 interface TableProps {
     limitInit?: number;
@@ -19,7 +19,7 @@ export const TableNotesRequest = (props: TableProps) => {
     const [state, setState] = useState('');
     const [previousCount, setPreviousCount] = useState(0);
     const [open, setOpen] = useState(false);
-    const [filterNumberNote, setFilterNumberNote] = useState(false); 
+    const [filterNumberNote, setFilterNumberNote] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
             const totalNotes = await getNoteRequest(page, limit, '', state);
@@ -133,7 +133,7 @@ export const TableNotesRequest = (props: TableProps) => {
                                         <TableCell>
                                             <Stack alignContent="center" direction="row">
                                                 <IconButton sx={{ p: 2 }} onClick={() => itemView!(note_request)}>
-                                                    <Description color="success" />
+                                                    <CheckCircle color="success" />
                                                 </IconButton>
                                                 {note_request.state === 'Aceptado' ? (
                                                     <IconButton sx={{ p: 2 }} onClick={() => PrintNoteRequest(note_request)}>
@@ -168,7 +168,7 @@ export const TableNotesRequest = (props: TableProps) => {
                 action={
                     <React.Fragment>
                         <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-                            <Description fontSize="small" />
+                            <CheckCircle fontSize="small" />
                         </IconButton>
                     </React.Fragment>
                 }

@@ -14,6 +14,29 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     border: '1px solid #ddd',
     padding: theme.spacing(0.2),
 }));
+const StyledBodyCell = styled(TableCell)({
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    width: '100px',
+    maxWidth: '100px',
+    fontSize: '0.7rem',
+    border: '1px solid #ddd',
+    backgroundColor: '#fff',
+});
+
+const StyledDetailCell = styled(TableCell)({
+    whiteSpace: 'normal', // Permite múltiples líneas de texto si es necesario
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    width: 'auto', // Deja que esta columna se ajuste automáticamente
+    maxWidth: '300px', // Ancho máximo (puedes ajustarlo según el diseño)
+    flexGrow: 1, // Da prioridad a esta columna para crecer más
+    fontSize: '0.7rem',
+    border: '1px solid #ddd',
+    backgroundColor: '#fff',
+});
+
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
@@ -99,16 +122,23 @@ export const TableExistence = (props: TableProps) => {
                     <TableBody>
                         {itemKardex.kardex_de_existencia.map((entry: any, index: number) => (
                             <StyledTableRow key={index}>
-                                <TableCell align="left">{entry.date}</TableCell>
-                                <TableCell align="left">{entry.description}</TableCell>
-                                <TableCell align="center">{entry.entradas}</TableCell>
-                                <TableCell align="center">{entry.salidas}</TableCell>
-                                <TableCell align="right">{entry.stock_fisico}</TableCell>
-                                <TableCell align="right">{entry.cost_unit}</TableCell>
-                                <TableCell align="right">{entry.entradas ? formatNumber(entry.entradas * entry.cost_unit) : '-'}</TableCell>
-                                <TableCell align="right">{entry.salidas ? formatNumber(entry.salidas * entry.cost_unit) : '-'}</TableCell>
-                                <TableCell align="right">{entry.entradas || entry.salidas ? `${entry.cost_total}` : '-'}</TableCell>
+                                <StyledBodyCell align="left">{entry.date}</StyledBodyCell>
+                                <StyledDetailCell align="left">{entry.description}</StyledDetailCell> {/* Cambiado aquí */}
+                                <StyledBodyCell align="center">{entry.entradas}</StyledBodyCell>
+                                <StyledBodyCell align="center">{entry.salidas}</StyledBodyCell>
+                                <StyledBodyCell align="right">{entry.stock_fisico}</StyledBodyCell>
+                                <StyledBodyCell align="right">{entry.cost_unit}</StyledBodyCell>
+                                <StyledBodyCell align="right">
+                                    {entry.entradas ? formatNumber(entry.entradas * entry.cost_unit) : '-'}
+                                </StyledBodyCell>
+                                <StyledBodyCell align="right">
+                                    {entry.salidas ? formatNumber(entry.salidas * entry.cost_unit) : '-'}
+                                </StyledBodyCell>
+                                <StyledBodyCell align="right">
+                                    {entry.entradas || entry.salidas ? `${entry.cost_total}` : '-'}
+                                </StyledBodyCell>
                             </StyledTableRow>
+
                         ))}
                     </TableBody>
                 </Table>

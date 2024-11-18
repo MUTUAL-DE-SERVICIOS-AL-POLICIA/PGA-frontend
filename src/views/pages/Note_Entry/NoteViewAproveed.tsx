@@ -18,8 +18,8 @@ export const NoteViewAproveed = (props: ViewProps) => {
         if (item) {
             setMaterials(item.materials.map((material: any) => ({
                 ...material,
-                amount_entries: material.pivot.amount_entries || '',   // Initialize amount_entries
-                cost_unit: material.pivot.cost_unit || ''             // Initialize cost_unit
+                amount_entries: material.pivot.amount_entries || '',   
+                cost_unit: material.pivot.cost_unit || ''             
             })));
         }
     }, [item]);

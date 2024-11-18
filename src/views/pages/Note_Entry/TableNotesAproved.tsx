@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Chip } from "@mui/material";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
-import { DeleteOutline, Description } from "@mui/icons-material";
+import { DeleteOutline, CheckCircle } from "@mui/icons-material";
 import { useNoteEntryStore } from "../../../hooks";
 
 interface TableProps {
@@ -74,7 +74,7 @@ export const TableNotesAproved = (props: TableProps) => {
                                         <TableCell>
                                             <Stack alignContent="center" direction="row">
                                                 <IconButton sx={{ p: 2 }} onClick={() => itemView!(note_request)}>
-                                                    <Description color="success" />
+                                                    <CheckCircle color="success" />
                                                 </IconButton>
                                                 <IconButton sx={{ p: 2 }} onClick={() => deleteNoteEntry(note_request)}>
                                                     <DeleteOutline color="error" />
