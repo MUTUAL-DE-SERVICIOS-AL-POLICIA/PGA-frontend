@@ -13,62 +13,98 @@ const getTodayDate = () => {
 };
 
 export const ExistenceCard = () => {
+    // Stores and hooks
     const { materials = [], getMaterial } = useMaterialStore();
     const { report_kardexs, getReportKardex, PrintReportKardex, DownloadReportKardex } = useReportKardexStore();
 
-
+    // States
     const [endDate, setEndDate] = useState(getTodayDate());
     const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
+    const [selectedCajaChicaId, setSelectedCajaChicaId] = useState<number | null>(null);
     const [isCalculateEnabled, setIsCalculateEnabled] = useState(false);
 
+    // Fetch materials on component mount
     useEffect(() => {
         getMaterial(0, 5000, '');
     }, []);
 
+    // Enable/Disable calculate button based on selections
     useEffect(() => {
-        setIsCalculateEnabled(!!selectedMaterialId);
-    }, [selectedMaterialId, endDate]);
+        setIsCalculateEnabled(!!selectedMaterialId || !!selectedCajaChicaId);
+    }, [selectedMaterialId, selectedCajaChicaId, endDate]);
 
+    // Handlers
     const handleAddMaterial = (value: any) => {
-        const material = materials.find((material: MaterialModel) => material.id === value);
-        if (material) {
-            setSelectedMaterialId(material.id);
-        }
-    }
+        setSelectedMaterialId(value);
+        setSelectedCajaChicaId(null); // Deselect "Caja Chica"
+    };
+
+    const handleAddCajaChica = (value: any) => {
+        setSelectedCajaChicaId(value);
+        setSelectedMaterialId(null); // Deselect "Materiales"
+    };
 
     const handleCalculateClick = () => {
-        if (selectedMaterialId !== null) {
-            getReportKardex(selectedMaterialId, endDate || null);
-        }
-    }
-
-    const handlePrintClick = () => {
-        if (selectedMaterialId !== null) {
-            PrintReportKardex(selectedMaterialId, endDate || null);
-        }
-    }
-
-    const handleDownloadClick = () => {
-        if (selectedMaterialId !== null) {
-            DownloadReportKardex(selectedMaterialId, endDate || null);
+        const idToCalculate = selectedMaterialId ?? selectedCajaChicaId;
+        if (idToCalculate !== null) {
+            getReportKardex(idToCalculate, endDate || null);
         }
     };
 
-    const availableMaterials = materials.filter((material: MaterialModel) => {
-        return !material.description.includes("(CAJA CHICA)");
-    });
+    const handlePrintClick = () => {
+        const idToPrint = selectedMaterialId ?? selectedCajaChicaId;
+        if (idToPrint !== null) {
+            PrintReportKardex(idToPrint, endDate || null);
+        }
+    };
+
+    const handleDownloadClick = () => {
+        const idToDownload = selectedMaterialId ?? selectedCajaChicaId;
+        if (idToDownload !== null) {
+            DownloadReportKardex(idToDownload, endDate || null);
+        }
+    };
+
+    const handleClearSelections = () => {
+        setSelectedMaterialId(null);
+        setSelectedCajaChicaId(null);
+    };
+
+    const availableMaterials = materials.filter((material: MaterialModel) =>
+        !material.description.includes("(CAJA CHICA)")
+    );
+
+    const cajaChicaMaterials = materials.filter((material: MaterialModel) =>
+        material.description.includes("(CAJA CHICA)")
+    );
 
     return (
         <>
             <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} sm={8}>
+                <Grid item xs={12}>
                     <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={8}>
+                        <Grid item xs={4}>
                             <SelectComponent
                                 handleSelect={handleAddMaterial}
-                                label={""}
-                                options={[...availableMaterials.map((material: MaterialModel) => ({ id: material.id, name: material.description }))]}
+                                label=""
+                                options={availableMaterials.map((material: MaterialModel) => ({
+                                    id: material.id,
+                                    name: material.description,
+                                }))}
                                 value={selectedMaterialId ?? ''}
+                                disabled={!!selectedCajaChicaId} 
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <SelectComponent
+                                handleSelect={handleAddCajaChica}
+                                label=""
+                                options={cajaChicaMaterials.map((material: MaterialModel) => ({
+                                    id: material.id,
+                                    name: material.description,
+                                }))}
+                                value={selectedCajaChicaId ?? ''}
+                                disabled={!!selectedMaterialId} 
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -77,7 +113,7 @@ export const ExistenceCard = () => {
                                 type="date"
                                 value={endDate}
                                 onChange={(e) => setEndDate(e.target.value)}
-                                sx={{ minWidth: 150 }}
+                                fullWidth
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -85,8 +121,9 @@ export const ExistenceCard = () => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                    <Grid container spacing={1}>
+                <Grid item xs={12}>
+                    <Grid container spacing={2} justifyContent="center">
+
                         <Grid item>
                             <Button
                                 variant="contained"
@@ -95,6 +132,15 @@ export const ExistenceCard = () => {
                                 disabled={!isCalculateEnabled}
                             >
                                 Calcular
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={handleClearSelections}
+                            >
+                                Borrar
                             </Button>
                         </Grid>
                         <Grid item>
@@ -110,6 +156,7 @@ export const ExistenceCard = () => {
                                 </span>
                             </Tooltip>
                         </Grid>
+
                         <Grid item>
                             <Tooltip title="Descargar">
                                 <span>
@@ -132,4 +179,4 @@ export const ExistenceCard = () => {
             />
         </>
     );
-}
+};
