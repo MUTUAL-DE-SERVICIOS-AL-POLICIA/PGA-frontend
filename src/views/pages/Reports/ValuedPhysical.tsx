@@ -99,7 +99,8 @@ export const ValuedPhysical = () => {
         if (endDate) {
             endDateObj = new Date(endDate);
         } else {
-            endDateObj = new Date(`${currentYear}-${today.getMonth() + 1}-${todayDate}`);
+            // Crear fecha directamente asegurándote de usar componentes locales
+            endDateObj = new Date(currentYear, today.getMonth(), todayDate);
         }
 
         const formattedDate = endDateObj.toLocaleDateString('es-ES', {
@@ -218,7 +219,7 @@ export const ValuedPhysical = () => {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric'
-                    }).toUpperCase() : report_ValuedPhys?.date_note} AL {getFormattedEndDate()}
+                    }).toUpperCase() : (report_ValuedPhys?.date_note || '').toUpperCase()} AL {getFormattedEndDate()}
                 </Typography>
                 <Typography align="center" gutterBottom>
                     (EXPRESADO EN BOLIVIANOS)

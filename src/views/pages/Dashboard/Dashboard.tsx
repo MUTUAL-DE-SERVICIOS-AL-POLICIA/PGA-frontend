@@ -45,7 +45,7 @@ export const Dashboard = () => {
         <>
             <Grid container rowSpacing={4.5} columnSpacing={2.75}>
                 <Grid item xs={12} sx={{ mb: -2.25 }}>
-                    <Typography variant="h5">Dashboard</Typography>
+                    <Typography variant="h5">Inicio</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={4}>
                     <AnalyticCard title="Total de Material" count={dashboards['num_material']} extra={dashboards['num_material_total']} />

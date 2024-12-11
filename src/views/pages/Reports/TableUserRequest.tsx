@@ -47,11 +47,7 @@ const StyledContainer = styled(Paper)(({ theme }) => ({
     boxShadow: theme.shadows[4],
 }));
 
-const capitalizeWords = (str: string): string => {
-    return str
-        .toLowerCase()
-        .replace(/\b\w/g, (char) => char.toUpperCase());
-};
+
 
 export const TableUserRequest = (props: TableProps) => {
     const { itemKardex } = props;
@@ -79,10 +75,10 @@ export const TableUserRequest = (props: TableProps) => {
             <Grid container spacing={1}>
                 <Grid item xs={12} sm={6}>
                     <Typography sx={{ padding: '10px' }}>
-                        <strong>FUNCIONARIO: </strong> {capitalizeWords(itemKardex.employee.name)}
+                        <strong>FUNCIONARIO: </strong> {(itemKardex.employee.name)}
                     </Typography>
                     <Typography sx={{ padding: '10px' }}>
-                        <strong>CARGO: </strong> {capitalizeWords(itemKardex.employee.position_name)}
+                        <strong>CARGO: </strong> {(itemKardex.employee.position_name).toUpperCase()}
                     </Typography>
                 </Grid>
             </Grid>

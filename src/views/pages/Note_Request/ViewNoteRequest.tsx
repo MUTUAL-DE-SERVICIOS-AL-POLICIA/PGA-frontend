@@ -48,7 +48,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
     };
 
     const canApprove = () => {
-        return materials.every((material: any) => material.amount_to_deliver !== '' && material.amount_to_deliver > 0);
+        return materials.every((material: any) => material.amount_to_deliver !== '' || material.amount_to_deliver > 0);
     };
 
     const handleSubmit = async (status: string) => {
