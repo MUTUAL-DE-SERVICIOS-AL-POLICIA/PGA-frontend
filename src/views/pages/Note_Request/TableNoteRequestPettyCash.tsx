@@ -19,7 +19,7 @@ export const TableNoteRequestPettyCash = (props: TableProps) => {
     const [state, setState] = useState('');
     const [previousCount, setPreviousCount] = useState(0);
     const [open, setOpen] = useState(false);
-    const [filterNumberNote, setFilterNumberNote] = useState(false); // Estado del Switch
+    const [filterNumberNote, setFilterNumberNote] = useState(false); 
 
     useEffect(() => {
         const fetchData = async () => {

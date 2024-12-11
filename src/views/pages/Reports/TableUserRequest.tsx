@@ -61,8 +61,6 @@ export const TableUserRequest = (props: TableProps) => {
             </StyledContainer>
         );
     }
-
-    // Calcula los totales de las columnas
     const totalRequested = itemKardex.materials.reduce((sum, material) => sum + material.amount_requested, 0);
     const totalDelivered = itemKardex.materials.reduce((sum, material) => sum + material.delivered_quantity, 0);
     const totalCost = itemKardex.materials.reduce((sum, material) => sum + (material.delivered_quantity * material.cost), 0);

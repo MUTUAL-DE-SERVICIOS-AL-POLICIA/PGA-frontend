@@ -20,7 +20,7 @@ export const ViewNoteRequestPettyCash = (props: ViewProps) => {
         if (item) {
             setMaterials(item.materials.map((material: any) => ({
                 ...material,
-                amount_to_deliver: material.amount_request, // Configura cantidad a entregar igual a cantidad solicitada
+                amount_to_deliver: material.amount_request, 
                 original_stock: material.stock
             })));
         }
