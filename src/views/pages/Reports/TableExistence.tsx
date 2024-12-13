@@ -26,12 +26,12 @@ const StyledBodyCell = styled(TableCell)({
 });
 
 const StyledDetailCell = styled(TableCell)({
-    whiteSpace: 'normal', // Permite múltiples líneas de texto si es necesario
+    whiteSpace: 'normal', 
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    width: 'auto', // Deja que esta columna se ajuste automáticamente
-    maxWidth: '300px', // Ancho máximo (puedes ajustarlo según el diseño)
-    flexGrow: 1, // Da prioridad a esta columna para crecer más
+    width: 'auto', 
+    maxWidth: '300px', 
+    flexGrow: 1, 
     fontSize: '0.7rem',
     border: '1px solid #ddd',
     backgroundColor: '#fff',

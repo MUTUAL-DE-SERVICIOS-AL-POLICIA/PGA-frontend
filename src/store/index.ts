@@ -10,4 +10,5 @@ export * from './ReportKardex/report_kardexSlice';
 export * from './Dasboard/dashboardSlice';
 export * from './UserRequest/userSlice';
 export * from './UserStore/storeSlice';
+export * from './PettyCash/petty_cashSlice';
 export * from './store';

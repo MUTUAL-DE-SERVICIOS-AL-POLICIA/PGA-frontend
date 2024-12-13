@@ -13,35 +13,34 @@ const getTodayDate = () => {
 };
 
 export const ExistenceCard = () => {
-    // Stores and hooks
+    
     const { materials = [], getMaterial } = useMaterialStore();
     const { report_kardexs, getReportKardex, PrintReportKardex, DownloadReportKardex } = useReportKardexStore();
 
-    // States
     const [endDate, setEndDate] = useState(getTodayDate());
     const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
     const [selectedCajaChicaId, setSelectedCajaChicaId] = useState<number | null>(null);
     const [isCalculateEnabled, setIsCalculateEnabled] = useState(false);
 
-    // Fetch materials on component mount
+    
     useEffect(() => {
         getMaterial(0, 5000, '');
     }, []);
 
-    // Enable/Disable calculate button based on selections
+    
     useEffect(() => {
         setIsCalculateEnabled(!!selectedMaterialId || !!selectedCajaChicaId);
     }, [selectedMaterialId, selectedCajaChicaId, endDate]);
 
-    // Handlers
+    
     const handleAddMaterial = (value: any) => {
         setSelectedMaterialId(value);
-        setSelectedCajaChicaId(null); // Deselect "Caja Chica"
+        setSelectedCajaChicaId(null); 
     };
 
     const handleAddCajaChica = (value: any) => {
         setSelectedCajaChicaId(value);
-        setSelectedMaterialId(null); // Deselect "Materiales"
+        setSelectedMaterialId(null); 
     };
 
     const handleCalculateClick = () => {

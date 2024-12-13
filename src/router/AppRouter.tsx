@@ -17,6 +17,8 @@ import { NoteEntryRevised, NoteEntryView } from '../views/pages/Note_Entry';
 import { NoteRequestPettyCash, NoteRequestView } from '../views/pages/Note_Request';
 import { UsersView } from '../views/pages/Users';
 import { DirectoryRequest, ExistenceCard, UserRequest, ValuedPhysical, ValuedPhysicalConsolided } from '../views/pages/Reports';
+import { PettyCash } from '../views/pages/PettyCash';
+
 
 export const AppRouter = () => {
 
@@ -43,6 +45,7 @@ export const AppRouter = () => {
                     <Route path='/reportExistence' element={<ExistenceCard />} />
                     <Route path='/reportValuedPhysical' element={<ValuedPhysical />} />
                     <Route path='/reportValuedPhysicalConsolided' element={<ValuedPhysicalConsolided />} />
+                    <Route path='/PettyCash' element={<PettyCash />} />
                     <Route path='/usersView' element={<UsersView />} />
                     <Route path='/listUserRequest' element={<UserRequest />} />
                     <Route path='/listDirectoryRequest' element={<DirectoryRequest />} />

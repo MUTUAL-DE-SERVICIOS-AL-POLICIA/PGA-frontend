@@ -10,3 +10,4 @@ export * from './useTypeStore';
 export * from './useReportKardexStore';
 export * from './useDashboardStore';
 export * from './useUserRequestStore';
+export * from './usePettyCash';

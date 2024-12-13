@@ -103,6 +103,9 @@ export const Dashboard = () => {
                         <MenuItem onClick={() => handleRedirect('/reportValuedPhysicalConsolided')}>
                             <ListAlt sx={{ mr: 1 }} /> Inventario Consolidado Fisico Valorado
                         </MenuItem>
+                        <MenuItem onClick={() => handleRedirect('/PettyCash')}>
+                            <ListAlt sx={{ mr: 1 }} /> Seguimiento Caja Chica
+                        </MenuItem>
                         <MenuItem onClick={handleSubMenuClick}>
                             <ListAlt sx={{ mr: 1 }} /> Salidas
                         </MenuItem>

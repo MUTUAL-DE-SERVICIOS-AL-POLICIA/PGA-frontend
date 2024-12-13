@@ -12,3 +12,4 @@ export * from './ModalSelect';
 export * from './Select';
 export * from './AnalyticCard';
 export * from './MainCard';
+export * from './AnalyticCardPetty';
