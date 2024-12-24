@@ -1,19 +1,7 @@
 import {
-    Grid,
-    Typography,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    TableContainer,
-    Paper,
-    IconButton,
-    TextField,
-    Button,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions
+    Grid, Typography, Table, TableBody, TableCell, TableRow, TableContainer, Paper,
+    IconButton, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions,
+    InputLabel, Select, MenuItem
 } from "@mui/material";
 import PrintIcon from "@mui/icons-material/Print";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -22,15 +10,11 @@ import { usePettyCash } from "../../../hooks/usePettyCash";
 import { useEffect, useState } from "react";
 
 export const PettyCash = () => {
-    const { petty_cashes, getDataPettyCash, PrintDiaryBook, DownloadDiaryBook, PaymentOrder } = usePettyCash();
+    const { petty_cashes, getDataPettyCash, PrintDiaryBook, DownloadDiaryBook, PaymentOrder, CreateDischarge } = usePettyCash();
     type DateFields = "libroDiario" | "planillaRendicion" | "descargoGeneral";
 
-    const [dates, setDates] = useState<{ [key in DateFields]: string }>({
-        libroDiario: "",
-        planillaRendicion: "",
-        descargoGeneral: "",
-    });
-
+    const [selectedManagement, setSelectedManagement] = useState('');
+    const [isPaymentOrderCompleted, setIsPaymentOrderCompleted] = useState(false); // Nuevo estado para seguimiento de la orden de pago
     const [openDialog, setOpenDialog] = useState(false);
     const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
     const [dialogValues, setDialogValues] = useState({
@@ -48,16 +32,16 @@ export const PettyCash = () => {
 
     const { date_recived, name_responsibility, concept, amount, balance, total } = petty_cashes.dataPettyCash;
 
-    const handleDateChange = (field: DateFields, value: string) => {
-        setDates((prevDates) => ({ ...prevDates, [field]: value }));
-    };
-
     const handleSaveDate = (field: DateFields) => {
-        PrintDiaryBook(field);
+        if (selectedManagement) {
+            PrintDiaryBook(field, selectedManagement);
+        }
     };
 
     const handleDownload = (field: DateFields) => {
-        DownloadDiaryBook(field);
+        if (selectedManagement) {
+            DownloadDiaryBook(field, selectedManagement);
+        }
     };
 
     const handleOpenDialog = () => {
@@ -74,6 +58,7 @@ export const PettyCash = () => {
 
     const sentPaymentOrder = () => {
         PaymentOrder(petty_cashes.dataPettyCash.total, petty_cashes.dataPettyCash.name_responsibility);
+        setIsPaymentOrderCompleted(true); // Marca la orden de pago como completada
     };
 
     const handleDialogChange = (field: keyof typeof dialogValues, value: string) => {
@@ -89,10 +74,16 @@ export const PettyCash = () => {
         setOpenConfirmationDialog(false);
     };
 
-    const handleFinalConfirm = () => {
-        console.log("Saldo Inicial:", dialogValues.balance);
-        console.log("Responsable:", dialogValues.responsible);
-        setOpenConfirmationDialog(false);
+    const handleFinalConfirm = async () => {
+        await CreateDischarge(dialogValues.balance, dialogValues.responsible).then((res) => {
+            if (res) {
+                setOpenConfirmationDialog(false);
+            }
+        });
+    };
+
+    const handleManagementChange = (event: any) => {
+        setSelectedManagement(event.target.value);
     };
 
     return (
@@ -136,27 +127,32 @@ export const PettyCash = () => {
                                 <TableRow>
                                     <TableCell>Libro Diario</TableCell>
                                     <TableCell>
-                                        <TextField
-                                            label="Fecha de fin"
-                                            type="date"
-                                            value={dates.libroDiario}
-                                            onChange={(e) => handleDateChange("libroDiario", e.target.value)}
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
+                                        <InputLabel id="management-select-label">Seleccionar Gestión</InputLabel>
+                                        <Select
+                                            labelId="management-select-label"
+                                            value={selectedManagement}
+                                            onChange={handleManagementChange}
+                                            label="Seleccionar Gestión"
+                                        >
+                                            {petty_cashes.discharges?.map((management: any) => (
+                                                <MenuItem key={management.id} value={management.id}>
+                                                    {management.id} - {management.received_amount} Bs.
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
                                     </TableCell>
                                     <TableCell>
                                         <IconButton
                                             color="primary"
                                             onClick={() => handleSaveDate("libroDiario")}
+                                            disabled={!selectedManagement} // Deshabilita si no hay gestión seleccionada
                                         >
                                             <PrintIcon />
                                         </IconButton>
                                         <IconButton
                                             color="info"
                                             onClick={() => handleDownload("libroDiario")}
+                                            disabled={!selectedManagement} // Deshabilita si no hay gestión seleccionada
                                         >
                                             <DownloadIcon />
                                         </IconButton>
@@ -165,27 +161,32 @@ export const PettyCash = () => {
                                 <TableRow>
                                     <TableCell>Planilla rendición de cuentas</TableCell>
                                     <TableCell>
-                                        <TextField
-                                            label="Fecha de fin"
-                                            type="date"
-                                            value={dates.planillaRendicion}
-                                            onChange={(e) => handleDateChange("planillaRendicion", e.target.value)}
-                                            fullWidth
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
+                                        <InputLabel id="management-select-label">Seleccionar Gestión</InputLabel>
+                                        <Select
+                                            labelId="management-select-label"
+                                            value={selectedManagement}
+                                            onChange={handleManagementChange}
+                                            label="Seleccionar Gestión"
+                                        >
+                                            {petty_cashes.discharges?.map((management: any) => (
+                                                <MenuItem key={management.id} value={management.id}>
+                                                    {management.id} - {management.received_amount} Bs.
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
                                     </TableCell>
                                     <TableCell>
                                         <IconButton
                                             color="primary"
                                             onClick={() => handleSaveDate("planillaRendicion")}
+                                            disabled={!selectedManagement} // Deshabilita si no hay gestión seleccionada
                                         >
                                             <PrintIcon />
                                         </IconButton>
                                         <IconButton
                                             color="info"
                                             onClick={() => handleDownload("planillaRendicion")}
+                                            disabled={!selectedManagement} // Deshabilita si no hay gestión seleccionada
                                         >
                                             <DownloadIcon />
                                         </IconButton>
@@ -210,6 +211,7 @@ export const PettyCash = () => {
                                             variant="contained"
                                             color="primary"
                                             onClick={handleOpenDialog}
+                                            disabled={!isPaymentOrderCompleted} // Deshabilita si no se ha realizado la orden de pago
                                         >
                                             Descargo General
                                         </Button>

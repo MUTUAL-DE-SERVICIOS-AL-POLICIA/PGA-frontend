@@ -39,10 +39,13 @@ export const usePettyCash = () => {
         }
     }
 
-    const PrintDiaryBook = async (action: string) => {
+    const PrintDiaryBook = async (action: string, id: any) => {
+        const params = new URLSearchParams({
+            idFund: id.toString(),
+        });
         if (action == 'libroDiario') {
             try {
-                const response = await api.get(`/auth/PrintRecordBook/`, {
+                const response = await api.get(`/auth/PrintRecordBook?${params.toString()}`, {
                     responseType: 'arraybuffer'
                 });
                 printDocument(response);
@@ -52,7 +55,7 @@ export const usePettyCash = () => {
             }
         } else {
             try {
-                const response = await api.get(`/auth/AccountabilitySheet/`, {
+                const response = await api.get(`/auth/AccountabilitySheet?${params.toString()}`, {
                     responseType: 'arraybuffer'
                 });
                 printDocument(response);
@@ -63,7 +66,8 @@ export const usePettyCash = () => {
         }
     }
 
-    const DownloadDiaryBook = async (action: string) => {
+    const DownloadDiaryBook = async (action: string, id: any) => {
+        console.log(id);
         if (action == 'libroDiario') {
             try {
                 const response = await api.get(`/auth/PrintRecordBook/`, {
@@ -101,11 +105,6 @@ export const usePettyCash = () => {
             Swal.fire('Éxito', 'Orden de pago enviada correctamente', 'success');
             downloadDocument(response, 'Orden_de_pago.pdf');
             return true;
-
-
-            // const { data } = await api.get(`/auth/paymentOrder?${params.toString()}`);
-            // Swal.fire('Éxito', 'Orden de pago enviada correctamente', 'success');
-
         } catch (error: any) {
             if (error.response && error.response.status == 400) {
                 const message = error.response.data.error;
@@ -120,6 +119,32 @@ export const usePettyCash = () => {
         }
     }
 
+    const CreateDischarge = async (balance: any, responsable: string) => {
+        try {
+            const params = new URLSearchParams({
+                balance: balance.toString(),
+                responsable,
+            });
+            await api.get(`/auth/createDischarge?${params.toString()}`);
+            dispatch(refreshPettyCash());
+            Swal.fire('Gescargo Exitoso', '', 'success');
+            return true;
+        } catch (error: any) {
+            if (error.response) {
+                if (error.response.status === 403) {
+                    const message = error.response.data.detail || 'Acceso denegado';
+                    Swal.fire('Acceso denegado', message, 'warning');
+                } else {
+                    const message = error.response.data.error || 'Error desconocido';
+                    Swal.fire('Error', message, 'error');
+                }
+            } else {
+                Swal.fire('Error', 'Ocurrió un error inesperado', 'error');
+            }
+            return false;
+        }
+    }
+
     return {
         petty_cashes,
         flag,
@@ -130,5 +155,6 @@ export const usePettyCash = () => {
         PrintDiaryBook,
         DownloadDiaryBook,
         PaymentOrder,
+        CreateDischarge,
     }
 }
