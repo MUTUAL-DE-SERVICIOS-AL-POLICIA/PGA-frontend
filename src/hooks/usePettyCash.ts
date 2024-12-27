@@ -119,11 +119,12 @@ export const usePettyCash = () => {
         }
     }
 
-    const CreateDischarge = async (balance: any, responsable: string) => {
+    const CreateDischarge = async (balance: any, responsable: string, username: string) => {
         try {
             const params = new URLSearchParams({
                 balance: balance.toString(),
                 responsable,
+                username,
             });
             await api.get(`/auth/createDischarge?${params.toString()}`);
             dispatch(refreshPettyCash());

@@ -20,6 +20,7 @@ export const PettyCash = () => {
     const [dialogValues, setDialogValues] = useState({
         balance: "",
         responsible: "",
+        username:""
     });
 
     useEffect(() => {
@@ -48,6 +49,7 @@ export const PettyCash = () => {
         setDialogValues({
             balance: balance,
             responsible: name_responsibility,
+            username: ""
         });
         setOpenDialog(true);
     };
@@ -75,7 +77,7 @@ export const PettyCash = () => {
     };
 
     const handleFinalConfirm = async () => {
-        await CreateDischarge(dialogValues.balance, dialogValues.responsible).then((res) => {
+        await CreateDischarge(dialogValues.balance, dialogValues.responsible, dialogValues.username).then((res) => {
             if (res) {
                 setOpenConfirmationDialog(false);
             }
@@ -179,14 +181,14 @@ export const PettyCash = () => {
                                         <IconButton
                                             color="primary"
                                             onClick={() => handleSaveDate("planillaRendicion")}
-                                            disabled={!selectedManagement} // Deshabilita si no hay gestión seleccionada
+                                            disabled={!selectedManagement} 
                                         >
                                             <PrintIcon />
                                         </IconButton>
                                         <IconButton
                                             color="info"
                                             onClick={() => handleDownload("planillaRendicion")}
-                                            disabled={!selectedManagement} // Deshabilita si no hay gestión seleccionada
+                                            disabled={!selectedManagement} 
                                         >
                                             <DownloadIcon />
                                         </IconButton>
@@ -211,7 +213,7 @@ export const PettyCash = () => {
                                             variant="contained"
                                             color="primary"
                                             onClick={handleOpenDialog}
-                                            disabled={!isPaymentOrderCompleted} // Deshabilita si no se ha realizado la orden de pago
+                                            disabled={!isPaymentOrderCompleted} 
                                         >
                                             Descargo General
                                         </Button>
@@ -241,6 +243,14 @@ export const PettyCash = () => {
                         margin="dense"
                         value={dialogValues.responsible}
                         onChange={(e) => handleDialogChange("responsible", e.target.value)}
+                    />
+                     <TextField
+                        label="usuario"
+                        type="text"
+                        fullWidth
+                        margin="dense"
+                        value={dialogValues.username}
+                        onChange={(e) => handleDialogChange("username", e.target.value)}
                     />
                 </DialogContent>
                 <DialogActions>

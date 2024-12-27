@@ -77,6 +77,12 @@ export const menu = () => {
             icon: <Notes />,
             requiredPermission: ["create-employee", "read-supply-requests"],
         },
+        {
+            path: "/PettyCash",
+            title: "Caja Chica",
+            icon: <Notes />,
+            requiredPermission: "operation_pettycash",
+        },
     ].filter(item => {
         return hasPermission(permissions, item.requiredPermission);
     });
