@@ -89,7 +89,7 @@ export const useReportKardexStore = () => {
     };
 
     const getReportValuedConsolid = async (idManagement: any) => {
-        const { data } = await api.get(`/auth/ReportPrintValuedPhysical23/${idManagement}/`);
+        const { data } = await api.get(`/auth/ReportPrintValuedPhysicalConsolidated/${idManagement}/`);
         dispatch(setReportValuedConsolid({ report_ValuedPhy_Consolids: data }));
         return true;
     }
