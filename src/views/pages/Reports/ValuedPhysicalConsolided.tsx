@@ -177,8 +177,8 @@ export const ValuedPhysicalConsolided = () => {
                                 <StyledTableCell rowSpan={2}>GRUPO</StyledTableCell>
                                 <StyledTableCell rowSpan={2}>DETALLE</StyledTableCell>
                                 <StyledTableCell colSpan={2}>SALDO GESTIÓN ANTERIOR</StyledTableCell>
-                                <StyledTableCell colSpan={2}>COMPRAS DE LA GESTIÓN 2024</StyledTableCell>
-                                <StyledTableCell colSpan={2}>SALIDAS DE LA GESTION 2024</StyledTableCell>
+                                <StyledTableCell colSpan={2}>COMPRAS DE LA GESTIÓN ACTUAL</StyledTableCell>
+                                <StyledTableCell colSpan={2}>SALIDAS DE LA GESTION ACTUAL</StyledTableCell>
                             </TableRow>
                             <TableRow>
                                 <StyledTableCell>FISICO</StyledTableCell>
@@ -193,14 +193,14 @@ export const ValuedPhysicalConsolided = () => {
                             {
                                 report_ValuedPhy_Consolids == null ? <SkeletonComponent quantity={4} /> : report_ValuedPhy_Consolids.map((group: any, index: number) => (
                                     <StyledTableRow key={index}>
-                                        <TableCell align="center">{group.code}</TableCell>
-                                        <TableCell align="left">{group.name_group}</TableCell>
-                                        <TableCell align="center">{group.previous_total_sum}</TableCell>
-                                        <TableCell align="right">{group.previous_total_cost}</TableCell>
-                                        <TableCell align="center">{group.latest_total_sum}</TableCell>
-                                        <TableCell align="right">{group.latest_total_cost}</TableCell>
-                                        <TableCell align="center">{group.latest_request_sum}</TableCell>
-                                        <TableCell align="right">{group.latest_request_cost}</TableCell>
+                                        <TableCell align="center">{group.codigo_grupo}</TableCell>
+                                        <TableCell align="left">{group.grupo}</TableCell>
+                                        <TableCell align="center">{group.total_cantidad_anterior}</TableCell>
+                                        <TableCell align="right">{group.total_presupuesto_anterior}</TableCell>
+                                        <TableCell align="center">{group.total_cantidad}</TableCell>
+                                        <TableCell align="right">{group.total_presupuesto}</TableCell>
+                                        <TableCell align="center">{group.cantidad_entregada}</TableCell>
+                                        <TableCell align="right">{group.suma_cost_detail}</TableCell>
                                     </StyledTableRow>
                                 ))
                             }

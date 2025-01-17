@@ -130,6 +130,27 @@ export const ValuedPhysical = () => {
         setSelectedGroup(event.target.value);
     };
 
+    const StyledFooterCell = styled(TableCell)({
+        fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize: '0.75rem',
+        border: '1px solid #ddd',
+        backgroundColor: '#e0e0e0',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+    });
+
+    const calculateGroupTotal = (materiales: any) => {
+        return materiales.reduce((total: any, material: any) => {
+            const materialTotal = material.lotes.reduce((loteTotal: any, lote: any) => {
+                return loteTotal + (lote.cantidad_restante || 0) * (lote.precio_unitario || 0);
+            }, 0);
+            return total + materialTotal;
+        }, 0);
+    };
+
+
     return (
         <>
             <Stack direction="row" marginTop={3} spacing={2} sx={{ mb: 2 }}>
@@ -234,7 +255,9 @@ export const ValuedPhysical = () => {
                 ) : (
                     report_ValuedPhys.data
                         .filter((item: any) => (selectedGroup === '' || item.codigo_grupo === selectedGroup))
-                        .map((item: any, index: number) => {
+                        .map((item: any, index: any) => {
+                            const groupTotal = calculateGroupTotal(item.materiales);
+
                             return (
                                 <React.Fragment key={index}>
                                     <TableContainer>
@@ -267,8 +290,8 @@ export const ValuedPhysical = () => {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {item.materiales.map((material: any, index: number) => (
-                                                    material.lotes.map((lote: any, loteIndex: number) => (
+                                                {item.materiales.map((material: any, index: any) => (
+                                                    material.lotes.map((lote: any, loteIndex: any) => (
                                                         <StyledTableRow key={`${index}-${loteIndex}`}>
                                                             {loteIndex === 0 && (
                                                                 <>
@@ -278,19 +301,23 @@ export const ValuedPhysical = () => {
                                                                 </>
                                                             )}
                                                             <StyledBodyCell align='center'>{lote.cantidad_inicial}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{lote.precio_unitario}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{(lote.cantidad_inicial * lote.precio_unitario).toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{lote.precio_unitario.toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{lote.cantidad_1.toFixed(2)}</StyledBodyCell>
 
                                                             <StyledBodyCell align='center'>{lote.cantidad_inicial - lote.cantidad_restante}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{lote.precio_unitario}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{((lote.cantidad_inicial - lote.cantidad_restante) * lote.precio_unitario).toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{lote.precio_unitario.toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{lote.cantidad_2.toFixed(2)}</StyledBodyCell>
 
                                                             <StyledBodyCell align='center'>{lote.cantidad_restante}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{lote.precio_unitario}</StyledBodyCell>
-                                                            <StyledBodyCell align='right'>{(lote.cantidad_restante * lote.precio_unitario).toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{lote.precio_unitario.toFixed(2)}</StyledBodyCell>
+                                                            <StyledBodyCell align='right'>{lote.cantidad_3.toFixed(2)}</StyledBodyCell>
                                                         </StyledTableRow>
                                                     ))
                                                 ))}
+                                                <StyledTableRow>
+                                                    <StyledFooterCell colSpan={11}>TOTAL EN BS</StyledFooterCell>
+                                                    <StyledFooterCell colSpan={2} align='right'>{groupTotal.toFixed(2)}</StyledFooterCell>
+                                                </StyledTableRow>
                                             </TableBody>
                                         </Table>
                                         <Divider sx={{ mt: 2 }} />
