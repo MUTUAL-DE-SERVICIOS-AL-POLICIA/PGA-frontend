@@ -71,6 +71,11 @@ export const useNoteRequestStore = () => {
         }
     };
 
+    const Arreglar = async () => {
+        const response = await api.get('/auth/Arreglar/');
+        return response;
+    }
+
 
     return {
         note_requests,
@@ -80,7 +85,8 @@ export const useNoteRequestStore = () => {
         getNoteRequest,
         postNoteRequest,
         PrintNoteRequest,
-        PrintNoteRequestDelivery
+        PrintNoteRequestDelivery,
+        Arreglar
     }
 
 }
