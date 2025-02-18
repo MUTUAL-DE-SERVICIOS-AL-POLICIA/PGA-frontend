@@ -16,7 +16,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
     const [isApproving, setIsApproving] = useState(false);
     const [cancelComment, setCancelComment] = useState('');
     const [approveComment, setApproveComment] = useState('');
-    const { postNoteRequest } = useNoteRequestStore();
+    const { postNoteRequest, PrintNoteRequest } = useNoteRequestStore();
 
     useEffect(() => {
         if (item) {
@@ -64,6 +64,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
 
         await postNoteRequest(dataToSend).then((res) => {
             if (res) {
+                PrintNoteRequest(res);
                 handleClose();
             }
         });
@@ -158,12 +159,29 @@ export const ViewNoteRequest = (props: ViewProps) => {
                                                 <Typography>{material.delivered_quantity}</Typography>
                                             ) : (
                                                 <TextField
-                                                    value={material.amount_to_deliver || ''}
+                                                    value={material.amount_to_deliver !== '' ? material.amount_to_deliver : ''}
                                                     onChange={(e) => handleAmountToDeliverChange(index, e.target.value)}
                                                     size="small"
                                                     type="number"
-                                                    inputProps={{ min: 0, max: material.amount_request }}
+                                                    inputProps={{
+                                                        min: 0,
+                                                        max: material.amount_request,
+                                                        onWheel: (e: any) => e.target.blur()
+                                                    }}
+                                                    onWheel={(e) => e.preventDefault()}
+                                                    sx={{
+                                                        width: '100px',
+                                                        textAlign: 'center',
+                                                        '& input[type=number]': {
+                                                            MozAppearance: 'textfield',
+                                                            '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
+                                                                WebkitAppearance: 'none',
+                                                                margin: 0,
+                                                            },
+                                                        }
+                                                    }}
                                                 />
+
                                             )}
                                         </TableCell>
                                     </TableRow>
@@ -204,7 +222,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
                                 variant="contained"
                                 color="success"
                                 sx={{ boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2)', borderRadius: '8px', marginRight: '8px' }}
-                                disabled={!canApprove()} // Desactiva si no se puede aprobar
+                                disabled={!canApprove()}
                             >
                                 {isApproving ? 'Confirmar Aprobación' : 'Aprobar'}
                             </Button>

@@ -12,15 +12,29 @@ export const useMaterialStore = () => {
     const dispatch = useDispatch();
 
 
-    const getMaterial = async (page: number, limit: number, search: string) => {
+    // const getMaterial = async (page: number, limit: number, search: string) => {
 
+    //     let filter: any = { params: { page: page } };
+    //     if (limit != -1) filter.params.limit = limit;
+    //     if (search !== '') filter.params.search = search;
+    //     const { data } = await api.get('/auth/materialslist', filter);
+    //     dispatch(setMaterial({ materials: data.materials }))
+    //     return data.total;
+    // }
+
+    const getMaterial = async (page: number, limit: number, search: string, state: string = '') => {
         let filter: any = { params: { page: page } };
-        if (limit != -1) filter.params.limit = limit;
+
+        if (limit !== -1) filter.params.limit = limit;
         if (search !== '') filter.params.search = search;
+        if (state !== '') filter.params.state = state; // Agregar filtro de estado si está definido
+
         const { data } = await api.get('/auth/materialslist', filter);
-        dispatch(setMaterial({ materials: data.materials }))
+        dispatch(setMaterial({ materials: data.materials }));
+
         return data.total;
-    }
+    };
+
 
     const getMaterial_petty_cash = async (page: number, limit: number, search: string) => {
 

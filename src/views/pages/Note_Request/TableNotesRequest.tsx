@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNoteRequestStore } from "../../../hooks/useNoteRequestStore";
 import { NoteRequestModel } from "../../../models/NoteRequestModel";
-import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, FormControl, Select, InputLabel, MenuItem, Snackbar, Chip, Switch } from "@mui/material";
+import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, FormControl, Select, InputLabel, MenuItem, Chip, Switch, TextField } from "@mui/material";
 import { ComponentTablePagination, SkeletonComponent } from "../../../components";
 import { CheckCircle, Print } from "@mui/icons-material";
 
@@ -20,9 +20,11 @@ export const TableNotesRequest = (props: TableProps) => {
     const [previousCount, setPreviousCount] = useState(0);
     const [open, setOpen] = useState(false);
     const [filterNumberNote, setFilterNumberNote] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    console.log(open);
     useEffect(() => {
         const fetchData = async () => {
-            const totalNotes = await getNoteRequest(page, limit, '', state);
+            const totalNotes = await getNoteRequest(page, limit, searchQuery, state);
             setTotal(totalNotes);
             if (totalNotes > previousCount) {
                 setOpen(true);
@@ -35,21 +37,13 @@ export const TableNotesRequest = (props: TableProps) => {
         const intervalId = setInterval(fetchData, 5000);
 
         return () => clearInterval(intervalId);
-    }, [page, limit, flag, previousCount, state]);
+    }, [page, limit, flag, previousCount, state, searchQuery]);
 
-    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        if (event) {
-            console.log(event);
-        }
-        setOpen(false);
-    };
-
-    const filteredNotes = filterNumberNote
-        ? note_requests?.filter((note: NoteRequestModel) => note.number_note !== 0)
-        : note_requests;
+    const filteredNotes = note_requests?.filter((note: NoteRequestModel) => {
+        const matchesName = note.employee.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesNumber = !filterNumberNote || note.number_note !== 0;
+        return matchesName && matchesNumber;
+    });
 
     return (
         <Stack sx={{ padding: '10px' }}>
@@ -62,25 +56,7 @@ export const TableNotesRequest = (props: TableProps) => {
                         value={state}
                         onChange={(e) => setState(e.target.value as string)}
                         label="Estado"
-                        sx={{
-                            minWidth: 200,
-                            borderRadius: '4px',
-                            backgroundColor: '#ffffff',
-                            '& .MuiSelect-select': {
-                                padding: '10px',
-                                display: 'flex',
-                                alignItems: 'center',
-                            },
-                            '& .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#ced4da',
-                            },
-                            '&:hover .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#80bdff',
-                            },
-                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#0056b3',
-                            },
-                        }}
+                        sx={{ minWidth: 200 }}
                     >
                         <MenuItem value="">Todos</MenuItem>
                         <MenuItem value="En Revision">En Revision</MenuItem>
@@ -88,6 +64,13 @@ export const TableNotesRequest = (props: TableProps) => {
                         <MenuItem value="Aceptado">Aceptado</MenuItem>
                     </Select>
                 </FormControl>
+                <TextField
+                    label="Buscar por Nombre"
+                    variant="outlined"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value.toUpperCase())}
+                    fullWidth
+                />
                 <Stack direction="row" spacing={1} alignItems="center">
                     <Typography>Mostrar</Typography>
                     <Switch
@@ -152,27 +135,7 @@ export const TableNotesRequest = (props: TableProps) => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <ComponentTablePagination
-                total={total}
-                onPageChange={(value) => setPage(value)}
-                onRowsPerPageChange={(value) => setLimit(value)}
-                page={page}
-                limit={limit}
-            />
-            <Snackbar
-                open={open}
-                autoHideDuration={3000}
-                onClose={handleClose}
-                message="Nueva Nota de Solicitud!"
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                action={
-                    <React.Fragment>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-                            <CheckCircle fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
-                }
-            />
+            <ComponentTablePagination total={total} onPageChange={setPage} onRowsPerPageChange={setLimit} page={page} limit={limit} />
         </Stack>
     );
 };

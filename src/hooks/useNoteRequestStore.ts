@@ -27,9 +27,6 @@ export const useNoteRequestStore = () => {
         return data.total;
     };
 
-
-    
-
     const postNoteRequest = async (body: object) => {
         try {
             const response = await api.post('/auth/delivered_material/', body);
@@ -39,7 +36,7 @@ export const useNoteRequestStore = () => {
             } else {
                 Swal.fire('Error', response.data.message, 'error');
             }
-            return true;
+            return response.data.note;
         } catch (error) {
             console.error('Error al procesar la solicitud:', error);
             Swal.fire('Error', 'Ocurrió un error al procesar la solicitud', 'error');
@@ -49,7 +46,8 @@ export const useNoteRequestStore = () => {
 
     const PrintNoteRequest = async (note_request: any) => {
         try {
-            const response = await api.get(`/auth/print_post_request/${note_request.id_note}/`, {
+            const noteId = note_request.id_note || note_request.id;
+            const response = await api.get(`/auth/print_post_request/${noteId}/`, {
                 responseType: 'arraybuffer',
             });
             printDocument(response)
