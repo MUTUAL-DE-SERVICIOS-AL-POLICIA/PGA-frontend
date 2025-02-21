@@ -14,13 +14,13 @@ export const ViewNoteRequestPettyCash = (props: ViewProps) => {
     const [materials, setMaterials] = useState(item?.materials || []);
     const [isApproving, setIsApproving] = useState(false);
     const [approveComment, setApproveComment] = useState('');
-    const { postNoteRequest } = useNoteRequestStore();
+    const { postNoteRequest, PrintNoteRequest } = useNoteRequestStore();
 
     useEffect(() => {
         if (item) {
             setMaterials(item.materials.map((material: any) => ({
                 ...material,
-                amount_to_deliver: material.amount_request, 
+                amount_to_deliver: material.amount_request,
                 original_stock: material.stock
             })));
         }
@@ -43,6 +43,7 @@ export const ViewNoteRequestPettyCash = (props: ViewProps) => {
 
         await postNoteRequest(dataToSend).then((res) => {
             if (res) {
+                PrintNoteRequest(res);
                 handleClose();
             }
         });

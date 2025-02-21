@@ -1,5 +1,5 @@
-import { Button, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
-import { ComponentSearch, ComponentTablePagination, SkeletonComponent } from "../../../components"
+import { Button, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Select, MenuItem, Box } from "@mui/material";
+import { ComponentSearch, ComponentTablePagination, SkeletonComponent } from "../../../components";
 import { useMaterialStore } from "../../../hooks";
 import React, { useEffect, useState } from "react";
 import { MaterialModel } from "../../../models";
@@ -21,26 +21,39 @@ export const MaterialTable = (props: tableProps) => {
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(limitInit);
+    const [stateFilter, setStateFilter] = useState("");
 
     useEffect(() => {
-        getMaterial(page, limit, '').then((total) => setTotal(total))
-    }, [page, limit, flag])
+        getMaterial(page, limit, '', stateFilter).then((total) => setTotal(total));
+    }, [page, limit, flag, stateFilter]);
 
     const handleSearch = async (search: string) => {
         await setPage(0);
         await setLimit(limitInit);
-        getMaterial(0, limit, search).then((total) => setTotal(total));
+        getMaterial(0, limit, search, stateFilter).then((total) => setTotal(total));
     }
 
-    const filteredMaterils = materials?.filter((material: MaterialModel) => material.type === 'Almacen' || material.type === 'Fondo de Avance') || [];
+    const filteredMaterials = materials?.filter((material: MaterialModel) =>
+        (material.type === 'Almacen' || material.type === 'Fondo de Avance')
+        && (stateFilter ? material.state === stateFilter : true)
+    ) || [];
 
     return (
         <Stack sx={{ paddingRight: '10px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                <ComponentSearch title="Buscar Material" onSearch={handleSearch} />
+                <Select
+                    value={stateFilter}
+                    onChange={(e) => setStateFilter(e.target.value)}
+                    displayEmpty
+                    sx={{ minWidth: 150 }}
+                >
+                    <MenuItem value="">Todos</MenuItem>
+                    <MenuItem value="Habilitado">Habilitado</MenuItem>
+                    <MenuItem value="Inhabilitado">Inhabilitado</MenuItem>
+                </Select>
+            </Box>
 
-            <ComponentSearch
-                title="Buscar Material"
-                onSearch={handleSearch}
-            />
             <TableContainer>
                 <Table sx={{ minWidth: 350 }} size="small">
                     <TableHead>
@@ -56,7 +69,7 @@ export const MaterialTable = (props: tableProps) => {
                     </TableHead>
                     <TableBody>
                         {
-                            materials == null ? <SkeletonComponent quantity={4} /> : filteredMaterils.map((material: MaterialModel, index: number) => {
+                            materials == null ? <SkeletonComponent quantity={4} /> : filteredMaterials.map((material: MaterialModel, index: number) => {
                                 return (
                                     <React.Fragment key={index}>
                                         <TableRow sx={{ borderBottom: '2px solid #ccc' }}>

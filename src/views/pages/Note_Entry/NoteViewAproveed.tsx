@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, Typography, Divider, DialogActions, Button, TextField, IconButton } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, Typography, Divider, DialogActions, Button, TextField, IconButton, CircularProgress } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect } from "react";
 import { useNoteEntryStore } from "../../../hooks";
@@ -12,14 +12,15 @@ interface ViewProps {
 export const NoteViewAproveed = (props: ViewProps) => {
     const { open, handleClose, item } = props;
     const [materials, setMaterials] = useState(item?.materials || []);
+    const [loading, setLoading] = useState(false); // Estado de carga
     const { postNoteEntryApproved } = useNoteEntryStore();
 
     useEffect(() => {
         if (item) {
             setMaterials(item.materials.map((material: any) => ({
                 ...material,
-                amount_entries: material.pivot.amount_entries || '',   
-                cost_unit: material.pivot.cost_unit || ''             
+                amount_entries: material.pivot.amount_entries || '',
+                cost_unit: material.pivot.cost_unit || ''
             })));
         }
     }, [item]);
@@ -49,6 +50,8 @@ export const NoteViewAproveed = (props: ViewProps) => {
     };
 
     const handleSubmit = async (status: string) => {
+        setLoading(true); // Activa el estado de carga
+
         const dataToSend = {
             noteEntryId: item.id,
             materials: materials.map((material: any) => ({
@@ -57,15 +60,17 @@ export const NoteViewAproveed = (props: ViewProps) => {
                 cost_unit: material.cost_unit
             })),
             status,
-            comment: '' 
+            comment: ''
         };
 
-
-        await postNoteEntryApproved(dataToSend).then((res) => {
-            if (res) {
-                handleClose();
-            }
-        });
+        try {
+            await postNoteEntryApproved(dataToSend);
+            handleClose();
+        } catch (error) {
+            console.error("Error al aprobar la nota:", error);
+        } finally {
+            setLoading(false); // Desactiva el estado de carga
+        }
     };
 
     return (
@@ -149,8 +154,13 @@ export const NoteViewAproveed = (props: ViewProps) => {
                 )}
             </DialogContent>
             <DialogActions sx={{ padding: '16px', flexDirection: 'column', alignItems: 'center' }}>
-                <Button onClick={() => handleSubmit('Approved')} variant="contained" color="success">
-                    Aprobar
+                <Button
+                    onClick={() => handleSubmit('Approved')}
+                    variant="contained"
+                    color="success"
+                    disabled={loading} 
+                >
+                    {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Aprobar"}
                 </Button>
             </DialogActions>
         </Dialog>
