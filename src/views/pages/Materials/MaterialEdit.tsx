@@ -15,6 +15,7 @@ export const MaterialEdit = (props: ViewProps) => {
     const { patchMaterial } = useMaterialStore();
 
     const [formData, setFormData] = useState({
+        code_material: item.code_material,
         description: item.description,
         unit_material: item.unit_material
     });
@@ -22,6 +23,7 @@ export const MaterialEdit = (props: ViewProps) => {
     useEffect(() => {
         if (item) {
             setFormData({
+                code_material: item.code_material,
                 description: item.description,
                 unit_material: item.unit_material
             });
@@ -74,6 +76,15 @@ export const MaterialEdit = (props: ViewProps) => {
             <form onSubmit={handleSubmit}>
                 <DialogContent>
                     <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                            <ComponentInput
+                                type="text"
+                                label="Codigo Material"
+                                name="code_material"
+                                value={formData.code_material}
+                                onChange={handleChange}
+                            />
+                        </Grid>
                         <Grid item xs={6}>
                             <ComponentInput
                                 type="text"

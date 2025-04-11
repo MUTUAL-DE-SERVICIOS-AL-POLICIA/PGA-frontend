@@ -38,6 +38,7 @@ export const MaterialTable = (props: tableProps) => {
         && (stateFilter ? material.state === stateFilter : true)
     ) || [];
 
+    console.log(filteredMaterials);
     return (
         <Stack sx={{ paddingRight: '10px' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
@@ -69,7 +70,7 @@ export const MaterialTable = (props: tableProps) => {
                     </TableHead>
                     <TableBody>
                         {
-                            materials == null ? <SkeletonComponent quantity={4} /> : filteredMaterials.map((material: MaterialModel, index: number) => {
+                            materials == null ? <SkeletonComponent quantity={4} /> : materials.map((material: MaterialModel, index: number) => {
                                 return (
                                     <React.Fragment key={index}>
                                         <TableRow sx={{ borderBottom: '2px solid #ccc' }}>
@@ -82,6 +83,7 @@ export const MaterialTable = (props: tableProps) => {
                                                     variant="contained"
                                                     color={material.state === 'Habilitado' ? 'success' : 'error'}
                                                     onClick={() => putState(material.id, material.state)}
+                                                    disabled={material.type !== 'Almacen'} 
                                                 >
                                                     {material.state === 'Habilitado' ? 'Habilitado' : 'Inhabilitado'}
                                                 </Button>
