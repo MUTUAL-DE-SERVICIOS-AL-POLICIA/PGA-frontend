@@ -33,12 +33,7 @@ export const MaterialTable = (props: tableProps) => {
         getMaterial(0, limit, search, stateFilter).then((total) => setTotal(total));
     }
 
-    const filteredMaterials = materials?.filter((material: MaterialModel) =>
-        (material.type === 'Almacen' || material.type === 'Fondo de Avance')
-        && (stateFilter ? material.state === stateFilter : true)
-    ) || [];
-
-    console.log(filteredMaterials);
+    
     return (
         <Stack sx={{ paddingRight: '10px' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
