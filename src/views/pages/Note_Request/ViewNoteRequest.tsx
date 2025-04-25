@@ -14,6 +14,7 @@ export const ViewNoteRequest = (props: ViewProps) => {
     const [materials, setMaterials] = useState(item?.materials || []);
     const [isCancelling, setIsCancelling] = useState(false);
     const [isApproving, setIsApproving] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [cancelComment, setCancelComment] = useState('');
     const [approveComment, setApproveComment] = useState('');
     const { postNoteRequest, PrintNoteRequest } = useNoteRequestStore();
@@ -51,7 +52,37 @@ export const ViewNoteRequest = (props: ViewProps) => {
         return materials.every((material: any) => material.amount_to_deliver !== '' || material.amount_to_deliver > 0);
     };
 
+    // const handleSubmit = async (status: string) => {
+    //     setIsLoading(true);
+    //     const dataToSend = {
+    //         noteRequestId: item.id_note,
+    //         materials: materials.map((material: any) => ({
+    //             id_material: material.id,
+    //             amount_to_deliver: status === 'Cancelled' ? null : material.amount_to_deliver
+    //         })),
+    //         status,
+    //         comment: status === 'Cancelled' ? cancelComment : approveComment
+    //     };
+
+    //     try {
+    //         const res = await postNoteRequest(dataToSend);
+    //         if (res) {
+    //             PrintNoteRequest(res);
+    //             handleClose();
+    //         }
+    //     } finally {
+    //         setIsLoading(false);
+    //         setIsApproving(false);
+    //         setIsCancelling(false);
+    //         setApproveComment('');
+    //         setCancelComment('');
+    //     }
+    // };
+
+
     const handleSubmit = async (status: string) => {
+        setIsLoading(true);
+
         const dataToSend = {
             noteRequestId: item.id_note,
             materials: materials.map((material: any) => ({
@@ -62,12 +93,23 @@ export const ViewNoteRequest = (props: ViewProps) => {
             comment: status === 'Cancelled' ? cancelComment : approveComment
         };
 
-        await postNoteRequest(dataToSend).then((res) => {
+        try {
+            const [res] = await Promise.all([
+                postNoteRequest(dataToSend),
+                new Promise(resolve => setTimeout(resolve, 2000)) 
+            ]);
+
             if (res) {
                 PrintNoteRequest(res);
                 handleClose();
             }
-        });
+        } finally {
+            setIsLoading(false);
+            setIsApproving(false);
+            setIsCancelling(false);
+            setApproveComment('');
+            setCancelComment('');
+        }
     };
 
     const handleCancel = () => {
@@ -222,10 +264,11 @@ export const ViewNoteRequest = (props: ViewProps) => {
                                 variant="contained"
                                 color="success"
                                 sx={{ boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2)', borderRadius: '8px', marginRight: '8px' }}
-                                disabled={!canApprove()}
+                                disabled={!canApprove() || isLoading}
                             >
-                                {isApproving ? 'Confirmar Aprobación' : 'Aprobar'}
+                                {isLoading ? 'Aprobando...' : isApproving ? 'Confirmar Aprobación' : 'Aprobar'}
                             </Button>
+
                             <Button
                                 onClick={handleCancel}
                                 variant="contained"
