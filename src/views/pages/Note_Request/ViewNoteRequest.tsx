@@ -52,34 +52,6 @@ export const ViewNoteRequest = (props: ViewProps) => {
         return materials.every((material: any) => material.amount_to_deliver !== '' || material.amount_to_deliver > 0);
     };
 
-    // const handleSubmit = async (status: string) => {
-    //     setIsLoading(true);
-    //     const dataToSend = {
-    //         noteRequestId: item.id_note,
-    //         materials: materials.map((material: any) => ({
-    //             id_material: material.id,
-    //             amount_to_deliver: status === 'Cancelled' ? null : material.amount_to_deliver
-    //         })),
-    //         status,
-    //         comment: status === 'Cancelled' ? cancelComment : approveComment
-    //     };
-
-    //     try {
-    //         const res = await postNoteRequest(dataToSend);
-    //         if (res) {
-    //             PrintNoteRequest(res);
-    //             handleClose();
-    //         }
-    //     } finally {
-    //         setIsLoading(false);
-    //         setIsApproving(false);
-    //         setIsCancelling(false);
-    //         setApproveComment('');
-    //         setCancelComment('');
-    //     }
-    // };
-
-
     const handleSubmit = async (status: string) => {
         setIsLoading(true);
 
