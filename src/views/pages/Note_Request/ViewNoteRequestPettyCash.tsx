@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, Typography, Divider, DialogActions, Button, TextField, IconButton } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Table, TableHead, TableBody, TableRow, TableCell, Typography, Divider, DialogActions, Button, TextField, IconButton, CircularProgress } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect } from "react";
 import { useNoteRequestStore } from "../../../hooks/useNoteRequestStore";
@@ -13,6 +13,7 @@ export const ViewNoteRequestPettyCash = (props: ViewProps) => {
     const { open, handleClose, item } = props;
     const [materials, setMaterials] = useState(item?.materials || []);
     const [isApproving, setIsApproving] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [approveComment, setApproveComment] = useState('');
     const { postNoteRequest, PrintNoteRequest } = useNoteRequestStore();
 
@@ -31,6 +32,8 @@ export const ViewNoteRequestPettyCash = (props: ViewProps) => {
     };
 
     const handleSubmit = async (status: string) => {
+        setIsLoading(true);
+
         const dataToSend = {
             noteRequestId: item.id_note,
             materials: materials.map((material: any) => ({
@@ -41,12 +44,21 @@ export const ViewNoteRequestPettyCash = (props: ViewProps) => {
             comment: approveComment
         };
 
-        await postNoteRequest(dataToSend).then((res) => {
+        try {
+            const [res] = await Promise.all([
+                postNoteRequest(dataToSend),
+                new Promise(resolve => setTimeout(resolve, 2000)) // ⏳ 2 segundos
+            ]);
+
             if (res) {
                 PrintNoteRequest(res);
                 handleClose();
             }
-        });
+        } finally {
+            setIsLoading(false);
+            setIsApproving(false);
+            setApproveComment('');
+        }
     };
 
     const handleApprove = () => {
@@ -120,7 +132,7 @@ export const ViewNoteRequestPettyCash = (props: ViewProps) => {
                                             <TableCell>{material.stock}</TableCell>
                                         )}
                                         <TableCell>
-                                            <Typography>{material.amount_request}</Typography> {/* Cantidad a entregar automática */}
+                                            <Typography>{material.amount_request}</Typography>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -148,9 +160,14 @@ export const ViewNoteRequestPettyCash = (props: ViewProps) => {
                             variant="contained"
                             color="success"
                             sx={{ boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2)', borderRadius: '8px' }}
-                            disabled={!canApprove()} // Desactiva si no se puede aprobar
+                            disabled={!canApprove() || isLoading}
                         >
-                            {isApproving ? 'Confirmar Aprobación' : 'Aprobar'}
+                            {isLoading ? (
+                                <>
+                                    <CircularProgress size={20} sx={{ color: 'white', mr: 1 }} />
+                                    Aprobando...
+                                </>
+                            ) : isApproving ? 'Confirmar Aprobación' : 'Aprobar'}
                         </Button>
                     )}
                 </div>
