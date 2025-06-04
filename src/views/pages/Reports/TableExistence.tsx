@@ -26,12 +26,12 @@ const StyledBodyCell = styled(TableCell)({
 });
 
 const StyledDetailCell = styled(TableCell)({
-    whiteSpace: 'normal', 
+    whiteSpace: 'normal',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    width: 'auto', 
-    maxWidth: '300px', 
-    flexGrow: 1, 
+    width: 'auto',
+    maxWidth: '300px',
+    flexGrow: 1,
     fontSize: '0.7rem',
     border: '1px solid #ddd',
     backgroundColor: '#fff',
@@ -52,7 +52,9 @@ const StyledContainer = styled(Paper)(({ theme }) => ({
 }));
 
 const formatNumber = (num: number | undefined) => {
-    return typeof num === 'number' ? num.toFixed(2) : '-';
+    return typeof num === 'number'
+        ? new Intl.NumberFormat('es-BO', { minimumFractionDigits: 2 }).format(num)
+        : '-';
 };
 
 export const TableExistence = (props: TableProps) => {
@@ -123,20 +125,21 @@ export const TableExistence = (props: TableProps) => {
                         {itemKardex.kardex_de_existencia.map((entry: any, index: number) => (
                             <StyledTableRow key={index}>
                                 <StyledBodyCell align="left">{entry.date}</StyledBodyCell>
-                                <StyledDetailCell align="left">{entry.description}</StyledDetailCell> {/* Cambiado aquí */}
+                                <StyledDetailCell align="left">{entry.description}</StyledDetailCell>
                                 <StyledBodyCell align="center">{entry.entradas}</StyledBodyCell>
                                 <StyledBodyCell align="center">{entry.salidas}</StyledBodyCell>
                                 <StyledBodyCell align="right">{entry.stock_fisico}</StyledBodyCell>
-                                <StyledBodyCell align="right">{entry.cost_unit}</StyledBodyCell>
+                                <StyledBodyCell align="right">{formatNumber(entry.cost_unit)}</StyledBodyCell>
                                 <StyledBodyCell align="right">
-                                    {entry.entradas ? formatNumber(entry.entradas * entry.cost_unit) : '-'}
+                                    {formatNumber(entry.importe_entrada)}
                                 </StyledBodyCell>
                                 <StyledBodyCell align="right">
-                                    {entry.salidas ? formatNumber(entry.salidas * entry.cost_unit) : '-'}
+                                    {formatNumber(entry.importe_salida)}
                                 </StyledBodyCell>
                                 <StyledBodyCell align="right">
-                                    {entry.entradas || entry.salidas ? `${entry.cost_total}` : '-'}
+                                    {formatNumber(entry.importe_saldo)}
                                 </StyledBodyCell>
+
                             </StyledTableRow>
 
                         ))}
