@@ -10,15 +10,24 @@ export const useReportKardexStore = () => {
     const { report_ValuedPhys, report_kardexs = [], report_ValuedPhy_Consolids, managements, flag } = useSelector((state: any) => state.report_kardexs);
     const dispatch = useDispatch();
 
-    const getReportKardex = async (material_id: any, endDate: string | null) => {
-        const { data } = await api.get(`/auth/ReportPrintKardex/${material_id}?end_date=${endDate || ''}`);
+    const getReportKardex = async (material_id: any, startDate: string | null, endDate: string | null) => {
+        const queryParams = new URLSearchParams({
+            start_date: startDate || '',
+            end_date: endDate || ''
+        });
+        const { data } = await api.get(`/auth/ReportPrintKardex/${material_id}?${queryParams}`);
         dispatch(setReportKardex({ report_kardexs: data }))
         return true;
     }
 
-    const PrintReportKardex = async (material_id: any, endDate: string | null) => {
+    const PrintReportKardex = async (material_id: any, startDate: string | null, endDate: string | null) => {
         try {
-            const response = await api.get(`/auth/PrintKardex/${material_id}?end_date=${endDate || ''}/`, {
+            const queryParams = new URLSearchParams({
+                start_date: startDate || '',
+                end_date: endDate || ''
+            });
+
+            const response = await api.get(`/auth/PrintKardex/${material_id}?${queryParams}`, {
                 responseType: 'arraybuffer',
             });
             printDocument(response)
@@ -28,12 +37,16 @@ export const useReportKardexStore = () => {
             console.error('Error al imprimir la nota de entrada:', error);
         }
     };
-    const DownloadReportKardex = async (material_id: any, endDate: string | null) => {
+    const DownloadReportKardex = async (material_id: any, startDate: string | null, endDate: string | null) => {
         try {
-            const response = await api.get(`/auth/PrintKardex/${material_id}?end_date=${endDate || ''}/`, {
+            const queryParams = new URLSearchParams({
+                start_date: startDate || '',
+                end_date: endDate || ''
+            });
+            const response = await api.get(`/auth/PrintKardex/${material_id}?${queryParams}`, {
                 responseType: 'arraybuffer',
             });
-            downloadDocument(response, `report_kardex_${material_id}.pdf`);
+            downloadDocument(response, `report_kardex_${endDate}.pdf`);
             return true;
         } catch (error) {
             console.error('Error al descargar el kardex:', error);

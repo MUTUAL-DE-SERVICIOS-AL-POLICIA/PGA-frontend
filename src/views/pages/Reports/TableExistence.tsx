@@ -36,6 +36,13 @@ const StyledDetailCell = styled(TableCell)({
     border: '1px solid #ddd',
     backgroundColor: '#fff',
 });
+const StyledTotalCell = styled(TableCell)({
+    backgroundColor: '#d1f2eb', 
+    fontWeight: 'bold',
+    fontSize: '0.75rem',
+    textAlign: 'center',
+    border: '1px solid #ddd',
+});
 
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -143,6 +150,17 @@ export const TableExistence = (props: TableProps) => {
                             </StyledTableRow>
 
                         ))}
+                        <StyledTableRow>
+                            <StyledTotalCell align="left" />
+                            <StyledTotalCell align="left">TOTAL</StyledTotalCell>
+                            <StyledTotalCell>{itemKardex.totales?.entradas ?? 0}</StyledTotalCell>
+                            <StyledTotalCell>{itemKardex.totales?.salidas ?? 0}</StyledTotalCell>
+                            <StyledTotalCell>{itemKardex.totales?.stock_fisico ?? 0}</StyledTotalCell>
+                            <StyledTotalCell />
+                            <StyledTotalCell>{formatNumber(itemKardex.totales?.importe_entrada)}</StyledTotalCell>
+                            <StyledTotalCell>{formatNumber(itemKardex.totales?.importe_salida)}</StyledTotalCell>
+                            <StyledTotalCell>{formatNumber(itemKardex.totales?.importe_saldo)}</StyledTotalCell>
+                        </StyledTableRow>
                     </TableBody>
                 </Table>
             </TableContainer>
