@@ -52,6 +52,26 @@ export const useReportKardexStore = () => {
             console.error('Error al descargar el kardex:', error);
         }
     };
+
+    const DownloadReportKardexExcel = async (material_id: any, startDate: string | null, endDate: string | null) => {
+        try {
+            const queryParams = new URLSearchParams({
+                start_date: startDate || '',
+                end_date: endDate || ''
+            });
+
+            const response = await api.get(`/auth/PrintKardexExcel/${material_id}?${queryParams}`, {
+                responseType: 'arraybuffer',
+            });
+
+            // Llamar a la función para descargar el archivo Excel
+            downloadDocument(response, `report_kardex_${endDate}.xlsx`);
+            return true;
+        } catch (error) {
+            console.error('Error al descargar el Kardex en Excel:', error);
+        }
+    };
+
     const getReportValued = async (startDate?: string, endDate?: string) => {
         const params = {
             start_date: startDate,
@@ -172,6 +192,7 @@ export const useReportKardexStore = () => {
         getReportValued,
         PrintReportKardex,
         DownloadReportKardex,
+        DownloadReportKardexExcel,
         PrintReportValued,
         DownloadReportValued,
         getReportValuedConsolid,

@@ -98,10 +98,14 @@ export const NoteViewAproveed = (props: ViewProps) => {
                                     <TableCell sx={{ fontWeight: 'bold' }}>Fecha Entrada:</TableCell>
                                     <TableCell>{item.delivery_date}</TableCell>
                                 </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Proveedor:</TableCell>
-                                    <TableCell>{item.name_supplier}</TableCell>
-                                </TableRow>
+                                {item.suppliers.map((supplier: any, index: number) => (
+                                    <TableRow key={index}>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Proveedor:</TableCell>
+                                        <TableCell>{supplier.name}</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Factura:</TableCell>
+                                        <TableCell>{supplier.nit}</TableCell>
+                                    </TableRow>
+                                ))}
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Estado:</TableCell>
                                     <TableCell>{item.state}</TableCell>
@@ -158,7 +162,7 @@ export const NoteViewAproveed = (props: ViewProps) => {
                     onClick={() => handleSubmit('Approved')}
                     variant="contained"
                     color="success"
-                    disabled={loading} 
+                    disabled={loading}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Aprobar"}
                 </Button>

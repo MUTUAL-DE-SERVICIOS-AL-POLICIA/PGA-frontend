@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Grow, IconButton, Paper, TextField, Typography, Box, Divider, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Table, TableBody, TableRow, TableCell } from "@mui/material";
-import { Delete, ExpandLess, ExpandMore, Save } from "@mui/icons-material";
-import { ComponentButton, SelectComponent } from "../../../components";
-import { useMaterialStore, useNoteEntryStore, useSupplierStore, useTypeStore } from "../../../hooks";
-import { MaterialModel, SupplierModel, TypeModel } from "../../../models";
-import { CreateSupplier } from "../Suppliers";
-import { CreateMaterials } from "../Materials/createMaterial";
+import { Add, Delete, ExpandLess, ExpandMore, Save } from "@mui/icons-material";
+import { ComponentButton, SelectComponent } from "../../../../components";
+import { useMaterialStore, useNoteEntryStore, useSupplierStore, useTypeStore } from "../../../../hooks";
+import { MaterialModel, SupplierModel, TypeModel } from "../../../../models";
+import { CreateSupplier } from "../../Suppliers";
+import { CreateMaterials } from "../../Materials/createMaterial";
 import { useNavigate } from "react-router-dom";
 
 export const CreateNote = () => {
@@ -15,11 +15,13 @@ export const CreateNote = () => {
     const { suppliers = [], getSuppliersList } = useSupplierStore();
     const { materials = [], getMaterial } = useMaterialStore();
     const [typeSelect, setTypeSelect] = useState<number>(0);
-    const [supplierSelect, setSupplierSelect] = useState<number>(0);
     const [openDialog, setOpenDialog] = useState(false);
     const [openDialogMaterial, setOpenDialogMaterial] = useState(false);
     const [selectedMaterials, setSelectedMaterials] = useState<{ id: number, name: string, quantity: number, price: number, unit_material: string }[]>([]);
-    const [invoiceNumber, setInvoiceNumber] = useState<string>('');
+
+    const [supplierEntries, setSupplierEntries] = useState([
+        { supplierId: 0, invoiceNumber: '' }
+    ]);
     const [authorizationNumber, setAuthorizationNumber] = useState<string>('');
     const { postNoteEntry, PrintNoteEntry } = useNoteEntryStore();
     console.log(formSubmitted);
@@ -29,12 +31,33 @@ export const CreateNote = () => {
         navigate('/entryView');
     }
 
+    const handleAddSupplier = () => {
+        setSupplierEntries([
+            ...supplierEntries,
+            { supplierId: 0, invoiceNumber: '' }
+        ]);
+    };
+
+    const handleRemoveSupplier = (index: number) => {
+        const updated = [...supplierEntries];
+        updated.splice(index, 1);
+        setSupplierEntries(updated);
+    };
+
+    const handleSupplierChange = (index: number, value: number) => {
+        const updated = [...supplierEntries];
+        updated[index].supplierId = value;
+        setSupplierEntries(updated);
+    };
+
+    const handleInvoiceChange = (index: number, value: string) => {
+        const updated = [...supplierEntries];
+        updated[index].invoiceNumber = value;
+        setSupplierEntries(updated);
+    };
+
     const handleType = (value: any) => {
         setTypeSelect(value);
-    }
-
-    const handleSupplier = (value: any) => {
-        setSupplierSelect(value);
     }
 
     const handleDialog = useCallback((value: boolean) => {
@@ -92,13 +115,12 @@ export const CreateNote = () => {
 
         const formData = {
             type: typeSelect,
-            id_supplier: supplierSelect,
+            suppliers: supplierEntries,
             materials: selectedMaterials,
             date_entry: getCurrentDate(),
             total: getTotal(),
-            invoice_number: invoiceNumber,
-            authorization_number: authorizationNumber,
-            id_user: localStorage.getItem('id')
+            id_user: localStorage.getItem('id'),
+            authorization_number: authorizationNumber
         };
 
         await postNoteEntry(formData).then((res) => {
@@ -130,21 +152,34 @@ export const CreateNote = () => {
         return !selectedMaterials.some(m => m.id === material.id);
     });
 
-    const isMaterialSelectDisabled = typeSelect === 0 || supplierSelect === 0;
+    const isMaterialSelectDisabled = typeSelect === 0;
 
     const [isMaterialsOpen, setIsMaterialsOpen] = useState(true);
 
     const toggleMaterialsList = () => {
         setIsMaterialsOpen(!isMaterialsOpen);
     }
+    const textFieldStyle = {
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': { borderColor: 'black' },
+            '&:hover fieldset': { borderColor: 'black' },
+            '&.Mui-focused fieldset': { borderColor: 'black' },
+        },
+        '& .MuiInputLabel-root': { color: 'black' },
+        '& .MuiOutlinedInput-input': { color: 'black' },
+    };
+
 
     return (
         <>
-            <Paper sx={{ margin: '10px 0px', padding: '10px', borderRadius: '10px', backgroundColor: '#d3f4eb' }}>
-                <Typography variant="h6" style={{ textAlign: 'center', fontSize: '1rem' }}>Nueva Nota de Entrada</Typography>
+            <Typography variant="h1" style={{ textAlign: 'left', fontSize: '1rem' }}>NOTAS DE ENTRADA</Typography>
+
+            <Paper sx={{ margin: '10px', padding: '15px', borderRadius: '10px', backgroundColor: '#d3f4eb' }}>
                 <Grow in={true}>
                     <form onSubmit={handleOpenConfirm}>
-                        <Grid container spacing={1}>
+                        <Grid container spacing={2}>
+
+                            {/* Tipo de ingreso y número de autorización */}
                             <Grid item xs={12} sm={5}>
                                 <SelectComponent
                                     handleSelect={handleType}
@@ -154,86 +189,64 @@ export const CreateNote = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={5}>
-                                <SelectComponent
-                                    handleSelect={handleSupplier}
-                                    label={""}
-                                    options={[{ id: 0, name: 'Escoger al proveedor' }, ...suppliers.map((supplier: SupplierModel) => ({ id: supplier.id, name: supplier.name }))]}
-                                    value={supplierSelect}
+                                <TextField
+                                    fullWidth
+                                    label="N° de Autorización"
+                                    value={authorizationNumber}
+                                    onChange={(e) => setAuthorizationNumber(e.target.value)}
+                                    variant="outlined"
+                                    size="small"
+                                    sx={textFieldStyle}
                                 />
                             </Grid>
+
+                            {/* Botón Nuevo Proveedor */}
                             <Grid item xs={12} sm={2}>
                                 <ComponentButton
                                     text="Nuevo Proveedor"
                                     onClick={() => handleDialog(true)}
                                 />
                             </Grid>
-                        </Grid>
-                        <Grid container spacing={1} mt={1}>
-                            <Grid item xs={12} sm={5}>
-                                <TextField
-                                    fullWidth
-                                    label="Número de Factura"
-                                    value={invoiceNumber}
-                                    onChange={(e) => setInvoiceNumber(e.target.value)}
-                                    variant="outlined"
-                                    size="small"
-                                    sx={{
-                                        '& .MuiOutlinedInput-root': {
-                                            '& fieldset': {
-                                                borderColor: 'black',
-                                            },
-                                            '&:hover fieldset': {
-                                                borderColor: 'black',
-                                            },
-                                            '&.Mui-focused fieldset': {
-                                                borderColor: 'black',
-                                            },
-                                        },
-                                        '& .MuiInputLabel-root': {
-                                            color: 'black',
-                                        },
-                                        '& .MuiOutlinedInput-input': {
-                                            color: 'black',
-                                        },
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={5}>
-                                <TextField
-                                    fullWidth
-                                    label="Número de Autorización"
-                                    value={authorizationNumber}
-                                    onChange={(e) => setAuthorizationNumber(e.target.value)}
-                                    variant="outlined"
-                                    size="small"
-                                    sx={{
-                                        '& .MuiOutlinedInput-root': {
-                                            '& fieldset': {
-                                                borderColor: 'black',
-                                            },
-                                            '&:hover fieldset': {
-                                                borderColor: 'black',
-                                            },
-                                            '&.Mui-focused fieldset': {
-                                                borderColor: 'black',
-                                            },
-                                        },
-                                        '& .MuiInputLabel-root': {
-                                            color: 'black',
-                                        },
-                                        '& .MuiOutlinedInput-input': {
-                                            color: 'black',
-                                        },
-                                    }}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={1} mt={1}>
+
+                            {/* Lista de Proveedores */}
+                            {supplierEntries.map((entry, index) => (
+                                <React.Fragment key={index}>
+                                    <Grid item xs={12} sm={5}>
+                                        <SelectComponent
+                                            handleSelect={(val) => handleSupplierChange(index, val)}
+                                            label={""}
+                                            options={[{ id: 0, name: 'Escoger al proveedor' }, ...suppliers.map((supplier: SupplierModel) => ({ id: supplier.id, name: supplier.name }))]}
+                                            value={entry.supplierId}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={5}>
+                                        <TextField
+                                            fullWidth
+                                            label="N° Factura"
+                                            value={entry.invoiceNumber}
+                                            onChange={(e) => handleInvoiceChange(index, e.target.value)}
+                                            variant="outlined"
+                                            size="small"
+                                            sx={textFieldStyle}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={2} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <IconButton color="error" onClick={() => handleRemoveSupplier(index)} disabled={supplierEntries.length === 1}>
+                                            <Delete />
+                                        </IconButton>
+                                        <IconButton color="primary" onClick={handleAddSupplier}>
+                                            <Add />
+                                        </IconButton>
+                                    </Grid>
+                                </React.Fragment>
+                            ))}
+
+                            {/* Selección de materiales */}
                             <Grid item xs={12} sm={10}>
                                 <SelectComponent
                                     handleSelect={handleAddMaterial}
                                     label={""}
-                                    options={[...availableMaterials.map((material: MaterialModel) => ({ id: material.id, name: material.description }))]}
+                                    options={availableMaterials.map((material: MaterialModel) => ({ id: material.id, name: material.description }))}
                                     value={''}
                                     disabled={isMaterialSelectDisabled}
                                 />
@@ -244,20 +257,26 @@ export const CreateNote = () => {
                                     onClick={() => handleDialogMaterial(true)}
                                 />
                             </Grid>
+
+                            {/* Botón Guardar */}
+                            <Grid item xs={12}>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{ mt: 2 }}
+                                    startIcon={<Save />}
+                                    disabled={selectedMaterials.length === 0}
+                                >
+                                    Guardar Nota
+                                </Button>
+                            </Grid>
+
                         </Grid>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            sx={{ mt: 2 }}
-                            startIcon={<Save />}
-                            disabled={selectedMaterials.length === 0}
-                        >
-                            Guardar Nota
-                        </Button>
                     </form>
                 </Grow>
             </Paper>
+
             <Paper sx={{ margin: '10px 0px', padding: '10px', borderRadius: '10px', backgroundColor: '#fffbe7' }}>
                 <Typography variant="h6" style={{ textAlign: 'center', fontSize: '1rem' }}>Lista de Materiales</Typography>
                 <Box sx={{ margin: '5px 0', padding: '5px', borderRadius: '5px', backgroundColor: '#e0e0e0' }}>
@@ -360,10 +379,6 @@ export const CreateNote = () => {
                     <Table sx={{ mb: 2 }}>
                         <TableBody>
                             <TableRow>
-                                <TableCell align="right" sx={{ fontWeight: 'bold', color: '#333' }}>Número de Factura:</TableCell>
-                                <TableCell>{invoiceNumber}</TableCell>
-                            </TableRow>
-                            <TableRow>
                                 <TableCell align="right" sx={{ fontWeight: 'bold', color: '#333' }}>Número de Autorización:</TableCell>
                                 <TableCell>{authorizationNumber}</TableCell>
                             </TableRow>
@@ -419,10 +434,6 @@ export const CreateNote = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
-
-
-
             {openDialog && (
                 <CreateSupplier
                     open={openDialog}

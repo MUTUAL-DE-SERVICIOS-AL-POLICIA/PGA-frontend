@@ -7,6 +7,7 @@ import { MaterialModel } from "../../../models";
 import PrintIcon from '@mui/icons-material/Print';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Box } from "@mui/system";
+import { PictureAsPdf } from "@mui/icons-material";
 
 const getTodayDate = () => {
     const today = new Date();
@@ -16,7 +17,7 @@ const getTodayDate = () => {
 export const ExistenceCard = () => {
 
     const { materials = [], getMaterial } = useMaterialStore();
-    const { report_kardexs, getReportKardex, PrintReportKardex, DownloadReportKardex } = useReportKardexStore();
+    const { report_kardexs, getReportKardex, PrintReportKardex, DownloadReportKardex, DownloadReportKardexExcel } = useReportKardexStore();
 
     const [endDate, setEndDate] = useState(getTodayDate());
     const [startDate, setStartDate] = useState<string | undefined>();
@@ -56,6 +57,14 @@ export const ExistenceCard = () => {
         const idToPrint = selectedMaterialId ?? selectedCajaChicaId;
         if (idToPrint !== null) {
             PrintReportKardex(idToPrint, startDate || null, endDate || null);
+        }
+    };
+
+
+    const handleDownloadExcel = () => {
+        const idToPrint = selectedMaterialId ?? selectedCajaChicaId;
+        if (idToPrint !== null) {
+            DownloadReportKardexExcel(idToPrint, startDate || null, endDate || null);
         }
     };
 
@@ -191,6 +200,19 @@ export const ExistenceCard = () => {
                                                         color="primary"
                                                         disabled={!isCalculateEnabled}
                                                         onClick={handleDownloadClick}
+                                                    >
+                                                        <PictureAsPdf />
+                                                    </IconButton>
+                                                </span>
+                                            </Tooltip>
+                                        </Grid>
+                                        <Grid item>
+                                            <Tooltip title="Imprimir EXCEL">
+                                                <span>
+                                                    <IconButton
+                                                        color="info"
+                                                        disabled={!isCalculateEnabled}
+                                                        onClick={handleDownloadExcel}
                                                     >
                                                         <DownloadIcon />
                                                     </IconButton>
