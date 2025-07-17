@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Button, CircularProgress, IconButton, MenuItem, Select, TextField, Tooltip, Typography, Collapse, Grid, FormControl } from '@mui/material';
 import PrintIcon from '@mui/icons-material/Print';
-import DownloadIcon from '@mui/icons-material/Download';
 import { useReportKardexStore } from '../../../hooks';
 import { SkeletonComponent } from '../../../components';
 import { StyledContainer } from './StyledComponents';
 import { ValuedTableGroup } from './ValuedTableGroup';
+import { PictureAsPdf } from '@mui/icons-material';
 
 export const ValuedPhysical = () => {
     const { getReportValued, report_ValuedPhys, PrintReportValued, DownloadReportValued } = useReportKardexStore();
@@ -96,7 +96,7 @@ export const ValuedPhysical = () => {
                         <Grid item>
                             <Tooltip title="Descargar">
                                 <IconButton color="primary" onClick={handleDownLoadClick} disabled={loading}>
-                                    {loading ? <CircularProgress size={24} /> : <DownloadIcon />}
+                                    {loading ? <CircularProgress size={24} /> : <PictureAsPdf />}
                                 </IconButton>
                             </Tooltip>
                         </Grid>
@@ -134,7 +134,7 @@ export const ValuedPhysical = () => {
                     <Typography align="center" gutterBottom>
                         LA PAZ DEL {startDate ? new Date(startDate).toLocaleDateString('es-ES', {
                             day: 'numeric', month: 'long', year: 'numeric'
-                        }).toUpperCase() : (report_ValuedPhys?.date_note || '').toUpperCase()} AL {getFormattedEndDate()}
+                        }).toUpperCase() : '1 DE ENERO'} AL {getFormattedEndDate()}
                     </Typography>
                     <Typography align="center" gutterBottom>
                         (EXPRESADO EN BOLIVIANOS)
@@ -149,13 +149,10 @@ export const ValuedPhysical = () => {
                         report_ValuedPhys.data
                             .filter((item: any) => (selectedGroup === '' || item.codigo_grupo === selectedGroup))
                             .map((item: any, index: number) => {
-                                const filteredSaldos = report_ValuedPhys.saldos_anterior_gestion[item.grupo] || {};
-
                                 return (
                                     <ValuedTableGroup
                                         key={index}
                                         item={item}
-                                        saldosAnteriores={filteredSaldos}
                                     />
                                 );
                             })

@@ -1,31 +1,11 @@
-import { Table, TableBody, TableContainer, TableHead, TableRow, Typography, Divider } from '@mui/material';
-import { StyledHeaderCell, StyledDescriptionCell, StyledBodyCell, StyledFooterCell, StyledTableRow } from './StyledComponents';
+import {
+    Table, TableBody, TableContainer, TableHead, TableRow, Typography, Divider
+} from '@mui/material';
+import {
+    StyledHeaderCell, StyledDescriptionCell, StyledBodyCell, StyledFooterCell, StyledTableRow
+} from './StyledComponents';
 
-export const ValuedTableGroup = ({ item, saldosAnteriores }: { item: any, saldosAnteriores: any }) => {
-    const calculateGroupTotal = (materiales: any) => {
-        return materiales.reduce((total: number, material: any) => {
-            const materialTotal = material.lotes.reduce((loteTotal: number, lote: any) => {
-                return loteTotal + (lote.cantidad_restante || 0) * (lote.precio_unitario || 0);
-            }, 0);
-            return total + materialTotal;
-        }, 0);
-    };
-
-    const groupTotal = calculateGroupTotal(item.materiales);
-
-    const getPreviousBalance = (codigo_material: string) => {
-
-        console.log(codigo_material);
-        // console.log(saldosAnteriores.materiales)
-        // if (saldosAnteriores.materiales[codigo_material]) {
-        //     const materialSaldo = saldosAnteriores[cod_group].materiales.find(
-        //         (saldo: any) => saldo.codigo_material === codigo_material
-        //     );
-        //     return materialSaldo || null;
-        // }
-        return null;
-    };
-
+export const ValuedTableGroup = ({ item }: { item: any }) => {
     return (
         <TableContainer>
             <Typography sx={{ padding: '10px', fontSize: '0.9rem' }}>
@@ -34,13 +14,14 @@ export const ValuedTableGroup = ({ item, saldosAnteriores }: { item: any, saldos
             <Typography sx={{ padding: '10px', fontSize: '0.9rem' }}>
                 <strong>Código:</strong> {item.codigo_grupo}
             </Typography>
+
             <Table>
                 <TableHead>
                     <TableRow>
                         <StyledHeaderCell rowSpan={2}>CÓDIGO</StyledHeaderCell>
                         <StyledHeaderCell rowSpan={2}>DESCRIPCIÓN</StyledHeaderCell>
                         <StyledHeaderCell rowSpan={2}>UNIDAD</StyledHeaderCell>
-                        <StyledHeaderCell colSpan={3}>SAL. ANT. GES</StyledHeaderCell>
+                        <StyledHeaderCell colSpan={3}>SALDO INICIAL AL 31/12/2024</StyledHeaderCell>
                         <StyledHeaderCell colSpan={3}>ENTRADAS</StyledHeaderCell>
                         <StyledHeaderCell colSpan={3}>SALIDAS</StyledHeaderCell>
                         <StyledHeaderCell colSpan={3}>SALDO</StyledHeaderCell>
@@ -61,21 +42,33 @@ export const ValuedTableGroup = ({ item, saldosAnteriores }: { item: any, saldos
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {item.materiales.map((material: any, index: number) =>
-                        material.lotes.map((lote: any, loteIndex: number) => {
-                            const previousBalance = getPreviousBalance(material.codigo_material);
+                    {item.materiales.map((material: any, index: number) => {
+                        const saldoAnteriores = material.saldo_anterior ?? [];
+                        const lotes = material.lotes ?? [];
+                        const maxRows = Math.max(saldoAnteriores.length, lotes.length);
+
+                        return [...Array(maxRows)].map((_, rowIndex) => {
+                            const saldo = saldoAnteriores[rowIndex] || { cantidad_restante: "", precio_unitario: "", valor_restante: "" };
+                            const lote = lotes[rowIndex] || {
+                                cantidad_inicial: 0,
+                                cantidad_restante: 0,
+                                precio_unitario: 0,
+                                cantidad_1: 0,
+                                cantidad_2: 0,
+                                cantidad_3: 0
+                            };
 
                             return (
-                                <StyledTableRow key={`${index}-${loteIndex}`}>
-                                    {loteIndex === 0 && (
+                                <StyledTableRow key={`${index}-${rowIndex}`}>
+                                    {rowIndex === 0 && (
                                         <>
-                                            <StyledBodyCell rowSpan={material.lotes.length} align="left">
+                                            <StyledBodyCell rowSpan={maxRows} align="left">
                                                 {material.codigo_material}
                                             </StyledBodyCell>
-                                            <StyledDescriptionCell rowSpan={material.lotes.length} align="left">
+                                            <StyledDescriptionCell rowSpan={maxRows} align="left">
                                                 {material.nombre_material}
                                             </StyledDescriptionCell>
-                                            <StyledBodyCell rowSpan={material.lotes.length}>
+                                            <StyledBodyCell rowSpan={maxRows}>
                                                 {material.unidad_material}
                                             </StyledBodyCell>
                                         </>
@@ -83,13 +76,13 @@ export const ValuedTableGroup = ({ item, saldosAnteriores }: { item: any, saldos
 
                                     {/* SALDO ANTERIOR GESTIÓN */}
                                     <StyledBodyCell align="center">
-                                        {previousBalance ? previousBalance.lotes[0]?.cantidad_restante : 0}
+                                        {saldo.cantidad_restante !== 0 ? saldo.cantidad_restante : ""}
                                     </StyledBodyCell>
                                     <StyledBodyCell align="right">
-                                        {previousBalance ? previousBalance.lotes[0]?.precio_unitario.toFixed(2) : 0}
+                                        {saldo.precio_unitario ? parseFloat(saldo.precio_unitario).toFixed(2) : ""}
                                     </StyledBodyCell>
                                     <StyledBodyCell align="right">
-                                        {previousBalance ? previousBalance.lotes[0]?.valor_restante.toFixed(2) : 0}
+                                        {saldo.valor_restante ? parseFloat(saldo.valor_restante).toFixed(2) : ""}
                                     </StyledBodyCell>
 
                                     {/* ENTRADAS */}
@@ -98,26 +91,43 @@ export const ValuedTableGroup = ({ item, saldosAnteriores }: { item: any, saldos
                                     <StyledBodyCell align="right">{lote.cantidad_1.toFixed(2)}</StyledBodyCell>
 
                                     {/* SALIDAS */}
-                                    <StyledBodyCell align="center">{lote.cantidad_inicial - lote.cantidad_restante}</StyledBodyCell>
+                                    <StyledBodyCell align="center">
+                                        {(lote.cantidad_inicial - lote.cantidad_restante)}
+                                    </StyledBodyCell>
                                     <StyledBodyCell align="right">{lote.precio_unitario.toFixed(2)}</StyledBodyCell>
                                     <StyledBodyCell align="right">{lote.cantidad_2.toFixed(2)}</StyledBodyCell>
 
-                                    {/* SALDO */}
+                                    {/* SALDO FINAL */}
                                     <StyledBodyCell align="center">{lote.cantidad_restante}</StyledBodyCell>
                                     <StyledBodyCell align="right">{lote.precio_unitario.toFixed(2)}</StyledBodyCell>
                                     <StyledBodyCell align="right">{lote.cantidad_3.toFixed(2)}</StyledBodyCell>
                                 </StyledTableRow>
                             );
-                        })
-                    )}
+                        });
+                    })}
+
+                    {/* FOOTER CON RESUMEN DEL BACKEND */}
                     <StyledTableRow>
-                        <StyledFooterCell colSpan={13}>TOTAL EN BS</StyledFooterCell>
-                        <StyledFooterCell colSpan={2} align="right">
-                            {groupTotal.toFixed(2)}
-                        </StyledFooterCell>
+                        <StyledFooterCell colSpan={3}>TOTAL EN BS</StyledFooterCell>
+                        <StyledFooterCell align="right">{item.resumen?.saldo_anterior_cantidad ?? ""}</StyledFooterCell>
+                        <StyledFooterCell /> {/* celda vacía para precio promedio */}
+                        <StyledFooterCell align="right">{item.resumen?.saldo_anterior_total?.toFixed(2) ?? ""}</StyledFooterCell>
+
+                        <StyledFooterCell align="right">{item.resumen?.entradas_cantidad ?? ""}</StyledFooterCell>
+                        <StyledFooterCell /> {/* celda vacía para precio promedio */}
+                        <StyledFooterCell align="right">{item.resumen?.entradas_total?.toFixed(2) ?? ""}</StyledFooterCell>
+
+                        <StyledFooterCell align="right">{item.resumen?.salidas_cantidad ?? ""}</StyledFooterCell>
+                        <StyledFooterCell />
+                        <StyledFooterCell align="right">{item.resumen?.salidas_total?.toFixed(2) ?? ""}</StyledFooterCell>
+
+                        <StyledFooterCell align="right">{item.resumen?.saldo_final_cantidad ?? ""}</StyledFooterCell>
+                        <StyledFooterCell />
+                        <StyledFooterCell align="right">{item.resumen?.saldo_final_total?.toFixed(2) ?? ""}</StyledFooterCell>
                     </StyledTableRow>
                 </TableBody>
             </Table>
+
             <Divider sx={{ mt: 2 }} />
         </TableContainer>
     );
