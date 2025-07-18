@@ -1,4 +1,4 @@
-import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Select, MenuItem, InputLabel, FormControl, TextField } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { useReportKardexStore } from "../../../hooks";
 import { useEffect, useState } from "react";
@@ -33,6 +33,9 @@ export const ValuedPhysicalConsolided = () => {
 
     const [openConfirm, setOpenConfirm] = useState(false);
     const [selectedManagement, setSelectedManagement] = useState('');
+
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     const getPermissionsFromStorage = () => {
         let permissions: string[] = [];
@@ -96,6 +99,7 @@ export const ValuedPhysicalConsolided = () => {
                 <Grid container item spacing={2} alignItems="center" direction="row">
                     <Grid item xs={12} sm={3}>
                         <FormControl fullWidth>
+                            
                             <InputLabel id="management-select-label">Seleccionar Gestión</InputLabel>
                             <Select
                                 labelId="management-select-label"
@@ -110,9 +114,34 @@ export const ValuedPhysicalConsolided = () => {
                                 ))}
                             </Select>
                         </FormControl>
+
+                        <Grid item>
+                            <Typography variant="subtitle2" gutterBottom>
+                                Fecha Inicio
+                            </Typography>
+                            <TextField
+                                type="date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                                sx={{ minWidth: 200 }}
+                                InputLabelProps={{ shrink: true }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="subtitle2" gutterBottom>
+                                Fecha Fin
+                            </Typography>
+                            <TextField
+                                type="date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                                sx={{ minWidth: 200 }}
+                                InputLabelProps={{ shrink: true }}
+                            />
+                        </Grid>
+
                     </Grid>
 
-                    {/* Conditionally render the buttons based on permissions */}
                     {permissions.includes('create-employee') && (
                         <>
                             <Grid item xs={12} sm={3}>
@@ -179,8 +208,11 @@ export const ValuedPhysicalConsolided = () => {
                                 <StyledTableCell colSpan={2}>SALDO GESTIÓN ANTERIOR</StyledTableCell>
                                 <StyledTableCell colSpan={2}>COMPRAS DE LA GESTIÓN ACTUAL</StyledTableCell>
                                 <StyledTableCell colSpan={2}>SALIDAS DE LA GESTION ACTUAL</StyledTableCell>
+                                <StyledTableCell colSpan={2}>SALDOS DE LA GESTION ACTUAL</StyledTableCell>
                             </TableRow>
                             <TableRow>
+                                <StyledTableCell>FISICO</StyledTableCell>
+                                <StyledTableCell>VALOR BS.</StyledTableCell>
                                 <StyledTableCell>FISICO</StyledTableCell>
                                 <StyledTableCell>VALOR BS.</StyledTableCell>
                                 <StyledTableCell>FISICO</StyledTableCell>
@@ -201,6 +233,8 @@ export const ValuedPhysicalConsolided = () => {
                                         <TableCell align="right">{group.total_presupuesto}</TableCell>
                                         <TableCell align="center">{group.cantidad_entregada}</TableCell>
                                         <TableCell align="right">{group.suma_cost_detail}</TableCell>
+                                        <TableCell align="center">{(group.total_cantidad_anterior + group.total_cantidad - group.cantidad_entregada)}</TableCell>
+                                        <TableCell align="right">{group.saldos_gestion_actual}</TableCell>
                                     </StyledTableRow>
                                 ))
                             }

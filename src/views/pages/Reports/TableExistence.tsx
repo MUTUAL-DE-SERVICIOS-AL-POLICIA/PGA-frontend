@@ -64,6 +64,8 @@ const formatNumber = (num: number | undefined) => {
         : '-';
 };
 
+var i = 1;
+
 export const TableExistence = (props: TableProps) => {
     const { itemKardex } = props;
 
@@ -113,6 +115,7 @@ export const TableExistence = (props: TableProps) => {
                 <Table>
                     <TableHead>
                         <TableRow>
+                            <StyledTableCell rowSpan={2}>NUM</StyledTableCell>
                             <StyledTableCell rowSpan={2}>FECHA</StyledTableCell>
                             <StyledTableCell rowSpan={2}>DETALLE</StyledTableCell>
                             <StyledTableCell colSpan={3}>CANTIDAD</StyledTableCell>
@@ -131,6 +134,7 @@ export const TableExistence = (props: TableProps) => {
                     <TableBody>
                         {itemKardex.kardex_de_existencia.map((entry: any, index: number) => (
                             <StyledTableRow key={index}>
+                                <StyledBodyCell align="left">{i++}</StyledBodyCell>
                                 <StyledBodyCell align="left">{entry.date}</StyledBodyCell>
                                 <StyledDetailCell align="left">{entry.description}</StyledDetailCell>
                                 <StyledBodyCell align="center">{entry.entradas}</StyledBodyCell>

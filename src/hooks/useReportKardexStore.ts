@@ -121,6 +121,26 @@ export const useReportKardexStore = () => {
         }
     };
 
+     const DownloadReportValuedExcel = async (startDate?: string, endDate?: string) => {
+        const params = {
+            start_date: startDate,
+            end_date: endDate,
+        };
+
+        try {
+            const response = await api.get('/auth/PrintValuedPhysicalExcel/', {
+                params,
+                responseType: 'arraybuffer',
+            });
+            downloadDocument(response, `report_kardex_${endDate}.xlsx`);
+
+            return true;
+        } catch (error) {
+            console.error('Error al descargar el kardex:', error);
+            return false;
+        }
+    };
+
     const getReportValuedConsolid = async (idManagement: any) => {
         const { data } = await api.get(`/auth/ReportPrintValuedPhysicalConsolidated/${idManagement}/`);
         dispatch(setReportValuedConsolid({ report_ValuedPhy_Consolids: data }));
@@ -195,6 +215,7 @@ export const useReportKardexStore = () => {
         DownloadReportKardexExcel,
         PrintReportValued,
         DownloadReportValued,
+        DownloadReportValuedExcel,
         getReportValuedConsolid,
         PrintReportConsolidatedInventory,
         DownloadReportConsolidatedInventory,

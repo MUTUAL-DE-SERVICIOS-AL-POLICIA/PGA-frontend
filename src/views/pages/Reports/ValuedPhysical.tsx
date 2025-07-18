@@ -5,10 +5,10 @@ import { useReportKardexStore } from '../../../hooks';
 import { SkeletonComponent } from '../../../components';
 import { StyledContainer } from './StyledComponents';
 import { ValuedTableGroup } from './ValuedTableGroup';
-import { PictureAsPdf } from '@mui/icons-material';
+import { DownloadTwoTone, PictureAsPdf } from '@mui/icons-material';
 
 export const ValuedPhysical = () => {
-    const { getReportValued, report_ValuedPhys, PrintReportValued, DownloadReportValued } = useReportKardexStore();
+    const { getReportValued, report_ValuedPhys, PrintReportValued, DownloadReportValued, DownloadReportValuedExcel } = useReportKardexStore();
 
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -31,6 +31,11 @@ export const ValuedPhysical = () => {
     const handleDownLoadClick = () => {
         setLoading(true);
         DownloadReportValued(startDate, endDate).finally(() => setLoading(false));
+    };
+
+    const handleDownLoadClickExcel = () => {
+        setLoading(true);
+        DownloadReportValuedExcel(startDate, endDate).finally(() => setLoading(false));
     };
 
     const getFormattedEndDate = () => {
@@ -97,6 +102,14 @@ export const ValuedPhysical = () => {
                             <Tooltip title="Descargar">
                                 <IconButton color="primary" onClick={handleDownLoadClick} disabled={loading}>
                                     {loading ? <CircularProgress size={24} /> : <PictureAsPdf />}
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+
+                        <Grid item>
+                            <Tooltip title="Descargar Excel">
+                                <IconButton color="primary" onClick={handleDownLoadClickExcel} disabled={loading}>
+                                    {loading ? <CircularProgress size={24} /> : <DownloadTwoTone />}
                                 </IconButton>
                             </Tooltip>
                         </Grid>
