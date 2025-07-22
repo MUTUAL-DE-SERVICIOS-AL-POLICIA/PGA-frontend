@@ -27,7 +27,7 @@ export const SelectComponent = (props: SelectComponentProps) => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: any) => {
     handleSelect(newValue);
-    event;
+    event.preventDefault();
   };
 
   const handleClear = () => {

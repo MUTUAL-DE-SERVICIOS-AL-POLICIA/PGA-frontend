@@ -1,10 +1,26 @@
-import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Select, MenuItem, InputLabel, FormControl, TextField } from "@mui/material";
+import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { useReportKardexStore } from "../../../hooks";
 import { useEffect, useState } from "react";
 import { SkeletonComponent } from "../../../components";
 import PrintIcon from '@mui/icons-material/Print';
 import DownloadIcon from '@mui/icons-material/Download';
+import { PictureAsPdf } from "@mui/icons-material";
+
+interface Report {
+    grupo: string;
+    codigo_grupo: string;
+    resumen: {
+        saldo_anterior_cantidad: number;
+        saldo_anterior_total: number;
+        entradas_cantidad: number;
+        entradas_total: number;
+        salidas_cantidad: number;
+        salidas_total: number;
+        saldo_final_cantidad: number;
+        saldo_final_total: number;
+    };
+}
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
@@ -28,11 +44,11 @@ const StyledContainer = styled(Paper)(({ theme }) => ({
     boxShadow: theme.shadows[4],
 }));
 
+
 export const ValuedPhysicalConsolided = () => {
-    const { report_ValuedPhy_Consolids, managements, listManagement, getReportValuedConsolid, PrintReportConsolidatedInventory, DownloadReportConsolidatedInventory, ClosureMagementStore } = useReportKardexStore();
+    const { report_ValuedPhy_Consolids, listManagement, getReportValuedConsolid, PrintReportConsolidatedInventory, DownloadReportConsolidatedInventory, ClosureMagementStore, DownloadReportConsolidatedInventoryExcel } = useReportKardexStore();
 
     const [openConfirm, setOpenConfirm] = useState(false);
-    const [selectedManagement, setSelectedManagement] = useState('');
 
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -60,17 +76,20 @@ export const ValuedPhysicalConsolided = () => {
         ClosureMagementStore();
         setOpenConfirm(false);
     };
-
     const handleCalculateClick = () => {
-        getReportValuedConsolid(selectedManagement);
+        getReportValuedConsolid(startDate, endDate);
     };
 
     const handlePrintClick = () => {
-        PrintReportConsolidatedInventory(selectedManagement);
+        PrintReportConsolidatedInventory(startDate, endDate);
     };
 
     const handleDownloadClick = () => {
-        DownloadReportConsolidatedInventory(selectedManagement);
+        DownloadReportConsolidatedInventory(startDate, endDate);
+    };
+
+    const handleDownloadClickExcel = () => {
+        DownloadReportConsolidatedInventoryExcel(startDate, endDate);
     };
 
     const handleCloseConfirmDialog = () => {
@@ -81,112 +100,132 @@ export const ValuedPhysicalConsolided = () => {
         setOpenConfirm(true);
     };
 
-    const handleManagementChange = (event: any) => {
-        setSelectedManagement(event.target.value);
-    };
-
-    useEffect(() => {
-        getReportValuedConsolid(selectedManagement);
-    }, []);
-
     useEffect(() => {
         listManagement();
     }, []);
 
+    const calculateTotals = () => {
+        let totalSaldoAnteriorCantidad = 0;
+        let totalSaldoAnteriorTotal = 0;
+        let totalEntradasCantidad = 0;
+        let totalEntradasTotal = 0;
+        let totalSalidasCantidad = 0;
+        let totalSalidasTotal = 0;
+        let totalSaldoFinalCantidad = 0;
+        let totalSaldoFinalTotal = 0;
+
+        report_ValuedPhy_Consolids?.data.forEach((report: Report) => {
+            totalSaldoAnteriorCantidad += report.resumen.saldo_anterior_cantidad;
+            totalSaldoAnteriorTotal += report.resumen.saldo_anterior_total;
+            totalEntradasCantidad += (report.resumen.entradas_cantidad - report.resumen.saldo_anterior_cantidad);
+            totalEntradasTotal += (report.resumen.entradas_total - report.resumen.saldo_anterior_total);
+            totalSalidasCantidad += report.resumen.salidas_cantidad;
+            totalSalidasTotal += report.resumen.salidas_total;
+            totalSaldoFinalCantidad += report.resumen.saldo_final_cantidad;
+            totalSaldoFinalTotal += report.resumen.saldo_final_total;
+        });
+
+        return {
+            totalSaldoAnteriorCantidad,
+            totalSaldoAnteriorTotal,
+            totalEntradasCantidad,
+            totalEntradasTotal,
+            totalSalidasCantidad,
+            totalSalidasTotal,
+            totalSaldoFinalCantidad,
+            totalSaldoFinalTotal
+        };
+    };
+
+    const totals = calculateTotals();
+
+
     return (
         <>
+            <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
+                Inventario Fisico Valorado Consolidado
+            </Typography>
+
             <Grid container spacing={2} alignItems="center">
-                <Grid container item spacing={2} alignItems="center" direction="row">
-                    <Grid item xs={12} sm={3}>
-                        <FormControl fullWidth>
-                            
-                            <InputLabel id="management-select-label">Seleccionar Gestión</InputLabel>
-                            <Select
-                                labelId="management-select-label"
-                                value={selectedManagement}
-                                onChange={handleManagementChange}
-                                label="Seleccionar Gestión"
-                            >
-                                {managements?.map((management: any) => (
-                                    <MenuItem key={management.id} value={management.id}>
-                                        {management.period_name} - {management.state}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
 
-                        <Grid item>
-                            <Typography variant="subtitle2" gutterBottom>
-                                Fecha Inicio
-                            </Typography>
-                            <TextField
-                                type="date"
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                                sx={{ minWidth: 200 }}
-                                InputLabelProps={{ shrink: true }}
-                            />
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="subtitle2" gutterBottom>
-                                Fecha Fin
-                            </Typography>
-                            <TextField
-                                type="date"
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
-                                sx={{ minWidth: 200 }}
-                                InputLabelProps={{ shrink: true }}
-                            />
-                        </Grid>
+                <Grid container item spacing={2} alignItems="center">
 
+                    <Grid item xs={12} sm={6} md={6} lg={4}>
+                        <Grid container spacing={2} direction="row" alignItems="center">
+                            <Grid item>
+                                <Typography variant="subtitle2" gutterBottom>
+                                    Fecha Inicio
+                                </Typography>
+                                <TextField
+                                    type="date"
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                    sx={{ minWidth: 150 }}
+                                    InputLabelProps={{ shrink: true }}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="subtitle2" gutterBottom>
+                                    Fecha Fin
+                                </Typography>
+                                <TextField
+                                    type="date"
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                    sx={{ minWidth: 150 }}
+                                    InputLabelProps={{ shrink: true }}
+                                />
+                            </Grid>
+                        </Grid>
                     </Grid>
 
-                    {permissions.includes('create-employee') && (
-                        <>
-                            <Grid item xs={12} sm={3}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    fullWidth
-                                    onClick={handleOpenConfirmDialog}
-                                >
-                                    Cerrar Gestión
-                                </Button>
-                            </Grid>
-                        </>
-                    )}
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={12} sm={3} md={2}>
                         <Button
                             variant="contained"
                             color="primary"
                             fullWidth
                             onClick={handleCalculateClick}
+                            sx={{ height: '100%' }}
                         >
                             Calcular
                         </Button>
                     </Grid>
 
+                    {permissions.includes('create-employee') && (
+                        <Grid item xs={12} sm={3} md={3}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                onClick={handleOpenConfirmDialog}
+                            >
+                                Cerrar Gestión
+                            </Button>
+                        </Grid>
+                    )}
+
                     <Grid item>
                         <Tooltip title="Imprimir">
                             <span>
-                                <IconButton
-                                    color="primary"
-                                    onClick={handlePrintClick}
-                                >
+                                <IconButton onClick={handlePrintClick} color="primary">
                                     <PrintIcon />
                                 </IconButton>
                             </span>
                         </Tooltip>
                     </Grid>
-
                     <Grid item>
-                        <Tooltip title="Descargar">
+                        <Tooltip title="Descargar PDF">
                             <span>
-                                <IconButton
-                                    color="primary"
-                                    onClick={handleDownloadClick}
-                                >
+                                <IconButton onClick={handleDownloadClick} color="primary">
+                                    <PictureAsPdf />
+                                </IconButton>
+                            </span>
+                        </Tooltip>
+                    </Grid>
+                    <Grid item>
+                        <Tooltip title="Descargar Excel">
+                            <span>
+                                <IconButton onClick={handleDownloadClickExcel} color="info">
                                     <DownloadIcon />
                                 </IconButton>
                             </span>
@@ -194,6 +233,7 @@ export const ValuedPhysicalConsolided = () => {
                     </Grid>
                 </Grid>
             </Grid>
+
 
             <StyledContainer>
                 <Typography variant="h6" align="center" gutterBottom>
@@ -205,10 +245,10 @@ export const ValuedPhysicalConsolided = () => {
                             <TableRow>
                                 <StyledTableCell rowSpan={2}>GRUPO</StyledTableCell>
                                 <StyledTableCell rowSpan={2}>DETALLE</StyledTableCell>
-                                <StyledTableCell colSpan={2}>SALDO GESTIÓN ANTERIOR</StyledTableCell>
-                                <StyledTableCell colSpan={2}>COMPRAS DE LA GESTIÓN ACTUAL</StyledTableCell>
-                                <StyledTableCell colSpan={2}>SALIDAS DE LA GESTION ACTUAL</StyledTableCell>
-                                <StyledTableCell colSpan={2}>SALDOS DE LA GESTION ACTUAL</StyledTableCell>
+                                <StyledTableCell colSpan={2}>SALDO INICIAL</StyledTableCell>
+                                <StyledTableCell colSpan={2}>ENTRADAS</StyledTableCell>
+                                <StyledTableCell colSpan={2}>SALIDAS </StyledTableCell>
+                                <StyledTableCell colSpan={2}>SALDOS</StyledTableCell>
                             </TableRow>
                             <TableRow>
                                 <StyledTableCell>FISICO</StyledTableCell>
@@ -223,22 +263,39 @@ export const ValuedPhysicalConsolided = () => {
                         </TableHead>
                         <TableBody>
                             {
-                                report_ValuedPhy_Consolids == null ? <SkeletonComponent quantity={4} /> : report_ValuedPhy_Consolids.map((group: any, index: number) => (
-                                    <StyledTableRow key={index}>
-                                        <TableCell align="center">{group.codigo_grupo}</TableCell>
-                                        <TableCell align="left">{group.grupo}</TableCell>
-                                        <TableCell align="center">{group.total_cantidad_anterior}</TableCell>
-                                        <TableCell align="right">{group.total_presupuesto_anterior}</TableCell>
-                                        <TableCell align="center">{group.total_cantidad}</TableCell>
-                                        <TableCell align="right">{group.total_presupuesto}</TableCell>
-                                        <TableCell align="center">{group.cantidad_entregada}</TableCell>
-                                        <TableCell align="right">{group.suma_cost_detail}</TableCell>
-                                        <TableCell align="center">{(group.total_cantidad_anterior + group.total_cantidad - group.cantidad_entregada)}</TableCell>
-                                        <TableCell align="right">{group.saldos_gestion_actual}</TableCell>
-                                    </StyledTableRow>
-                                ))
+                                report_ValuedPhy_Consolids == null ? (
+                                    <SkeletonComponent quantity={4} />
+                                ) : (
+                                    report_ValuedPhy_Consolids.data.map((report: any, index: number) => (
+                                        <StyledTableRow key={index}>
+                                            <TableCell>{report.grupo}</TableCell>
+                                            <TableCell>{report.codigo_grupo}</TableCell>
+                                            <TableCell align="right">{report.resumen.saldo_anterior_cantidad}</TableCell>
+                                            <TableCell align="right">{report.resumen.saldo_anterior_total.toFixed(2)}</TableCell>
+                                            <TableCell align="right">{(report.resumen.entradas_cantidad - report.resumen.saldo_anterior_cantidad)}</TableCell>
+                                            <TableCell align="right">{(report.resumen.entradas_total - report.resumen.saldo_anterior_total).toFixed(2)}</TableCell>
+                                            <TableCell align="right">{report.resumen.salidas_cantidad}</TableCell>
+                                            <TableCell align="right">{report.resumen.salidas_total.toFixed(2)}</TableCell>
+                                            <TableCell align="right">{report.resumen.saldo_final_cantidad}</TableCell>
+                                            <TableCell align="right">{report.resumen.saldo_final_total.toFixed(2)}</TableCell>
+                                        </StyledTableRow>
+                                    ))
+                                )
                             }
+
+                            <StyledTableRow>
+                                <StyledTableCell colSpan={2} style={{ textAlign: 'center' }}>TOTAL</StyledTableCell>
+                                <StyledTableCell align="right">{totals.totalSaldoAnteriorCantidad}</StyledTableCell>
+                                <StyledTableCell align="right">{totals.totalSaldoAnteriorTotal.toFixed(2)}</StyledTableCell>
+                                <StyledTableCell align="right">{totals.totalEntradasCantidad}</StyledTableCell>
+                                <StyledTableCell align="right">{totals.totalEntradasTotal.toFixed(2)}</StyledTableCell>
+                                <StyledTableCell align="right">{totals.totalSalidasCantidad}</StyledTableCell>
+                                <StyledTableCell align="right">{totals.totalSalidasTotal.toFixed(2)}</StyledTableCell>
+                                <StyledTableCell align="right">{totals.totalSaldoFinalCantidad}</StyledTableCell>
+                                <StyledTableCell align="right">{totals.totalSaldoFinalTotal.toFixed(2)}</StyledTableCell>
+                            </StyledTableRow>
                         </TableBody>
+
                     </Table>
                 </TableContainer>
             </StyledContainer>

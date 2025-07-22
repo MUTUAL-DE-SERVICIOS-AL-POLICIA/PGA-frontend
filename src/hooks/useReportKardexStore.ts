@@ -121,7 +121,7 @@ export const useReportKardexStore = () => {
         }
     };
 
-     const DownloadReportValuedExcel = async (startDate?: string, endDate?: string) => {
+    const DownloadReportValuedExcel = async (startDate?: string, endDate?: string) => {
         const params = {
             start_date: startDate,
             end_date: endDate,
@@ -141,15 +141,26 @@ export const useReportKardexStore = () => {
         }
     };
 
-    const getReportValuedConsolid = async (idManagement: any) => {
-        const { data } = await api.get(`/auth/ReportPrintValuedPhysicalConsolidated/${idManagement}/`);
+    const getReportValuedConsolid = async (startDate?: string, endDate?: string) => {
+        const params = {
+            start_date: startDate,
+            end_date: endDate,
+        };
+        const { data } = await api.get(`/auth/ValuedPhysicalConsolidatedModificaded/`, { params });
         dispatch(setReportValuedConsolid({ report_ValuedPhy_Consolids: data }));
         return true;
     }
 
-    const PrintReportConsolidatedInventory = async (idManagement: any) => {
+
+    const PrintReportConsolidatedInventory = async (startDate?: string, endDate?: string) => {
         try {
-            const response = await api.get(`/auth/PrintValuedPhysicalConsolidated/${idManagement}/`, {
+            const params = {
+                start_date: startDate,
+                end_date: endDate,
+            };
+
+            const response = await api.get(`/auth/PrintValuedPhysicalConsolidated/`, {
+                params,
                 responseType: 'arraybuffer',
             });
             printDocument(response);
@@ -161,9 +172,15 @@ export const useReportKardexStore = () => {
         }
     };
 
-    const DownloadReportConsolidatedInventory = async (idManagement: any) => {
+    const DownloadReportConsolidatedInventory = async (startDate?: string, endDate?: string) => {
+
         try {
-            const response = await api.get(`/auth/PrintValuedPhysicalConsolidated/${idManagement}/`, {
+            const params = {
+                start_date: startDate,
+                end_date: endDate,
+            };
+            const response = await api.get(`/auth/PrintValuedPhysicalConsolidated/`, {
+                params,
                 responseType: 'arraybuffer',
             });
             downloadDocument(response, 'Inventario_Fisico_Valorado_Consolidado.pdf');
@@ -175,6 +192,25 @@ export const useReportKardexStore = () => {
         }
     };
 
+    const DownloadReportConsolidatedInventoryExcel = async (startDate?: string, endDate?: string) => {
+        const params = {
+            start_date: startDate,
+            end_date: endDate,
+        };
+
+        try {
+            const response = await api.get('/auth/ReportConsolidatedExcel/', {
+                params,
+                responseType: 'arraybuffer',
+            });
+            downloadDocument(response, `report_kardex_${endDate}.xlsx`);
+
+            return true;
+        } catch (error) {
+            console.error('Error al descargar el kardex:', error);
+            return false;
+        }
+    };
 
     const ClosureMagementStore = async () => {
         try {
@@ -219,6 +255,7 @@ export const useReportKardexStore = () => {
         getReportValuedConsolid,
         PrintReportConsolidatedInventory,
         DownloadReportConsolidatedInventory,
+        DownloadReportConsolidatedInventoryExcel,
         ClosureMagementStore,
         listManagement,
     }

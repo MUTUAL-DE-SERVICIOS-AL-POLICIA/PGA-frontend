@@ -88,6 +88,9 @@ export const ExistenceCard = () => {
         material.description.includes("(CAJA CHICA)")
     );
 
+
+
+
     return (
         <>
             <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
@@ -229,7 +232,7 @@ export const ExistenceCard = () => {
             </Grid>
             <TableExistence
                 itemKardex={report_kardexs}
-                date_report={endDate}
+                date_report={startDate}
             />
         </>
     );
