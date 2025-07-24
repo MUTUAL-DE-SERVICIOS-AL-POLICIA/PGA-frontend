@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Grow, IconButton, Paper, TextField, Typography, Box, Divider, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Table, TableBody, TableRow, TableCell } from "@mui/material";
 import { Add, Delete, ExpandLess, ExpandMore, Save } from "@mui/icons-material";
-import { ComponentButton, SelectComponent } from "../../../../components";
+import { ComponentButton, SelectComponent, SelectMaterialComponent } from "../../../../components";
 import { useMaterialStore, useNoteEntryStore, useSupplierStore, useTypeStore } from "../../../../hooks";
 import { MaterialModel, SupplierModel, TypeModel } from "../../../../models";
 import { CreateSupplier } from "../../Suppliers";
@@ -179,15 +179,22 @@ export const CreateNote = () => {
                     <form onSubmit={handleOpenConfirm}>
                         <Grid container spacing={2}>
 
-                            {/* Tipo de ingreso y número de autorización */}
+                            <Grid item xs={12}>
+                                <Typography variant="subtitle2" fontWeight="bold" sx={{ color: '#333' }}>
+                                    Elegir tipo de ingreso y colocar número de autorización
+                                </Typography>
+                            </Grid>
+
                             <Grid item xs={12} sm={5}>
                                 <SelectComponent
                                     handleSelect={handleType}
                                     label={""}
                                     options={[{ id: 0, name: 'Escoger el tipo de ingreso' }, ...types.map((type: TypeModel) => ({ id: type.id, name: type.name_type }))]}
                                     value={typeSelect}
+                                    disabled={selectedMaterials.length > 0}
                                 />
                             </Grid>
+
                             <Grid item xs={12} sm={5}>
                                 <TextField
                                     fullWidth
@@ -200,7 +207,6 @@ export const CreateNote = () => {
                                 />
                             </Grid>
 
-                            {/* Botón Nuevo Proveedor */}
                             <Grid item xs={12} sm={2}>
                                 <ComponentButton
                                     text="Nuevo Proveedor"
@@ -208,7 +214,12 @@ export const CreateNote = () => {
                                 />
                             </Grid>
 
-                            {/* Lista de Proveedores */}
+                            <Grid item xs={12}>
+                                <Typography variant="subtitle2" fontWeight="bold" sx={{ color: '#333' }}>
+                                    Agregue proveedores y su factura
+                                </Typography>
+                            </Grid>
+
                             {supplierEntries.map((entry, index) => (
                                 <React.Fragment key={index}>
                                     <Grid item xs={12} sm={5}>
@@ -241,16 +252,25 @@ export const CreateNote = () => {
                                 </React.Fragment>
                             ))}
 
-                            {/* Selección de materiales */}
+                            <Grid item xs={12}>
+                                <Typography variant="subtitle2" fontWeight="bold" sx={{ color: '#333' }}>
+                                    Escoja sus materiales
+                                </Typography>
+                            </Grid>
+
                             <Grid item xs={12} sm={10}>
-                                <SelectComponent
-                                    handleSelect={handleAddMaterial}
-                                    label={""}
-                                    options={availableMaterials.map((material: MaterialModel) => ({ id: material.id, name: material.description }))}
-                                    value={''}
+                                <SelectMaterialComponent
+                                    label="Buscar material"
+                                    value={null}
+                                    onChange={handleAddMaterial}
                                     disabled={isMaterialSelectDisabled}
+                                    options={availableMaterials.map((material: MaterialModel) => ({
+                                        id: material.id,
+                                        name: material.description
+                                    }))}
                                 />
                             </Grid>
+
                             <Grid item xs={12} sm={2}>
                                 <ComponentButton
                                     text="Nuevo Material"
@@ -258,7 +278,6 @@ export const CreateNote = () => {
                                 />
                             </Grid>
 
-                            {/* Botón Guardar */}
                             <Grid item xs={12}>
                                 <Button
                                     type="submit"

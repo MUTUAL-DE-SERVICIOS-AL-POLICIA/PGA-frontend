@@ -1,13 +1,13 @@
 import { TableExistence } from "./TableExistence";
 import { useMaterialStore, useReportKardexStore } from "../../../hooks";
 import { useEffect, useState } from "react";
-import { Grid, IconButton, TextField, Tooltip, Button, Typography, Collapse } from "@mui/material";
-import { SelectComponent } from "../../../components";
+import { Grid, IconButton, TextField, Tooltip, Button, Typography, Collapse, CircularProgress } from "@mui/material";
 import { MaterialModel } from "../../../models";
 import PrintIcon from '@mui/icons-material/Print';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Box } from "@mui/system";
 import { PictureAsPdf } from "@mui/icons-material";
+import { SelectMaterialComponent } from "../../../components/SelectMaterialComponet";
 
 const getTodayDate = () => {
     const today = new Date();
@@ -24,6 +24,7 @@ export const ExistenceCard = () => {
     const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
     const [selectedCajaChicaId, setSelectedCajaChicaId] = useState<number | null>(null);
     const [isCalculateEnabled, setIsCalculateEnabled] = useState(false);
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
@@ -46,12 +47,18 @@ export const ExistenceCard = () => {
         setSelectedMaterialId(null);
     };
 
-    const handleCalculateClick = () => {
+    const handleCalculateClick = async () => {
         const idToCalculate = selectedMaterialId ?? selectedCajaChicaId;
         if (idToCalculate !== null) {
-            getReportKardex(idToCalculate, startDate || null, endDate || null);
+            setLoading(true);
+            try {
+                await getReportKardex(idToCalculate, startDate || null, endDate || null);
+            } finally {
+                setLoading(false);
+            }
         }
     };
+
 
     const handlePrintClick = () => {
         const idToPrint = selectedMaterialId ?? selectedCajaChicaId;
@@ -103,14 +110,14 @@ export const ExistenceCard = () => {
                             <Typography variant="subtitle2" gutterBottom>
                                 Materiales del almacén
                             </Typography>
-                            <SelectComponent
-                                handleSelect={handleAddMaterial}
-                                label=""
-                                options={availableMaterials.map((material: MaterialModel) => ({
-                                    id: material.id,
-                                    name: material.description,
+                            <SelectMaterialComponent
+                                label="Seleccionar material de almacén"
+                                value={selectedMaterialId}
+                                options={availableMaterials.map((m: any) => ({
+                                    id: m.id,
+                                    name: m.description
                                 }))}
-                                value={selectedMaterialId ?? ''}
+                                onChange={handleAddMaterial}
                                 disabled={!!selectedCajaChicaId}
                             />
                         </Grid>
@@ -118,14 +125,14 @@ export const ExistenceCard = () => {
                             <Typography variant="subtitle2" gutterBottom>
                                 Materiales de Caja Chica
                             </Typography>
-                            <SelectComponent
-                                handleSelect={handleAddCajaChica}
-                                label=""
-                                options={cajaChicaMaterials.map((material: MaterialModel) => ({
-                                    id: material.id,
-                                    name: material.description,
+                            <SelectMaterialComponent
+                                label="Seleccionar caja chica"
+                                value={selectedCajaChicaId}
+                                options={cajaChicaMaterials.map((m: any) => ({
+                                    id: m.id,
+                                    name: m.description
                                 }))}
-                                value={selectedCajaChicaId ?? ''}
+                                onChange={handleAddCajaChica}
                                 disabled={!!selectedMaterialId}
                             />
                         </Grid>
@@ -169,9 +176,10 @@ export const ExistenceCard = () => {
                                                 variant="contained"
                                                 color="primary"
                                                 onClick={handleCalculateClick}
-                                                disabled={!isCalculateEnabled}
+                                                disabled={!isCalculateEnabled || loading}
+                                                startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
                                             >
-                                                Calcular
+                                                {loading ? "Calculando..." : "Calcular"}
                                             </Button>
                                         </Grid>
                                         <Grid item>
