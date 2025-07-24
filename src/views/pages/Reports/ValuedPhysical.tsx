@@ -14,13 +14,13 @@ export const ValuedPhysical = () => {
     const [endDate, setEndDate] = useState('');
     const [selectedGroup, setSelectedGroup] = useState('');
     const [loading, setLoading] = useState(false);
-    const [showCollapse, setShowCollapse] = useState(false);  // New state to control Collapse visibility
+    const [showCollapse, setShowCollapse] = useState(false);  
 
     const handleUpdateClick = () => {
-        setLoading(true);  // Set loading true when updating
+        setLoading(true);  
         (startDate && endDate ? getReportValued(startDate, endDate) : getReportValued())
-            .finally(() => setLoading(false));  // End loading when the data is fetched
-        setShowCollapse(true);  // Show Collapse after update
+            .finally(() => setLoading(false));  
+        setShowCollapse(true);  
     };
 
     const handlePrintClick = () => {

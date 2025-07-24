@@ -1,4 +1,4 @@
-import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
+import { Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, CircularProgress } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { useReportKardexStore } from "../../../hooks";
 import { useEffect, useState } from "react";
@@ -52,6 +52,7 @@ export const ValuedPhysicalConsolided = () => {
 
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const getPermissionsFromStorage = () => {
         let permissions: string[] = [];
@@ -76,8 +77,18 @@ export const ValuedPhysicalConsolided = () => {
         ClosureMagementStore();
         setOpenConfirm(false);
     };
-    const handleCalculateClick = () => {
-        getReportValuedConsolid(startDate, endDate);
+    // const handleCalculateClick = () => {
+    //     getReportValuedConsolid(startDate, endDate);
+    // };
+    const handleCalculateClick = async () => {
+        setLoading(true);
+        try {
+            await getReportValuedConsolid(startDate, endDate);
+        } catch (error) {
+            console.error("Error al obtener el reporte:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handlePrintClick = () => {
@@ -185,9 +196,27 @@ export const ValuedPhysicalConsolided = () => {
                             color="primary"
                             fullWidth
                             onClick={handleCalculateClick}
-                            sx={{ height: '100%' }}
+                            sx={{ height: '100%', position: 'relative' }}
+                            disabled={loading}
                         >
-                            Calcular
+                            {loading ? (
+                                <>
+                                    <CircularProgress
+                                        size={24}
+                                        sx={{
+                                            color: 'white',
+                                            position: 'absolute',
+                                            top: '50%',
+                                            left: '50%',
+                                            marginTop: '-12px',
+                                            marginLeft: '-12px',
+                                        }}
+                                    />
+                                    <span style={{ opacity: 0 }}>Calculando...</span>
+                                </>
+                            ) : (
+                                'Calcular'
+                            )}
                         </Button>
                     </Grid>
 
@@ -263,7 +292,7 @@ export const ValuedPhysicalConsolided = () => {
                         </TableHead>
                         <TableBody>
                             {
-                                report_ValuedPhy_Consolids == null ? (
+                                (loading || report_ValuedPhy_Consolids == null) ? (
                                     <SkeletonComponent quantity={4} />
                                 ) : (
                                     report_ValuedPhy_Consolids.data.map((report: any, index: number) => (

@@ -66,7 +66,7 @@ const formatNumber = (num: number | undefined) => {
 
 
 export const TableExistence = (props: TableProps) => {
-    const { itemKardex, date_report } = props;
+    const { itemKardex } = props;
 
     if (!itemKardex || !itemKardex.kardex_de_existencia) {
         return (
@@ -78,7 +78,7 @@ export const TableExistence = (props: TableProps) => {
         );
     }
 
-    console.log(date_report);
+    console.log(itemKardex);
 
 
     return (
@@ -135,29 +135,20 @@ export const TableExistence = (props: TableProps) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {
-                            date_report == null ? (
-                                <StyledTableRow>
-                                    <StyledBodyCell align="left">2025-01-01</StyledBodyCell>
-                                    <StyledBodyCell align="left">Saldo al 31/12/2024</StyledBodyCell>
-                                    <StyledBodyCell align="center">
-                                        {itemKardex.kardex_de_existencia && itemKardex.kardex_de_existencia[0] && itemKardex.kardex_de_existencia[0].entradas !== ""
-                                            ? itemKardex.kardex_de_existencia[0].entradas
-                                            : 0}
-                                    </StyledBodyCell>
 
-                                    <StyledBodyCell align="left"></StyledBodyCell>
-                                    <StyledBodyCell align="left"></StyledBodyCell>
-                                    <StyledBodyCell align="left"></StyledBodyCell>
-                                    <StyledBodyCell align="left"></StyledBodyCell>
-                                    <StyledBodyCell align="center">{itemKardex.kardex_de_existencia && itemKardex.kardex_de_existencia[0] && itemKardex.kardex_de_existencia[0].entradas !== "" ? formatNumber(itemKardex.kardex_de_existencia[0].importe_entrada) : 0}</StyledBodyCell>
-                                    <StyledBodyCell align="left"></StyledBodyCell>
-                                    <StyledBodyCell align="left"></StyledBodyCell>
-                                    <StyledBodyCell align="left"></StyledBodyCell>
-                                </StyledTableRow>
-                            ) : null
-                        }
-
+                        <StyledTableRow>
+                            <StyledBodyCell align="left">2025-01-01</StyledBodyCell>
+                            <StyledBodyCell align="left">Saldo al 31/12/2024</StyledBodyCell>
+                            <StyledBodyCell align="center">{itemKardex.balance_amount_entries}</StyledBodyCell>
+                            <StyledBodyCell align="left"></StyledBodyCell>
+                            <StyledBodyCell align="left"></StyledBodyCell>
+                            <StyledBodyCell align="left"></StyledBodyCell>
+                            <StyledBodyCell align="left"></StyledBodyCell>
+                            <StyledBodyCell align="center">{formatNumber(itemKardex.balance_cost_total)}</StyledBodyCell>
+                            <StyledBodyCell align="left"></StyledBodyCell>
+                            <StyledBodyCell align="left"></StyledBodyCell>
+                            <StyledBodyCell align="left"></StyledBodyCell>
+                        </StyledTableRow>
 
                         {itemKardex.kardex_de_existencia.map((entry: any, index: number) => (
                             <StyledTableRow key={index}>
@@ -169,30 +160,20 @@ export const TableExistence = (props: TableProps) => {
                                 <StyledBodyCell align="right">{entry.stock_fisico}</StyledBodyCell>
                                 <StyledBodyCell align="right">{formatNumber(entry.cost_unit)}</StyledBodyCell>
                                 <StyledBodyCell align="left"></StyledBodyCell>
-                                <StyledBodyCell align="right">
-                                    {formatNumber(entry.importe_entrada)}
-                                </StyledBodyCell>
-                                <StyledBodyCell align="right">
-                                    {formatNumber(entry.importe_salida)}
-                                </StyledBodyCell>
-                                <StyledBodyCell align="right">
-                                    {formatNumber(entry.importe_saldo)}
-                                </StyledBodyCell>
-
+                                <StyledBodyCell align="right">{formatNumber(entry.importe_entrada)}</StyledBodyCell>
+                                <StyledBodyCell align="right">{formatNumber(entry.importe_salida)}</StyledBodyCell>
+                                <StyledBodyCell align="right">{formatNumber(entry.importe_saldo)}</StyledBodyCell>
                             </StyledTableRow>
-
                         ))}
                         <StyledTableRow>
                             <StyledTotalCell align="left" />
                             <StyledTotalCell align="left">TOTAL</StyledTotalCell>
-                            <StyledTotalCell align="left">{itemKardex.kardex_de_existencia && itemKardex.kardex_de_existencia[0] && itemKardex.kardex_de_existencia[0].entradas !== ""
-                                ? itemKardex.kardex_de_existencia[0].entradas
-                                : 0}</StyledTotalCell>
+                            <StyledTotalCell align="left">{itemKardex.balance_amount_entries}</StyledTotalCell>
                             <StyledTotalCell>{itemKardex.totales?.entradas ?? 0}</StyledTotalCell>
                             <StyledTotalCell>{itemKardex.totales?.salidas ?? 0}</StyledTotalCell>
                             <StyledTotalCell>{itemKardex.totales?.stock_fisico ?? 0}</StyledTotalCell>
                             <StyledTotalCell />
-                            <StyledTotalCell align="left">{itemKardex.kardex_de_existencia && itemKardex.kardex_de_existencia[0] && itemKardex.kardex_de_existencia[0].entradas !== "" ? formatNumber(itemKardex.kardex_de_existencia[0].importe_entrada) : 0}</StyledTotalCell>
+                            <StyledTotalCell align="left">{formatNumber(itemKardex.balance_cost_total)}</StyledTotalCell>
                             <StyledTotalCell>{formatNumber(itemKardex.totales?.importe_entrada)}</StyledTotalCell>
                             <StyledTotalCell>{formatNumber(itemKardex.totales?.importe_salida)}</StyledTotalCell>
                             <StyledTotalCell>{formatNumber(itemKardex.totales?.importe_saldo)}</StyledTotalCell>

@@ -113,9 +113,9 @@ export const ValuedTableGroup = ({ item }: { item: any }) => {
                         <StyledFooterCell /> {/* celda vacía para precio promedio */}
                         <StyledFooterCell align="right">{item.resumen?.saldo_anterior_total?.toFixed(2) ?? ""}</StyledFooterCell>
 
-                        <StyledFooterCell align="right">{item.resumen?.entradas_cantidad ?? ""}</StyledFooterCell>
+                        <StyledFooterCell align="right">{(item.resumen?.entradas_cantidad - item.resumen?.saldo_anterior_cantidad)}</StyledFooterCell>
                         <StyledFooterCell /> {/* celda vacía para precio promedio */}
-                        <StyledFooterCell align="right">{item.resumen?.entradas_total?.toFixed(2) ?? ""}</StyledFooterCell>
+                        <StyledFooterCell align="right">{(item.resumen?.entradas_total - item.resumen?.saldo_anterior_total).toFixed(2)}</StyledFooterCell>
 
                         <StyledFooterCell align="right">{item.resumen?.salidas_cantidad ?? ""}</StyledFooterCell>
                         <StyledFooterCell />
