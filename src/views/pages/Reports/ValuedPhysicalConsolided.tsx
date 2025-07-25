@@ -77,9 +77,7 @@ export const ValuedPhysicalConsolided = () => {
         ClosureMagementStore();
         setOpenConfirm(false);
     };
-    // const handleCalculateClick = () => {
-    //     getReportValuedConsolid(startDate, endDate);
-    // };
+
     const handleCalculateClick = async () => {
         setLoading(true);
         try {
@@ -149,7 +147,6 @@ export const ValuedPhysicalConsolided = () => {
     };
 
     const totals = calculateTotals();
-
 
     return (
         <>
@@ -266,7 +263,10 @@ export const ValuedPhysicalConsolided = () => {
 
             <StyledContainer>
                 <Typography variant="h6" align="center" gutterBottom>
-                    INVENTARIO CONSOLIDADO FISICO VALORADO
+                    INVENTARIO FISICO VALORADO CONSOLIDADO
+                </Typography>
+                <Typography align="center" gutterBottom>
+                    (EXPRESADO EN BOLIVIANOS)
                 </Typography>
                 <TableContainer>
                     <Table>
