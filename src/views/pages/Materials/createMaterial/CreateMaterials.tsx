@@ -46,10 +46,10 @@ export const CreateMaterials = (props: createProps) => {
 
         const data = {
             group_id: group_id.id,
-            code_material: '0', // Establecido en 0
+            code_material: '0', 
             description,
             unit_material,
-            barcode: '0', // Establecido en 0
+            barcode: '0',
             stock: 0,
             state: "Inhabilitado",
             min: 5,
@@ -69,7 +69,7 @@ export const CreateMaterials = (props: createProps) => {
     }
 
     const units = ["HOJAS", "ROLLO", "BLOCK", "CAJA", "PIEZAS", "OVILLO", "GLOBAL", "PAQUETE", "RESMA"];
-    const type_material_select = ["Almacen", "Caja Chica, Fondo en Avance, Reposicion"];
+    const type_material_select = ["Almacen", "Caja Chica, Fondo en Avance y Reposiciones"];
     units.sort((a, b) => a.localeCompare(b));
 
     return (

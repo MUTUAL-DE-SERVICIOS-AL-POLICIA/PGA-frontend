@@ -1,7 +1,7 @@
 import { IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, TextField } from "@mui/material";
 import { useNoteEntryStore } from "../../../hooks";
 import { useEffect, useState } from "react";
-import { ComponentTablePagination, SkeletonComponent } from "../../../components";
+import { ComponentSearch, ComponentTablePagination, SkeletonComponent } from "../../../components";
 import { NoteEntryModel } from "../../../models";
 import { Description, Print } from "@mui/icons-material";
 
@@ -38,10 +38,17 @@ export const TableNotesEntry = (props: tableProps) => {
         getNoteEntry(page, limit, '', startDate, endDate).then((total) => setTotal(total));
     }, [page, limit, flag, startDate, endDate]);
 
+    const handleSearch = async (search: string) => {
+        await setPage(0);
+        await setLimit(limitInit);
+        getNoteEntry(0, limit, search).then((total) => setTotal(total));
+    }
+
     return (
         <Stack sx={{ paddingRight: '10px' }}>
             <Typography variant="h6" gutterBottom>Notas de Entrada</Typography>
             <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+                <ComponentSearch title="Nro de Nota" onSearch={handleSearch} />
                 <TextField
                     label="Fecha Inicio"
                     type="date"
@@ -68,7 +75,6 @@ export const TableNotesEntry = (props: tableProps) => {
                     <TableHead>
                         <TableRow sx={{ background: '#E2F6F0' }}>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Nro Nota</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Nro Factura</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Fecha de Ingreso</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Tipo de Nota de Entrada</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
@@ -82,7 +88,6 @@ export const TableNotesEntry = (props: tableProps) => {
                                 note_entries.map((note_entry: NoteEntryModel, index: number) => (
                                     <TableRow key={index} sx={{ borderBottom: '2px solid #ccc' }}>
                                         <TableCell align="center">{note_entry.number_note}</TableCell>
-                                        <TableCell align="center">{note_entry.invoice_number}</TableCell>
                                         <TableCell align="center">{note_entry.delivery_date}</TableCell>
                                         <TableCell align="center">
                                             <Typography variant="body2" sx={{ color: getTypeTextAndColor(note_entry.type_id).color }}>
@@ -90,14 +95,13 @@ export const TableNotesEntry = (props: tableProps) => {
                                             </Typography>
                                         </TableCell>
                                         <TableCell align="center">
-                                            <Stack alignContent="center" direction="row">
-                                                <IconButton sx={{ p: 2 }} onClick={() => PrintNoteEntry(note_entry)}>
-                                                    <Print color="info" />
-                                                </IconButton>
-                                                <IconButton sx={{ p: 2 }} onClick={() => itemView!(note_entry)}>
-                                                    <Description color="success" />
-                                                </IconButton>
-                                            </Stack>
+                                            <IconButton sx={{ p: 2 }} onClick={() => PrintNoteEntry(note_entry)}>
+                                                <Print color="info" />
+                                            </IconButton>
+                                            <IconButton sx={{ p: 2 }} onClick={() => itemView!(note_entry)}>
+                                                <Description color="success" />
+                                            </IconButton>
+
                                         </TableCell>
                                     </TableRow>
                                 ))

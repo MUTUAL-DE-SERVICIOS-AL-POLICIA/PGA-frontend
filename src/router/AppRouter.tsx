@@ -12,7 +12,7 @@ import { ClassifierView } from '../views/pages/Classifiers';
 import { GroupTableSec } from '../views/pages/Groups';
 import { MaterialView } from '../views/pages/Materials';
 import { Dashboard } from '../views/pages/Dashboard';
-import { CreateNote } from '../views/pages/Note_Entry/CreateNote';
+import { CreateNote } from '../views/pages/Note_Entry/CreationNoteEntrie/CreateNote';
 import { NoteEntryRevised, NoteEntryView } from '../views/pages/Note_Entry';
 import { NoteRequestPettyCash, NoteRequestView } from '../views/pages/Note_Request';
 import { UsersView } from '../views/pages/Users';

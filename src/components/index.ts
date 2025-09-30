@@ -13,3 +13,5 @@ export * from './Select';
 export * from './AnalyticCard';
 export * from './MainCard';
 export * from './AnalyticCardPetty';
+export * from './DevBar';
+export * from './SelectMaterialComponet';

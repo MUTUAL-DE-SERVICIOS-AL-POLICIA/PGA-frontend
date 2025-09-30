@@ -1,4 +1,4 @@
-export * from './CreateNote';
+export * from './CreationNoteEntrie/CreateNote';
 export * from './NoteEntryView';
 export * from './TableNotesEntry';
 export * from './ViewNote';

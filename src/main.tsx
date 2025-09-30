@@ -1,19 +1,20 @@
 //import React from 'react'
 import ReactDOM from 'react-dom/client'
-import {App} from './App'
+import { App } from './App'
 import './styles.css'
+import { DevBar } from './components/DevBar.tsx';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createPalette } from './utils/createPalette.ts';
 
 const theme = createTheme({
-  breakpoints:{
+  breakpoints: {
     values: {
       xs: 0,
       sm: 600,
       md: 900,
       lg: 1200,
-      xl:1440
+      xl: 1440
     }
   },
   palette: createPalette(),
@@ -38,9 +39,12 @@ fontStyle.load().then(() => {
 });
 
 
+const isProd = import.meta.env.VITE_STATE_PROD === 'true';
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>
   <ThemeProvider theme={theme}>
+    {!isProd && <DevBar />}
     <App />
   </ThemeProvider>
   // </React.StrictMode>

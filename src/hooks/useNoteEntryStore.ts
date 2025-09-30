@@ -18,15 +18,23 @@ export const useNoteEntryStore = () => {
     }
 
     const getNoteEntry = async (page: number, limit: number, search: string, startDate?: string, endDate?: string) => {
-        let filter: any = { params: { page: page } };
-        if (limit != -1) filter.params.limit = limit;
+        let filter: any = {
+            params: {
+                page: page,
+                limit: limit,
+            },
+        };
+
         if (search !== '') filter.params.search = search;
-        if (startDate !== '') filter.params.start_date = startDate;
-        if (endDate !== '') filter.params.end_date = endDate;
+        if (startDate) filter.params.start_date = startDate;
+        if (endDate) filter.params.end_date = endDate;
+        
         const { data } = await api.get('/auth/notes/', filter);
         dispatch(setNoteEntry({ note_entries: data.data }));
+
         return data.total;
     };
+
 
     const getNoteEntryRevision = async (page: number, limit: number, search: string, startDate?: string, endDate?: string) => {
         let filter: any = { params: { page: page } };

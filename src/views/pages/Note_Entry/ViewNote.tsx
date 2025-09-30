@@ -35,14 +35,14 @@ export const ViewNote = (props: ViewProps) => {
                                     <TableCell sx={{ fontWeight: 'bold' }}>Número de Nota:</TableCell>
                                     <TableCell>{item.number_note}</TableCell>
                                 </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Número de Factura:</TableCell>
-                                    <TableCell>{item.invoice_number}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Nombre del proveedor:</TableCell>
-                                    <TableCell>{item.name_supplier}</TableCell>
-                                </TableRow>
+                                {item.suppliers.map((supplier: any, index: number) => (
+                                    <TableRow key={index}>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Proveedor:</TableCell>
+                                        <TableCell>{supplier.name}</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Factura:</TableCell>
+                                        <TableCell>{supplier.nit}</TableCell>
+                                    </TableRow>
+                                ))}
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Fecha de Ingreso:</TableCell>
                                     <TableCell>{item.delivery_date}</TableCell>

@@ -10,15 +10,24 @@ export const useReportKardexStore = () => {
     const { report_ValuedPhys, report_kardexs = [], report_ValuedPhy_Consolids, managements, flag } = useSelector((state: any) => state.report_kardexs);
     const dispatch = useDispatch();
 
-    const getReportKardex = async (material_id: any, endDate: string | null) => {
-        const { data } = await api.get(`/auth/ReportPrintKardex/${material_id}?end_date=${endDate || ''}`);
+    const getReportKardex = async (material_id: any, startDate: string | null, endDate: string | null) => {
+        const queryParams = new URLSearchParams({
+            start_date: startDate || '',
+            end_date: endDate || ''
+        });
+        const { data } = await api.get(`/auth/ReportPrintKardex/${material_id}?${queryParams}`);
         dispatch(setReportKardex({ report_kardexs: data }))
         return true;
     }
 
-    const PrintReportKardex = async (material_id: any, endDate: string | null) => {
+    const PrintReportKardex = async (material_id: any, startDate: string | null, endDate: string | null) => {
         try {
-            const response = await api.get(`/auth/PrintKardex/${material_id}?end_date=${endDate || ''}/`, {
+            const queryParams = new URLSearchParams({
+                start_date: startDate || '',
+                end_date: endDate || ''
+            });
+
+            const response = await api.get(`/auth/PrintKardex/${material_id}?${queryParams}`, {
                 responseType: 'arraybuffer',
             });
             printDocument(response)
@@ -28,17 +37,40 @@ export const useReportKardexStore = () => {
             console.error('Error al imprimir la nota de entrada:', error);
         }
     };
-    const DownloadReportKardex = async (material_id: any, endDate: string | null) => {
+    const DownloadReportKardex = async (material_id: any, startDate: string | null, endDate: string | null) => {
         try {
-            const response = await api.get(`/auth/PrintKardex/${material_id}?end_date=${endDate || ''}/`, {
+            const queryParams = new URLSearchParams({
+                start_date: startDate || '',
+                end_date: endDate || ''
+            });
+            const response = await api.get(`/auth/PrintKardex/${material_id}?${queryParams}`, {
                 responseType: 'arraybuffer',
             });
-            downloadDocument(response, `report_kardex_${material_id}.pdf`);
+            downloadDocument(response, `report_kardex_${endDate}.pdf`);
             return true;
         } catch (error) {
             console.error('Error al descargar el kardex:', error);
         }
     };
+
+    const DownloadReportKardexExcel = async (material_id: any, startDate: string | null, endDate: string | null) => {
+        try {
+            const queryParams = new URLSearchParams({
+                start_date: startDate || '',
+                end_date: endDate || ''
+            });
+
+            const response = await api.get(`/auth/PrintKardexExcel/${material_id}?${queryParams}`, {
+                responseType: 'arraybuffer',
+            });
+
+            downloadDocument(response, `report_kardex_${endDate}.xlsx`);
+            return true;
+        } catch (error) {
+            console.error('Error al descargar el Kardex en Excel:', error);
+        }
+    };
+
     const getReportValued = async (startDate?: string, endDate?: string) => {
         const params = {
             start_date: startDate,
@@ -88,15 +120,46 @@ export const useReportKardexStore = () => {
         }
     };
 
-    const getReportValuedConsolid = async (idManagement: any) => {
-        const { data } = await api.get(`/auth/ReportPrintValuedPhysicalConsolidated/${idManagement}/`);
+    const DownloadReportValuedExcel = async (startDate?: string, endDate?: string) => {
+        const params = {
+            start_date: startDate,
+            end_date: endDate,
+        };
+
+        try {
+            const response = await api.get('/auth/PrintValuedPhysicalExcel/', {
+                params,
+                responseType: 'arraybuffer',
+            });
+            downloadDocument(response, `report_kardex_${endDate}.xlsx`);
+
+            return true;
+        } catch (error) {
+            console.error('Error al descargar el kardex:', error);
+            return false;
+        }
+    };
+
+    const getReportValuedConsolid = async (startDate?: string, endDate?: string) => {
+        const params = {
+            start_date: startDate,
+            end_date: endDate,
+        };
+        const { data } = await api.get(`/auth/ValuedPhysicalConsolidatedModificaded/`, { params });
         dispatch(setReportValuedConsolid({ report_ValuedPhy_Consolids: data }));
         return true;
     }
 
-    const PrintReportConsolidatedInventory = async (idManagement: any) => {
+
+    const PrintReportConsolidatedInventory = async (startDate?: string, endDate?: string) => {
         try {
-            const response = await api.get(`/auth/PrintValuedPhysicalConsolidated/${idManagement}/`, {
+            const params = {
+                start_date: startDate,
+                end_date: endDate,
+            };
+
+            const response = await api.get(`/auth/PrintValuedPhysicalConsolidated/`, {
+                params,
                 responseType: 'arraybuffer',
             });
             printDocument(response);
@@ -108,9 +171,15 @@ export const useReportKardexStore = () => {
         }
     };
 
-    const DownloadReportConsolidatedInventory = async (idManagement: any) => {
+    const DownloadReportConsolidatedInventory = async (startDate?: string, endDate?: string) => {
+
         try {
-            const response = await api.get(`/auth/PrintValuedPhysicalConsolidated/${idManagement}/`, {
+            const params = {
+                start_date: startDate,
+                end_date: endDate,
+            };
+            const response = await api.get(`/auth/PrintValuedPhysicalConsolidated/`, {
+                params,
                 responseType: 'arraybuffer',
             });
             downloadDocument(response, 'Inventario_Fisico_Valorado_Consolidado.pdf');
@@ -122,6 +191,25 @@ export const useReportKardexStore = () => {
         }
     };
 
+    const DownloadReportConsolidatedInventoryExcel = async (startDate?: string, endDate?: string) => {
+        const params = {
+            start_date: startDate,
+            end_date: endDate,
+        };
+
+        try {
+            const response = await api.get('/auth/ReportConsolidatedExcel/', {
+                params,
+                responseType: 'arraybuffer',
+            });
+            downloadDocument(response, `report_kardex_${endDate}.xlsx`);
+
+            return true;
+        } catch (error) {
+            console.error('Error al descargar el kardex:', error);
+            return false;
+        }
+    };
 
     const ClosureMagementStore = async () => {
         try {
@@ -159,11 +247,14 @@ export const useReportKardexStore = () => {
         getReportValued,
         PrintReportKardex,
         DownloadReportKardex,
+        DownloadReportKardexExcel,
         PrintReportValued,
         DownloadReportValued,
+        DownloadReportValuedExcel,
         getReportValuedConsolid,
         PrintReportConsolidatedInventory,
         DownloadReportConsolidatedInventory,
+        DownloadReportConsolidatedInventoryExcel,
         ClosureMagementStore,
         listManagement,
     }
